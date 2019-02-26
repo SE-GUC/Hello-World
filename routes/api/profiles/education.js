@@ -48,7 +48,7 @@ router.post('/create', (req,res)=>{
 })
 
 
-// @route   GET api/profiles/education/:partner_id
+// @route   GET api/profiles/education/:id
 // @desc    Get education's profile by ID
 // @access  Public
 router.get('/:id',(req,res)=>{
@@ -66,7 +66,7 @@ router.get('/:id',(req,res)=>{
 });
 
 
-// @route   POST api/profiles/education/edit/:partner_id
+// @route   POST api/profiles/education/edit/:id
 // @desc    Edit education's Profile
 // @access  Private
 router.put('/edit/:id',(req,res)=>{
@@ -95,7 +95,7 @@ router.put('/edit/:id',(req,res)=>{
 });
 
 
-// @route   DELETE api/profiles/education/delete/:partner_id
+// @route   DELETE api/profiles/education/delete/:id
 // @desc    Delete education's Profile
 // @access  Private
 router.delete('/delete/:id',(req,res)=>{

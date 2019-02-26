@@ -51,7 +51,7 @@ router.post('/create', (req,res)=>{
 });
 
 
-// @route   GET api/profiles/partner/:partner_id
+// @route   GET api/profiles/partner/:id
 // @desc    Get Partner's profile by ID
 // @access  Public
 router.get('/:id',(req,res)=>{
@@ -69,7 +69,7 @@ router.get('/:id',(req,res)=>{
 });
 
 
-// @route   POST api/profiles/partner/edit/:partner_id
+// @route   POST api/profiles/partner/edit/:id
 // @desc    Edit Partner's Profile
 // @access  Private
 router.put('/edit/:id',(req,res)=>{
@@ -98,7 +98,7 @@ router.put('/edit/:id',(req,res)=>{
 });
 
 
-// @route   DELETE api/profiles/partner/delete/:partner_id
+// @route   DELETE api/profiles/partner/delete/:id
 // @desc    Delete Partner's Profile
 // @access  Private
 router.delete('/delete/:id',(req,res)=>{

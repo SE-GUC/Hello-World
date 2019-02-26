@@ -50,7 +50,7 @@ router.post('/create', (req,res)=>{
 })
 
 
-// @route   GET api/profiles/consultant/:partner_id
+// @route   GET api/profiles/consultant/:id
 // @desc    Get consultant's profile by ID
 // @access  Public
 router.get('/:id',(req,res)=>{
@@ -68,7 +68,7 @@ router.get('/:id',(req,res)=>{
 });
 
 
-// @route   POST api/profiles/consultant/edit/:partner_id
+// @route   POST api/profiles/consultant/edit/:id
 // @desc    Edit consultant's Profile
 // @access  Private
 router.put('/edit/:id',(req,res)=>{
@@ -97,7 +97,7 @@ router.put('/edit/:id',(req,res)=>{
 });
 
 
-// @route   DELETE api/profiles/consultant/delete/:partner_id
+// @route   DELETE api/profiles/consultant/delete/:id
 // @desc    Delete consultant's Profile
 // @access  Private
 router.delete('/delete/:id',(req,res)=>{
