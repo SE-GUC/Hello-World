@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 
 // @route   GET api/profiles/test
 // @desc    Tests profiles route
