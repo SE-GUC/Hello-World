@@ -78,3 +78,7 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+~$Sprint_Backlog_Template.xlsx
+.idea/workspace.xml
+
