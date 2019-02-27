@@ -8,8 +8,8 @@ const Member = require('../../models/Member');
 
 //temp data
 const users =
-    [new User("sad",123,1415),
-     new User("asd",231,414)
+    [new User(123,"sad",1415),
+     new User(231,"asd",414)
     ]
 const organizations = [
     new Organization("7mada", 11,1),
@@ -61,6 +61,30 @@ router.post('/addtomember/:id',(req,res)=>{
     else{
         members.push(memberadd);
         return res.json({data: memberadd});
+    }
+})
+//create new user profile (should be member but will do later on)
+router.post('/pofilecreation',(req,res)=>{
+    const name = req.body.name;
+    const id = uuid.v4();
+    const age = req.body.age;
+    const newUser = new User(
+        id,
+        name,
+        age
+    );
+    users.push(newUser);
+    return res.json({data: newUser});
+})
+//show memeber profile
+router.get('/profilemembers/:id',(req,res)=>{
+    const id = req.params.id;
+    const member1 = members.find(element => {
+        return element.id == id;
+    });
+    if(!member1) return res.status(404).json({profile: 'There is no  profile for this user'});
+    else {
+        return res.json({data: members});
     }
 })
 module.exports = router;
