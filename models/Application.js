@@ -1,11 +1,11 @@
 class Application {
-    constructor(number, partner,id,consultancy) {
-        this.number = number;
+    constructor(description, partner, id) {
+        this.description = description;
         this.partner = partner;
-        this.id = id;
-        this.messages = [];
         this.applicants = [];
-        this.consultancy = consultancy;
+        this.id =id;
+        this.messages = [];
+        
     };
 }
 

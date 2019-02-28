@@ -1,7 +1,9 @@
 class User {
-    constructor(name, age, id) {
-        this.name = name;
-        this.age = age;
+    constructor(username, password, id) {
+        this.username = username;
+        this.password = password;
+        this.id = id;
     };
 }
-module.exports = User;
+
+module.exports = User
