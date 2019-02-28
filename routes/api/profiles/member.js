@@ -29,7 +29,7 @@ router.get('/:id',(req,res)=>{
     const member = members.find(element => {
         return element.id == id;
     });
-    if(!member) return res.status(404).json({profile: 'There is no  profile for this user'});
+    if(!member) return res.status(404).json({profile: 'There is no Member profile for this user'});
     else {
         return res.json({data: member});
     }
@@ -45,6 +45,11 @@ router.post('/create/:id',(req,res)=>{
     const email = req.body.email;
     const phone = req.body.phone;
     const id = req.params.id;
+
+    if (!name) return res.status(400).send({ err: 'name field is required' });
+    if (!age) return res.status(400).send({ err: 'age field is required' });
+    if (!email) return res.status(400).send({ err: 'email field is required' });
+    if (!phone) return res.status(400).send({ err: 'phone field is required' });
 
     const user = users.find(element => {
         return element.id == id;
@@ -72,22 +77,26 @@ router.put('/edit/:id',(req,res)=>{
     const phone = req.body.phone;
     const id = req.params.id;
 
+    if (!name) return res.status(400).send({ err: 'name field is required' });
+    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
+    if (!age) return res.status(400).send({ err: 'age field is required' });
+    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
+    if (!email) return res.status(400).send({ err: 'email field is required' });
+    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
+    if (!phone) return res.status(400).send({ err: 'phone field is required' });
+    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
+
     const member = members.find(element => {
         return element.id == id;
     });
     if(!member){
-        res.status(404).json({ profile: 'There is no Member profile for this user' });
+        return res.status(404).json({ profile: 'There is no Member profile for this user' });
     }
     else {
         member.name = name;
         member.age = age;
         member.email = email;
         member.phone = phone;
-
-        if (!name) return res.status(400).send({err: 'Name field is required'});
-        if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
-        if (!age) return res.status(400).send({err: 'Age field is required'});
-        if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
 
         return res.json({data: members});
     }

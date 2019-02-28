@@ -1,12 +1,10 @@
 class Consultant {
-    constructor(id, workPosition) {
+    constructor(id) {
         this.id = id;
         this.boardMembers = [];
         this.events = [];
-        this.workPosition = workPosition;
         this.partners = [];
         this.reports = [];
-        this.acceptedConsultant = null;
     };
 };
 

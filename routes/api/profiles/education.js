@@ -2,93 +2,79 @@ const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
 
-//Load Education Model
+//Load Consultant Model
+const User = require('../../../models/User');
+const Organization = require('../../../models/Organization');
 const Education = require('../../../models/Education');
 
 // Temporary Data
-const educations = [
-    new Education('Education 1', 80, 1),
-    new Education('Education 2', 90, 2),
-    new Education('Education 3', 100, 3),
-    new Education('Education 4', 110, 4),
-    new Education('Education 5', 123, 5),
+const users = [
+    new User('karim13','karimPassword',1),
+    new User('youssef12','youssefPassword',2),
+    new User('moataz11','moatazPassword',3),
+    new User('kashlan10','kashlanPassword',4),
 ];
 
+const organizations = [
+    new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
+    new Organization('auc', 'El Tagamo3 El Khames', 'auc@mail.com', 11, 2),
+    new Organization('miu', '3obor', 'miu@mail.com', 12, 3),
+    new Organization('aast', 'Sheraton', 'aast@mail.com', 13, 4),
+];
 
-// @route   GET api/profiles/education/all
-// @desc    Gets All Education Profiles
-// @access  Public
-router.get('/all', (req,res)=>{
-    res.json({data: educations});
-});
+const educations = [
+    new Education(1),
+    new Education(2),
+    new Education(3),
+];
 
-
-// @route   POST api/profiles/education/create
-// @desc    Creates Educations Profile
+// @route   POST api/profiles/education/create/:id
+// @desc    Creates Educational Organization Profile
 // @access  Private
-router.post('/create', (req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-
-
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (typeof name !== 'string') return res.status(400).send({ err: 'Invalid value for name' });
-    if (!age) return res.status(400).send({ err: 'Age field is required' });
-    if (isNaN(age)) return res.status(400).send({ err: 'Invalid value for age' });
-
-
-
+router.post('/create/:id', (req,res)=>{
+    const id = req.params.id;
+    const education= educations.find(element => {
+        return element.id == id;
+    });
+    if(!education)   return res.status(404).json({ profile: 'There is no Educational Organization profile for this user' });
     const newEducation = {
-        name,
-        age,
-        id: uuid.v4()
+        id
     };
     educations.push(newEducation);
     return res.json({ data: newEducation });
-})
+});
 
 
 // @route   GET api/profiles/education/:id
-// @desc    Get education's profile by ID
-// @access  Public
+// @desc    Get educational organization's profile by ID
+// @access  private
 router.get('/:id',(req,res)=>{
     const id = req.params.id;
     const education = educations.find(element => {
         return element.id == id;
     });
     if(!education){
-        res.status(404).json({ profile: 'There is no profile for this user' });
+        return res.status(404).json({ profile: 'There is no Educational Organization profile for this user' });
     }
     else{
-        res.json({data: education});
+        return res.json({data: education});
     }
 
 });
 
 
 // @route   PUT api/profiles/education/edit/:id
-// @desc    Edit education's Profile
+// @desc    Edit educational organization's Profile
 // @access  Private
 router.put('/edit/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
     const id = req.params.id;
     const education = educations.find(element => {
         return element.id == id;
     });
     if(!education){
-        res.status(404).json({ profile: 'There is no profile for this user' });
+        return res.status(404).json({ profile: 'There is no Education profile for this user' });
     }
     else{
-        education.name = name;
-        education.age = age;
-
-        if (!name) return res.status(400).send({ err: 'Name field is required' });
-        if (typeof name !== 'string') return res.status(400).send({ err: 'Invalid value for name' });
-        if (!age) return res.status(400).send({ err: 'Age field is required' });
-        if (isNaN(age)) return res.status(400).send({ err: 'Invalid value for age' });
-
-
         return res.json({data: education});
     }
 
@@ -103,13 +89,11 @@ router.delete('/delete/:id',(req,res)=>{
     const education = educations.find(element => {
         return element.id == id;
     });
-    educations.splice( educations.indexOf(education), 1 );
     if(!education){
-        return res.status(404).json({ profile: 'There is no profile for this user' });
+        return res.status(404).json({ profile: 'There is no Educational Organization profile for this user' });
     }
-    else{
-        return res.json({data: educations});
-    }
+    educations.splice( educations.indexOf(education), 1 );
+    return res.json({data: educations});
 });
 
 module.exports = router;

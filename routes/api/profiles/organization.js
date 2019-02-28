@@ -30,6 +30,11 @@ router.post('/create/:id',(req,res)=>{
     const address = req.body.address;
     const phone = req.body.phone;
     const id = req.params.id;
+
+    if (!name) return res.status(400).send({ err: 'name field is required' });
+    if (!email) return res.status(400).send({ err: 'email field is required' });
+    if (!address) return res.status(400).send({ err: 'address field is required' });
+    if (!phone) return res.status(400).send({ err: 'phone field is required' });
     const organization = new Organization(
         name,
         address,
