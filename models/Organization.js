@@ -1,20 +1,11 @@
-<<<<<<< HEAD
-class Organization{
-constructor(name,age,id){
-    this.name = name;
-    this.age = age;
-    this.id = id;
-}
-
-}
-=======
 class Organization {
-    constructor(name,age,id) {
-    this.name = name;
-    this.age = age;
-    this.id = id;
+    constructor(name, address, email, phone, id) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.id = id;
     };
-}
+};
 
->>>>>>> origin/user
 module.exports = Organization;

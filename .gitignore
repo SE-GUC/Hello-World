@@ -79,5 +79,7 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-.idea/workspace.xml
 ~$Sprint_Backlog_Template.xlsx
+.idea/workspace.xml
+package-lock.json
+

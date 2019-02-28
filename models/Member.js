@@ -1,12 +1,9 @@
 class Member {
-
-    constructor(name, age, mail, phone, userID,RMC,id) {
+    constructor(name, age, email, phone, id) {
         this.name = name;
         this.age = age;
-        this.mail = mail;
+        this.email = email;
         this.phone = phone;
-        this.userID = userID;
-        this.RMC = RMC;
         this.skills = [];
         this.interests = [];
         this.pastEvents = [];
@@ -15,7 +12,6 @@ class Member {
         this.certificates = [];
         this.masterclasses = [];
         this.id = id;
-        
     };
 };
 

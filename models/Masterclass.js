@@ -1,8 +1,9 @@
-class Masterclass{
-    constructor(nameOfMC,MCID){
-        this.nameOfMC = nameOfMC;
-        this.MCID = MCID;
-    }
-
+class Masterclass {
+    constructor(name, description, id) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.applicants = [];
+    };
 }
-module.exports = Masterclass
+module.exports = Masterclass;
