@@ -4,6 +4,6 @@ class User {
         this.password = password;
         this.id = id;
     };
-}
+};
 
-module.exports = User
+module.exports = User;

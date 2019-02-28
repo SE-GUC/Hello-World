@@ -1,11 +1,10 @@
 class Education {
-    constructor(organizationID,id) {
-        this.organizationID = organizationID;
+    constructor(id) {
+        this.id = id;
         this.courses = [];
         this.trainers = [];
         this.certificates = [];
         this.trainigPrograms = [];
-        this.id = id;
     };
 }
 

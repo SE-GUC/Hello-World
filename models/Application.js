@@ -5,7 +5,7 @@ class Application {
         this.applicants = [];
         this.id =id;
         this.messages = [];
-        
+
     };
 }
 

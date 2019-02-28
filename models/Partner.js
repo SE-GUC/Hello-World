@@ -1,6 +1,5 @@
 class Partner {
-    constructor(organizationID ,workPosition, fieldOfWork, id) {
-        this.organizationID = organizationID;
+    constructor(workPosition, fieldOfWork, id) {
         this.workPosition = workPosition;
         this.partners = [];
         this.boardMembers = [];
