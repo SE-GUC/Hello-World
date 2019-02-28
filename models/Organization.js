@@ -1,4 +1,4 @@
-class Member {
+class Organization {
     constructor(name,age,id) {
     this.name = name;
     this.age = age;
@@ -6,4 +6,4 @@ class Member {
     };
 }
 
-module.exports = Member;
+module.exports = Organization;
