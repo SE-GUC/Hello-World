@@ -32,34 +32,5 @@ const classes = [
     new Masterclass('hawdfa',2)
 ];
 
-// @route get api/users/viewrecMC/:id
-router.get('/viewrecMC/:id',(req,res)=>{
-    const id = req.param.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    const i = members.indexOf(member);
-    const a = members[i].RMC;
-    return res.json({data:members[i].RMC});
-});
-
-
-// @route get api/users/addRMC/:ID1/:ID2
-router.put('/addRMC/:ID1/:ID2',(req,res) =>{
-const id1 = req.params.ID1;
-const id2 = req.params.ID2;
-const rmcs = req.body.rmcs;
-const member = members.find(element =>{
-    return element.id = id2;
-});
-if(!member){
-    res.status(404).json({ profile: 'There is no Member profile for this user' });
-}
-else{
-const index = members.indexOf(member);
-members[index].RMC.push(rmcs);
-res.json({data: members[index.RMC]});
-}
-});
 
 module.exports = router;

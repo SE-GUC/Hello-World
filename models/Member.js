@@ -12,6 +12,7 @@ class Member {
         this.certificates = [];
         this.masterclasses = [];
         this.id = id;
+        this.recommendedMasterclasses = [];
     };
 };
 
