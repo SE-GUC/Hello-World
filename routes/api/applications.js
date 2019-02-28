@@ -45,17 +45,17 @@ router.get('/test', (req,res)=>{
 router.post('/submit/:id',(req,res)=>{
     const number = req.body.number;
     const id = req.params.id;
-    const newApp = new Application(
-      number,
-      id,
-      uuid.v4()
-    );
     if (!number) return res.status(400).send({ err: 'Application Number field is required' });
     const partner = partners.find(element => {
         return element.id == id;
     });
     if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
     else{
+        const newApp = new Application(
+            number,
+            id,
+            uuid.v4()
+        );
         applications.push(newApp);
         return res.json({data: newApp});
     }
