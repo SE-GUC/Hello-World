@@ -7,6 +7,7 @@
     "server": "nodemon app.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "^4.16.4",
@@ -14,6 +15,7 @@
     "morgan": "~1.9.0",
     "node": "^11.10.0",
     "nodemon": "^1.18.10",
-    "pug": "2.0.0-beta11"
+    "pug": "^2.0.3",
+    "uuid": "^3.3.2"
   }
 }

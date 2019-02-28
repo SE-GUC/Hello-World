@@ -22,7 +22,7 @@ app.use('/api/masterclasses',masterclasses);
 app.use('/api/applications',applications);
 
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 7000;
 
 app.listen(port,()=>{
     console.log(`Server Running On Port ${port}`);
