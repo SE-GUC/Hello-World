@@ -8,7 +8,7 @@ const Member = require('../../models/Member');
 
 //temp data
 const users =
-    [new User(123,"sad",1415),
+    [new User("sad",123,1415),
      new User(231,"asd",414)
     ]
 const organizations = [
@@ -17,7 +17,9 @@ const organizations = [
 ]
 const members = [
     new Member("ba", 11, 123),
-    new Member("as", 123, 141)];
+    new Member("as", 123, 141),
+    new Member("sda",1,1)
+];
 
 
 // @route   get api/users/test
@@ -87,4 +89,30 @@ router.get('/profilemembers/:id',(req,res)=>{
         return res.json({data: members});
     }
 })
+//edit page
+router.put('/profilemembersedit/:id',(req,res)=>{
+    const Idr = request.params.id;
+    let member1 = members.filter(member1 => {
+        return member1.id = Idr;
+    })[0];
+    const index = members.indexOf(member1);
+    const keys = Object.keys(request.body);
+    keys.forEach(key => {
+        member1[key] = req.body[key];
+    });
+    members[index] = member1;
+    Response.json(members[index]);
+});
+router.delete('/deletemember/:id',(req,res) =>{
+const id = req.param.id;
+let member = members.filter(member =>{
+    return member.id == id;
+})[0];
+const index = members.indexOf(member);
+members.splice(index,1);
+res.json({massage :'Member ${id} deleted.'});
+});
+router.get('/showmem',(req,res)=>{
+    res.json({data:members});
+});
 module.exports = router;
