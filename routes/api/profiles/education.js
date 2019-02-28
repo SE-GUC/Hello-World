@@ -66,7 +66,7 @@ router.get('/:id',(req,res)=>{
 });
 
 
-// @route   POST api/profiles/education/edit/:id
+// @route   PUT api/profiles/education/edit/:id
 // @desc    Edit education's Profile
 // @access  Private
 router.put('/edit/:id',(req,res)=>{
