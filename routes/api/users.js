@@ -28,6 +28,18 @@ const members = [
 ];
 
 
+
+const classes = [
+    new Masterclass('The Prince',1),
+    new Masterclass('hawdfa',2)
+];
+
+
+    
+
+
+
+
 // @route   GET api/users/test
 // @desc    Tests users route
 // @access  Public
@@ -131,6 +143,7 @@ router.delete('/member/delete/:id',(req,res) => {
         return element.id == id;
     });
 
+
     members.splice( members.indexOf(member), 1 );
     if(!member){
         return res.status(404).json({ profile: 'There is no Member profile for this user' });
@@ -167,4 +180,33 @@ res.json({data: members[index.RMC]});
 }
 }
 );
+
+//showing classes
+router.get('/showclasses', (req, res) => res.json({ data: classes }));
+
+// member applying for a masterclass
+router.post('/apply/:id/:id2',(req,res)=>{
+    const memberid = req.params.id;
+    const classid = req.params.id2;
+
+    const masterclass = classes.find(element => {
+        return element.id == classid;
+    });
+    const member = members.find(element => {
+        return element.id == memberid;
+     });
+    if (!masterclass) return res.status(404).json({profile: 'there is no such master class'})
+    if (!member) return res.status(404).json({profile: 'there is no such member'})
+    
+    const applicant ={member}
+    const mclass ={masterclass}
+
+    masterclass.applicants.push(applicant.member.id);
+    member.masterclasses.push(mclass);
+    return res.json({data : masterclass , member})
+  
+});
+
+
+
 module.exports = router;

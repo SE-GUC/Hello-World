@@ -1,8 +1,6 @@
 class Masterclass{
-    constructor(nameOfMC,expertarray,reqestUserArray,MCID){
+    constructor(nameOfMC,MCID){
         this.nameOfMC = nameOfMC;
-        this.expertarray = [];
-        this.reqestUserArray = [];
         this.MCID = MCID;
     }
 
