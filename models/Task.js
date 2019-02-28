@@ -1,18 +1,15 @@
 class Task {
-    constructor(discription, deadline, levelOfCometment, experienceLevel
-        ,partenr,consultant,setOfSkills,monetaryCompensation,Application) {
-        this.discription = discription;
-        this.deadline = deadline;
-        this.levelOfCometment = levelOfCometment;
+    constructor(levelOfCommitment, experienceLevel, setOfSkills, monetaryCompensation, appID, id) {
+        this.levelOfCommitment = levelOfCommitment;
         this.experienceLevel = experienceLevel;
-        this.partenr = partenr;
         this.consultant = consultant;
         this.setOfSkills = setOfSkills;
         this.monetaryCompensation = monetaryCompensation;
-        this.Application = Application;
-
-
+        this.appID = appID;
+        this.id = id;
+        this.applicants = [];
+        this.acceptedApplicants = [];
     };
-}
+};
 
-module.exports = Task
+module.exports = Task;

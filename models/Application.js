@@ -1,13 +1,12 @@
 class Application {
-    constructor(discription, deadline
-        ,partenr,consultant,monetaryCompensation) {
-        this.discription = discription;
-        this.deadline = deadline;
-        this.partenr = partenr;
-        this.consultant = consultant;
-        this.monetaryCompensation = monetaryCompensation;
+    constructor(description, partner, id) {
+        this.description = description;
+        this.partner = partner;
+        this.applicants = [];
+        this.id =id;
+        this.messages = [];
 
     };
 }
 
-module.exports = Application
+module.exports = Application;

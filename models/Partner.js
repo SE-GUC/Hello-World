@@ -1,23 +1,15 @@
 class Partner {
-    constructor(name, age, mail, phone
-        ,orgnization,workPosition,partnersList,boardMembers,evenets,fieldOfWork,pastProjects,feedbackForm) {
-        this.name = name;
-        this.age = age;
-        this.mail = mail;
-        this.phone = phone;
-        this.orgnization = orgnization;
+    constructor(organizationID ,workPosition, fieldOfWork, id) {
+        this.organizationID = organizationID;
         this.workPosition = workPosition;
-        this.partnersList = partnersList;
-        this.boardMembers = boardMembers;
-        this.evenets = evenets;
+        this.partners = [];
+        this.boardMembers = [];
+        this.events = [];
         this.fieldOfWork = fieldOfWork;
-        this.pastProjects = pastProjects;
-        this.feedbackForm = feedbackForm;
-
-
-
-
+        this.pastProjects = [];
+        this.feedback = [];
+        this.id = id;
     };
 }
 
-module.exports = Partner
+module.exports = Partner;
