@@ -4,8 +4,12 @@ class Member {
         this.age = age;
         this.email = email;
         this.phone = phone;
+<<<<<<< HEAD
         this.rmasterc = [];
         this.skills = [];
+=======
+        this.setOfSkills = [];
+>>>>>>> module
         this.interests = [];
         this.pastEvents = [];
         this.tasksCompleted = [];
@@ -13,6 +17,8 @@ class Member {
         this.certificates = [];
         this.masterclasses = [];
         this.id = id;
+        this.recommendedMasterclasses = [];
+        this.notifications = [];
     };
 };
 

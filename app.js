@@ -16,7 +16,6 @@ const consultant = require('./routes/api/profiles/consultant');
 const education = require('./routes/api/profiles/education');
 const applications = require('./routes/api/applications');
 const masterclasses = require('./routes/api/masterclasses');
-const admin = require('./routes/api/admin');
 
 app.get('/',(req,res)=>{
     res.send('Hello World');
@@ -34,9 +33,8 @@ app.use('/api/profiles/consultant',consultant);
 app.use('/api/profiles/education',education);
 app.use('/api/masterclasses',masterclasses);
 app.use('/api/applications',applications);
-app.use('/api/admin',admin);
 
-const port = process.env.PORT || 12000;
+const port = process.env.PORT || 5000;
 
 app.listen(port,()=>{
     console.log(`Server Running On Port ${port}`);
