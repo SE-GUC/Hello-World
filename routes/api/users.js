@@ -32,5 +32,4 @@ const classes = [
     new Masterclass('hawdfa',2)
 ];
 
-
 module.exports = router;
