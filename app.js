@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const home = require('./routes/api/home')
 const users = require('./routes/api/users');
 const tasks = require('./routes/api/tasks');
 const member = require('./routes/api/profiles/member');
@@ -17,13 +16,24 @@ const education = require('./routes/api/profiles/education');
 const applications = require('./routes/api/applications');
 const masterclasses = require('./routes/api/masterclasses');
 
-app.get('/',(req,res)=>{
-    res.send('Hello World');
+
+// @route   GET /home
+// @desc    Home Page
+// @access  public
+app.get('/home',(req,res) =>{
+    return res.json({msg:'Welcome To Lirten Hub'});
+});
+
+// @route   GET /about
+// @desc    About Page
+// @access  public
+
+app.get('/about', (req, res) => {
+    res.json({msg: 'About Us'});
 });
 
 
 // Use Routes
-app.use('/api/home',home)
 app.use('/api/users',users);
 app.use('/api/tasks',tasks);
 app.use('/api/profiles/member',member);
