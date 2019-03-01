@@ -1,9 +1,10 @@
 class Member {
-    constructor(name, age, email, phone, id) {
+    constructor(name, age, email, phone,rmasterc, id) {
         this.name = name;
         this.age = age;
         this.email = email;
         this.phone = phone;
+        this.rmasterc = [];
         this.skills = [];
         this.interests = [];
         this.pastEvents = [];

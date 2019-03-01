@@ -34,7 +34,7 @@ const classes = [
 
 // @route get api/users/viewrecMC/:id
 router.get('/viewrecMC/:id',(req,res)=>{
-    const id = req.param.id;
+    const id = req.params.id;
     let i = 0;
     while(i<members.length){
         if(members[i].id == id){

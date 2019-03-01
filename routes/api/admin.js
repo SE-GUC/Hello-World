@@ -2,10 +2,14 @@ const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
 
+const Task = require('../../models/Task');
 const Application = require('../../models/Application');
 const Consultant = require('../../models/Consultant');
 const Admin = require('../../models/Admin');
 
+const tasks = [
+    new task(1,1,['bom','t','elhbd'],10000,100)
+]
 const admins= [
     new Admin('s',1)
 ];
@@ -72,5 +76,41 @@ router.post('/negotiate/:id/:id2',(req,res)=>{
     };
     application.messages.push(newMessage);
     return res.json({data: application});
+});
+// @route   GET api/admin/reviewtask/:id
+router.get('/reviewtask/:id',(req,res)=>{
+    const id = req.params.id;
+    const task = tasks.find(element =>{
+        return element.id == id;
+    })
+    res.json({data:task});
+})
+// @route PUT api/admin/edittask/:id
+router.put('/edittask/:id',(req,res)=>
+{   
+    const levelOfCommitment =req.body.levelOfCommitment;
+    const experienceLevel = req.body.experienceLevel;
+    const setOfSkills = req.body.setOfSkills;
+    const monetaryCompensation = req.body.monetaryCompensation;
+    const id = req.params.id;
+    const task = tasks.find(element =>{
+      return element.id = id;
+    });
+    let i = tasks.indexOf(task);
+    tasks[i].monetaryCompensation = monetaryCompensation;
+    tasks[i].levelOfCommitment = levelOfCommitment;
+    tasks[i].setOfSkills = setOfSkills;
+    tasks[i].experienceLevel = experienceLevel;
+    res.json({data: tasks[i]});
+});
+//@route DELETE api/admin/deletetask/:id
+router.delete('deletetask/:id',(req,res)=>{
+    const id = req.params.id;
+    const task = tasks.find(element =>{
+    return    element.id == id;
+    });
+    let i = tasks.indexOf(task);
+    tasks.splice(i,1);
+    res.json({data: tasks});
 });
 module.exports = router;

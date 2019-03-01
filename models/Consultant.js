@@ -1,5 +1,6 @@
 class Consultant {
-    constructor(id, workPosition) {
+    constructor(id, workPosition,status) {
+        this.status = status;
         this.id = id;
         this.boardMembers = [];
         this.events = [];
