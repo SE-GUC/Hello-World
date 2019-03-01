@@ -5,7 +5,7 @@ class Application {
         this.applicants = [];
         this.id =id;
         this.messages = [];
-        this.acceptedConsultant = null;
+        this.consultant = null;
         this.needConsultancy = needConsultancy;
         this.reviewed = false;
     };

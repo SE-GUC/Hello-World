@@ -89,7 +89,7 @@ router.post('/submit/:id',(req,res)=>{
 });
 
 
-// @route   PUT api/applications/edit/:id
+// @route   PUT api/applications/edit/:id/:id2
 // @desc    Edits an Application of a task
 // @access  Private
 router.put('/edit/:id/:id2',(req,res)=>{
@@ -117,7 +117,8 @@ router.put('/edit/:id/:id2',(req,res)=>{
     if(partner.id !== application.partner) return res.status(400).json({data: 'This Partner Doesnt have access to this Application'});
 
     application.description = description;
-    application.needConsultancy = needConsultancy;
+    if(needConsultancy === 'true') application.needConsultancy = true;
+    if(needConsultancy === 'false') application.needConsultancy = false;
     application.reviewed = false;
     return res.json({data: application});
 
@@ -191,7 +192,7 @@ router.get('/admin/all/:id',(req,res)=>{
 
 
 // @route   PUT api/applications/admin/review/:id/:id2
-// @desc    Gets All Applications
+// @desc    Admin Reviews Application
 // @access  Private
 router.put('/admin/review/:id/:id2',(req,res)=>{
     const appID = req.params.id;
@@ -287,6 +288,8 @@ router.put('/respond/:id/:id2/:id3',(req,res)=>{
     if(!applicant) return res.status(404).json({application: 'This Consultant did not apply for this application'});
     applicant.status = response;
 
+    if(applicant.status == 'accepted') application.consultant = consultantID;
+
     if(!response) return res.status(404).json({err: 'Response Field is Required'});
     return res.json({data: applicant});
 });
@@ -302,18 +305,19 @@ router.get('/consultant/all/:id',(req,res)=>{
         return element.id == id;
     });
     if(!consultant) return res.status(404).json({profile: 'There is no consultant profile for this user'});
-    const reviewedApps = applications.filter(element=>{
-        element.reviewed == true;
+
+    const reviewedApplications = applications.filter(function(element) {
+        return element.reviewed == true;
     });
 
-    return res.json({data: reviewedApps});
+    return res.json({data: reviewedApplications});
 
 });
 
-// @route   GET api/applications/apply/:id/:id2
+// @route   POST api/applications/apply/:id/:id2
 // @desc    Apply For an Application
 // @access  Private
-router.put('/apply/:id/:id2',(req,res)=>{
+router.post('/apply/:id/:id2',(req,res)=>{
     const appID = req.params.id;
     const consultantID =req.params.id2;
     const consultant = consultants.find(element => {

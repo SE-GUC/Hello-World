@@ -7,6 +7,8 @@ class Task {
         this.id = id;
         this.applicants = [];
         this.acceptedApplicants = [];
+        this.reviewed = false;
+        this.extra = [];
     };
 };
 

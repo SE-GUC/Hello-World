@@ -4,7 +4,7 @@ class Member {
         this.age = age;
         this.email = email;
         this.phone = phone;
-        this.skills = [];
+        this.setOfSkills = [];
         this.interests = [];
         this.pastEvents = [];
         this.tasksCompleted = [];
@@ -13,6 +13,7 @@ class Member {
         this.masterclasses = [];
         this.id = id;
         this.recommendedMasterclasses = [];
+        this.notifications = [];
     };
 };
 

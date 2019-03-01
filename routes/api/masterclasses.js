@@ -97,6 +97,9 @@ router.put('/respond/:id/:id2',(req,res)=>{
 
     request.status = response;
 
+    if(request.status=='accepted'){
+        member.notifications.push(`Your Request has been accepted by Expert ${expertID}`);
+    }
     return res.json({data: request});
 });
 
