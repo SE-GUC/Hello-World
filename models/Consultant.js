@@ -5,6 +5,7 @@ class Consultant {
         this.events = [];
         this.partners = [];
         this.reports = [];
+        this.applications = [];
     };
 };
 

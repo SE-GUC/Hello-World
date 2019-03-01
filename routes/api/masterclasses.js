@@ -33,26 +33,6 @@ const experts = [
     new Expert(2)
 ];
 
-
-// @route get api/users/addRMC/:ID1/:ID2
-router.put('/addRMC/:ID1/:ID2',(req,res) =>{
-    const id1 = req.params.ID1;
-    const id2 = req.params.ID2;
-    const rmcs = req.body.rmcs;
-    const member = members.find(element =>{
-        return element.id = id2;
-    });
-    if(!member){
-        res.status(404).json({ profile: 'There is no Member profile for this user' });
-    }
-    else{
-        const index = members.indexOf(member);
-        members[index].RMC.push(rmcs);
-        res.json({data: members[index.RMC]});
-    }
-});
-
-
 // @route   GET api/masterclasses/all/:id
 // @desc    View Masterclasses
 // @access  Private
@@ -107,6 +87,8 @@ router.put('/respond/:id/:id2',(req,res)=>{
         return element.id == expertID;
     });
     if(!expert) return res.status(404).json({profile: 'This User is not An Expert'});
+
+    if(!response) return res.status(404).json({err: 'Response Field is Required'});
 
     const request = expert.requests.find(element => {
         return element.member = member;

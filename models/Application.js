@@ -7,6 +7,7 @@ class Application {
         this.messages = [];
         this.acceptedConsultant = null;
         this.needConsultancy = needConsultancy;
+        this.reviewed = false;
     };
 }
 
