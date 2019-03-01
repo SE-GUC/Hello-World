@@ -105,8 +105,8 @@ router.get('/recommended/:id', (req,res)=>{
 });
 
 
-// @route   POST api/tasks/apply/:id/id2
-// @desc    Apply For a Task
+// @route   POST api/tasks/apply/:id/:id2
+// @desc    Eligible Member Apply For a Task
 // @access  private
 router.post('/apply/:id/:id2',(req,res)=>{
     const taskID = req.params.id;
@@ -114,7 +114,7 @@ router.post('/apply/:id/:id2',(req,res)=>{
     const task = tasks.find(element => {
         return element.id == taskID;
     });
-    if(!task) return res.status(400).json({profile: 'There is no such task'});
+    if(!task) return res.status(400).json({task: 'There is no such task'});
     const member = members.find(element => {
         return element.id == memberID;
     });
@@ -132,7 +132,7 @@ router.post('/apply/:id/:id2',(req,res)=>{
     return res.json({data: task});
 });
 
-// @route   DELETE api/tasks/delete-application/:id/id2
+// @route   DELETE api/tasks/delete-application/:id/:id2
 // @desc    Delete Member's Application For a Task
 // @access  private
 router.delete('/delete-application/:id/:id2',(req,res)=>{
@@ -141,7 +141,7 @@ router.delete('/delete-application/:id/:id2',(req,res)=>{
     const task = tasks.find(element =>{
         return element.id == taskID;
     });
-    if(!task) return res.status(400).json({profile: 'There is no such task'});
+    if(!task) return res.status(400).json({task: 'There is no such task'});
     const member = members.find(element =>{
         return element.id == memberID;
     });
@@ -149,7 +149,7 @@ router.delete('/delete-application/:id/:id2',(req,res)=>{
     const application = task.applicants.find(element=>{
         return element.member == member;
     });
-    if(!application) return res.status(400).json({profile: 'There is no application for this member on this task'});
+    if(!application) return res.status(400).json({application: 'There is no application for this member on this task'});
     task.applicants = _.reject(task.applicants,element=>{
         return element.member == member;
     });
@@ -259,7 +259,7 @@ router.put('/admin/review/:id/:id2',(req,res)=>{
     const admin = admins.find(element => {
         return element.id == adminID;
     });
-    if(!admin) return res.status(400).json({admin: 'This User does not have access to this Page'});
+    if(!admin) return res.status(400).json({user: 'This User does not have access to this Page'});
     const task = tasks.find(element => {
         return element.id == taskID;
     });
@@ -303,11 +303,11 @@ router.put('/admin/edit/:id/:id2',(req,res)=>{
     const admin = admins.find(element => {
         return element.id == adminID;
     });
-    if(!admin) return res.status(400).json({admin: 'This User does not have access to this Page'});
+    if(!admin) return res.status(400).json({user: 'This User does not have access to this Page'});
     const task = tasks.find(element => {
         return element.id == taskID;
     });
-    if(!task) return res.status(400).json({application: 'There is no such Task'});
+    if(!task) return res.status(400).json({task: 'There is no such Task'});
 
     if(!levelOfCommitment) return res.status(400).json({task: 'Level Of Commitment Field is Required'});
     if(typeof levelOfCommitment !== 'string') return res.status(400).json({task: 'Invalid Value for Level Of Commitment'});
@@ -341,11 +341,11 @@ router.delete('/admin/delete/:id/:id2',(req,res)=>{
     const admin = admins.find(element => {
         return element.id == adminID;
     });
-    if(!admin) return res.status(400).json({admin: 'This User does not have access to this Page'});
+    if(!admin) return res.status(400).json({user: 'This User does not have access to this Page'});
     const task = tasks.find(element => {
         return element.id == taskID;
     });
-    if(!task) return res.status(400).json({application: 'There is no such Task'});
+    if(!task) return res.status(400).json({task: 'There is no such Task'});
 
     tasks.splice( tasks.indexOf(task), 1 );
     res.json({data: tasks});

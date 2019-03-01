@@ -59,7 +59,7 @@ router.post('/require/:id/:id2',(req,res)=>{
     const expert = experts.find(element => {
         return element.id == expertID;
     });
-    if(!expert) return res.status(404).json({profile: 'This User is not An Expert'});
+    if(!expert) return res.status(404).json({expert: 'This User is not An Expert'});
 
     const request = {
         member,
@@ -86,7 +86,7 @@ router.put('/respond/:id/:id2',(req,res)=>{
     const expert = experts.find(element => {
         return element.id == expertID;
     });
-    if(!expert) return res.status(404).json({profile: 'This User is not An Expert'});
+    if(!expert) return res.status(404).json({expert: 'This User is not An Expert'});
 
     if(!response) return res.status(404).json({err: 'Response Field is Required'});
 
@@ -117,7 +117,7 @@ router.post('/apply/:id/:id2',(req,res)=>{
     const member = members.find(element => {
         return element.id == memberID;
     });
-    if (!masterclass) return res.status(404).json({profile: 'there is no such Masterclass'});
+    if (!masterclass) return res.status(404).json({masterclass: 'there is no such Masterclass'});
     if (!member) return res.status(404).json({profile: 'there is no Member Profile for this User'});
 
     const applicant ={member};
@@ -155,12 +155,12 @@ router.put('/assess/:id/:id2',(req,res)=>{
     const expert = experts.find(element => {
         return element.id == expertID;
     });
-    if (!expert) return res.status(404).json({profile: 'this User is not an Expert'});
+    if (!expert) return res.status(404).json({expert: 'this User is not an Expert'});
 
     const masterclass = masterclasses.find(element => {
         return element.id == recommendedMasterclass;
     });
-    if (!masterclass) return res.status(404).json({profile: 'there is no Such Masterclass'});
+    if (!masterclass) return res.status(404).json({masterclass: 'there is no Such Masterclass'});
 
 
     member.recommendedMasterclasses.push(masterclass);
