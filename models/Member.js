@@ -4,12 +4,7 @@ class Member {
         this.age = age;
         this.email = email;
         this.phone = phone;
-<<<<<<< HEAD
-        this.rmasterc = [];
-        this.skills = [];
-=======
         this.setOfSkills = [];
->>>>>>> module
         this.interests = [];
         this.pastEvents = [];
         this.tasksCompleted = [];
