@@ -33,12 +33,12 @@ const users = [
     new User('gaafar80','gaafarPassword',5),
     new User('mahmoud','mahmoudPassword',6),
 ];
-const members = [
-    new Member('Karim', 21, 'Karim@mail.com', 10, 1),
-    new Member('Youssef', 65, 'youssef@mail.com', 11, 2),
-    new Member('Moataz', 25, 'moataz@mail.com', 12, 3),
-    new Member('Kashlan', 13, 'kashlan@mail.com', 13, 4),
-];
+// const members = [
+// //     new Member('Karim', 21, 'Karim@mail.com', 10, 1),
+// //     new Member('Youssef', 65, 'youssef@mail.com', 11, 2),
+// //     new Member('Moataz', 25, 'moataz@mail.com', 12, 3),
+// //     new Member('Kashlan', 13, 'kashlan@mail.com', 13, 4),
+// // ];
 
 const organizations = [
     new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
