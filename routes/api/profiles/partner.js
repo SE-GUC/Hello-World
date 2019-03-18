@@ -7,6 +7,8 @@ const uuid = require('uuid');
 const Partner = require('../../../models/Partner');
 const Organization = require('../../../models/Organization');
 const User = require('../../../models/User');
+const Application = require('../../../models/Application');
+const Task = require('../../../models/Task');
 
 // Temporary Data
 const users = [
@@ -29,7 +31,16 @@ const partners = [
     new Partner('Graphic Design', 3),
     new Partner('Online Banking', 4),
 ];
-
+const applications = [
+    new Application('Freelancing Website',1,1,false),
+    new Application('Online Hotel Booking Website',2,2,true),
+    new Application('Cryptocurrency website',3,3,true),
+];
+const tasks = [
+    new Task('High','Medium',['node','express','react'],1500,1),
+    new Task('Medium','High',['java','unit testing'],1000,2),
+    new Task('Low','Low',['HTML','CSS','Javascript'],500,3),
+];
 
 // @route   POST api/profiles/partner/create/:id
 // @desc    Creates Partner Profile
@@ -98,6 +109,131 @@ router.put('/edit/:id',(req,res)=>{
 
 });
 
+// @route POST api/profiles/partner/board-members/add/:id
+// @decs Adds Board Member To Partner's Profile
+// @access private
+router.post('/board-members/add/:id',(req,res)=>{
+    const name = req.body.name;
+    const age = req.body.age;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const id = req.params.id;
+
+    const partner = partners.find(element => {
+        return element.id == id;
+    });
+    if(!partner){
+        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
+    };
+    if (!name) return res.status(400).send({ err: 'Name field is required' });
+    if (!age) return res.status(400).send({ err: 'Age field is required' });
+    if (!phone) return res.status(400).send({ err: 'Phone field is required' });
+    if (!email) return res.status(400).send({ err: 'Email field is required' });
+
+
+    const boardMember ={
+        name,
+        age,
+        phone,
+        email
+    };
+    partner.boardMembers.push(boardMember);
+    return res.json(partner);
+});
+
+
+// @route POST api/profiles/partner/events/add/:id
+// @decs Adds Event To Partner's Profile
+// @access private
+router.post('/events/add/:id',(req,res)=>{
+    const eventName = req.body.eventName;
+    const description = req.body.description;
+    const date = req.body.date;
+    const id = req.params.id;
+
+    const partner = partners.find(element => {
+        return element.id == id;
+    });
+    if(!partner){
+        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
+    };
+
+    if (!eventName) return res.status(400).send({ err: 'Event Name field is required' });
+    if (!description) return res.status(400).send({ err: 'Event Description field is required' });
+
+    const event = {
+        eventName,
+        description,
+        date
+    };
+    partner.events.push(event);
+    return res.json(partner);
+});
+
+// @route POST api/profiles/partner/partners/add/:id/:id2
+// @decs Adds Partner to Partner's Profile
+// @access private
+router.post('/partners/add/:id/:id2',(req,res)=>{
+    const id = req.params.id;
+    const id2 = req.params.id2;
+    const partner = partners.find(element => {
+        return element.id == id;
+    });
+    if(!partner){
+        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
+    };
+    const partner2 = partners.find(element => {
+        return element.id == id2;
+    });
+    if(!partner2){
+        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
+    };
+    const organization2 = organizations.find(element => {
+        return element.id == id2;
+    });
+    if(!organization2){
+        return res.status(400).json({ profile: 'There is no Organization profile for this user' });
+    };
+    const myPartner = {
+        name: organization2.name,
+        email: organization2.email,
+        phone: organization2.phone,
+        address: organization2.address,
+    };
+    partner.partners.push(myPartner);
+    return res.json(partner);
+});
+
+// @route POST api/profiles/partner/past-projects/add/:id/:id2
+// @decs Adds Past Project To Partner's Profile
+// @access private
+router.post('/past-projects/add/:id/:id2s',(req,res)=>{
+    const partnerID = req.params.id;
+    const taskID = req.params.id2;
+    const partner = partners.find(element => {
+        return element.id == id;
+    });
+    if(!partner){
+        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
+    };
+    const task = tasks.find(element => {
+        return element.id == id;
+    });
+    if(!task){
+        return res.status(400).json({ profile: 'There is no such Task' });
+    };
+    const application = applications.find(element => {
+        return element.id == id;
+    });
+    if(!application){
+        return res.status(400).json({ profile: 'There is no such Application' });
+    };
+
+    if(application.partner !== partner){
+        return res.status(400).json({err: 'This Task is not Submitted by this Partner'});
+    }
+    partner.pastProjects.add(task);
+});
 
 // @route   DELETE api/profiles/partner/delete/:id
 // @desc    Delete Partner's Profile
