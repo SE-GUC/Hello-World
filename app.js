@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 const users = require('./routes/api/users');
 const tasks = require('./routes/api/tasks');
@@ -15,6 +13,28 @@ const consultant = require('./routes/api/profiles/consultant');
 const education = require('./routes/api/profiles/education');
 const applications = require('./routes/api/applications');
 const masterclasses = require('./routes/api/masterclasses');
+
+
+
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+
+// DB Config
+const db = require('./config/keys').mongoURI;
+
+// Connect to MongoDB
+const MongoClient = require('mongodb').MongoClient;
+const client = new MongoClient(db, { useNewUrlParser: true });
+client.connect(err => {
+    const client = new MongoClient(db, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("test").collection("devices");
+        console.log("MongoDB Connected");
+        client.close();
+    });
+});
 
 
 // @route   GET /home
