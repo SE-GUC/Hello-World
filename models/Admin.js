@@ -17,3 +17,4 @@ const AdminSchema = new schema({
         ref:'users'
     }
 })
+module.exports = Admin = mongoose.module('admins',AdminSchema)
