@@ -1,5 +1,5 @@
 class Member {
-    constructor(name, age, email, phone, id) {
+    constructor(name, age, email, phone,rmasterc, id) {
         this.name = name;
         this.age = age;
         this.email = email;

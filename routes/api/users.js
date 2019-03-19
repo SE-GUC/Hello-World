@@ -4,5 +4,4 @@ const uuid = require('uuid');
 
 // To Be Used For Register & Login
 
-
 module.exports = router;
