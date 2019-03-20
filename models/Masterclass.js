@@ -1,9 +1,18 @@
-class Masterclass {
-    constructor(name, description, id) {
-        this.name = name;
-        this.description = description;
-        this.id = id;
-        this.applicants = [];
-    };
-}
-module.exports = Masterclass;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema
+masterclassschema = new Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    description:{
+        type:String,
+        required:true
+    },
+    applicants:[{
+
+    }]
+
+})
+
+module.exports = Masterclass =mongoose.model('masterclasses',masterclassschema);

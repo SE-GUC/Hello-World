@@ -8,31 +8,7 @@ const User = require('../../../models/User');
 const Task = require('../../../models/Task');
 const Masterclass = require('../../../models/Masterclass');
 
-// Temporary Data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-];
 
-const members = [
-    new Member('Karim', 21, 'Karim@mail.com', 10, 1),
-    new Member('Youssef', 65, 'youssef@mail.com', 11, 2),
-    new Member('Moataz', 25, 'moataz@mail.com', 12, 3),
-    new Member('Kashlan', 13, 'kashlan@mail.com', 13, 4),
-];
-const tasks = [
-    new Task('High','Medium',['node','express','react'],1500,1),
-    new Task('Medium','High',['java','unit testing'],1000,2),
-    new Task('Low','Low',['HTML','CSS','Javascript'],500,3),
-];
-
-const masterclasses = [
-    new Masterclass('Javascript', 'Master Javascript in 10 Days!', 1),
-    new Masterclass('Python', 'From Zero To Hero - Become A Python Expert', 2),
-    new Masterclass('React', 'React Course For Complete Beginners', 3)
-];
 
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
@@ -53,10 +29,7 @@ router.get('/:id',(req,res)=>{
 // @desc Creates Member Profile
 // @access private
 router.post('/create/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const email = req.body.email;
-    const phone = req.body.phone;
+    const { name, age, email, phone}  = req.body
     const id = req.params.id;
 
     if (!name) return res.status(400).send({ err: 'name field is required' });
@@ -64,7 +37,7 @@ router.post('/create/:id',(req,res)=>{
     if (!email) return res.status(400).send({ err: 'email field is required' });
     if (!phone) return res.status(400).send({ err: 'phone field is required' });
 
-    const user = users.find(element => {
+    const user = users.findone(element => {
         return element.id == id;
     });
 
@@ -76,18 +49,16 @@ router.post('/create/:id',(req,res)=>{
         phone,
         user.id
     );
-    members.push(member);
-    return res.json({data: member});
+    member.save()
+    .then(member => res.json({data: user}))
+    .catch(err => res.json({error: 'Can not create user'}))
 });
 
 // @route PUT api/profiles/member/edit/:id
 // @desc Edit Member's Profile
 // @access private
 router.put('/edit/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const email = req.body.email;
-    const phone = req.body.phone;
+    const { name, age, email, phone}  = req.body
     const id = req.params.id;
 
     if (!name) return res.status(400).send({ err: 'name field is required' });
@@ -99,7 +70,7 @@ router.put('/edit/:id',(req,res)=>{
     if (!phone) return res.status(400).send({ err: 'phone field is required' });
     if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
 
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
@@ -122,7 +93,7 @@ router.put('/edit/:id',(req,res)=>{
 router.post('/skills/add/:id',(req,res)=>{
     const skill = req.body.skill;
     const id = req.params.id;
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
@@ -130,7 +101,7 @@ router.post('/skills/add/:id',(req,res)=>{
     };
     if (!skill) return res.status(400).send({ err: 'Skill field is required' });
 
-    member.setOfSkills.push(skill);
+    member.setOfSkills.save()
     return res.json(member);
 });
 
@@ -140,7 +111,7 @@ router.post('/skills/add/:id',(req,res)=>{
 router.post('/Interests/add/:id',(req,res)=>{
     const interest = req.body.interest;
     const id = req.params.id;
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
@@ -156,12 +127,10 @@ router.post('/Interests/add/:id',(req,res)=>{
 // @desc Adds Past Event To Member's Profile
 // @access private
 router.post('/past-events/add/:id',(req,res)=>{
-    const eventName = req.body.eventName;
-    const description = req.body.description;
-    const date = req.body.date;
+    const {eventName,description,date} = req.body;
     const id = req.params.id;
 
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
@@ -187,13 +156,13 @@ router.post('/past-events/add/:id',(req,res)=>{
 router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
     const memberID = req.params.id;
     const taskID = req.params.id2;
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
     };
-    const task = tasks.find(element => {
+    const task = Task.findone(element => {
         return element.id == id;
     });
     if(!task){
@@ -213,12 +182,9 @@ router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
 // @desc Adds Certificates To Member's Profile
 // @access private
 router.post('/certificates/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const date = req.body.date;
-    const entity = req.body.entity;
-    const description = req.body.description;
+    const {name,date,entity,description} = req.body;
     const id = req.params.id;
-    const member = members.find(element => {
+    const member = members.findone(element => {
         return element.id == id;
     });
     if(!member){
@@ -246,13 +212,13 @@ router.post('/certificates/add/:id',(req,res)=>{
 router.post('/masterclasses/add/:id/:id2',(req,res)=>{
     const memberID = req.params.id;
     const masterclassID = req.params.id2;
-    const member = members.find(element => {
+    const member = Member.findone(element => {
         return element.id == id;
     });
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
     };
-    const masterclass = masterclasses.find(element => {
+    const masterclass = masterclasses.findone(element => {
         return element.id == id;
     });
     if(!masterclass){
@@ -272,18 +238,17 @@ router.post('/masterclasses/add/:id/:id2',(req,res)=>{
 // @desc Delete Member's Profile
 // @access private
 router.delete('/delete/:id',(req,res) => {
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-
-    if(!member){
-        return res.status(404).json({ profile: 'There is no Member profile for this user' });
-    }
-    else{
-        members.splice( members.indexOf(member), 1 );
-        return res.json({data: members});
-    }
+   
+    
+    
+        Member.findOneAndDelete({user:req.params.id})
+        .then(member=>{
+            if(!member){
+                return res.status(404).json({ profile: 'There is no Member profile for this user' });
+            }        })
+            
+        return res.json({data:members});
+    
 });
 
 
