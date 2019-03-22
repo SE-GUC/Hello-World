@@ -10,7 +10,8 @@ masterclassschema = new Schema({
         required:true
     },
     applicants:[{
-
+         type: Schema.Types.ObjectId,
+        ref: 'members'
     }]
 
 })

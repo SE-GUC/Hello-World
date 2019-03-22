@@ -1,9 +1,9 @@
-/*
+
 
 const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
-
+const mongoose = require('mongoose');
 //Load Models
 const Member = require('../../../models/Member');
 const User = require('../../../models/User');
@@ -11,20 +11,19 @@ const Task = require('../../../models/Task');
 const Masterclass = require('../../../models/Masterclass');
 
 
-
+// Validation
+const validator = require('../../validation/memberValidation');
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
 // @access private
 router.get('/:id',(req,res)=>{
     const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member profile for this user'});
-    else {
-        return res.json({data: member});
-    }
-});
+    members.findone(id)
+    .then(member=>{
+  res.json({data: member})
+    })
+    .catch(err => {res.status(404).json({ membernotfound: 'member not found' })})
+})
 
 
 // @route post api/profiles/member/create/:id
@@ -32,27 +31,21 @@ router.get('/:id',(req,res)=>{
 // @access private
 router.post('/create/:id',(req,res)=>{
     const { name, age, email, phone}  = req.body
-    const id = req.params.id;
-
-    if (!name) return res.status(400).send({ err: 'name field is required' });
-    if (!age) return res.status(400).send({ err: 'age field is required' });
-    if (!email) return res.status(400).send({ err: 'email field is required' });
-    if (!phone) return res.status(400).send({ err: 'phone field is required' });
-
-    const user = users.findone(element => {
-        return element.id == id;
-    });
-
+    const id = req.params.id
+    const user = users.findone(id)
+    .then(user=>{
     if(!user) return res.status(400).json({profile: 'User Does Not Exist'});
+    const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
     const member = new Member(
         name,
         age,
         email,
         phone,
         user.id
-    );
+    )})
     member.save()
-    .then(member => res.json({data: user}))
+    .then({msg:'Application was submitted successfully', data: newApp})
     .catch(err => res.json({error: 'Can not create user'}))
 });
 
@@ -63,30 +56,29 @@ router.put('/edit/:id',(req,res)=>{
     const { name, age, email, phone}  = req.body
     const id = req.params.id;
 
-    if (!name) return res.status(400).send({ err: 'name field is required' });
-    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
-    if (!age) return res.status(400).send({ err: 'age field is required' });
-    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
-    if (!email) return res.status(400).send({ err: 'email field is required' });
-    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
-    if (!phone) return res.status(400).send({ err: 'phone field is required' });
-    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
-
-    const member = members.findone(element => {
-        return element.id == id;
-    });
+    
+    const member1 = Member.findone(id)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    }
-    else {
-        member.name = name;
-        member.age = age;
-        member.email = email;
-        member.phone = phone;
-
-        return res.json({data: members});
-    }
-});
+        const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    
+    }})
+    .catch(err=>{err: {res.status(404).json({ memberNotFound: 'Member Not Found' })}})
+        member1.name = name;
+        member1.age = age;
+        member1.email = email;
+        member1.phone = phone;
+        Member.findOneAndUpdate(
+            {member: req.params.id},
+            {$set: member1},
+            {new: true})
+            .then(member=>{
+                return res.json({msg: 'updated',data: member})})
+                .catch(err=>{err:{res.status(404).json({MemberNotFound:'Could not find member'})}})
+    
+})
 
 
 // @route POST api/profiles/member/skills/add/:id
@@ -95,16 +87,20 @@ router.put('/edit/:id',(req,res)=>{
 router.post('/skills/add/:id',(req,res)=>{
     const skill = req.body.skill;
     const id = req.params.id;
-    const member = members.findone(element => {
-        return element.id == id;
-    });
+    const member = Member.findone(id)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!skill) return res.status(400).send({ err: 'Skill field is required' });
-
+        const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    
+    }})
+    .catch(err=>{err:{res.status(404).json({MemberNotFound:'Member not found'})}})
+    
     member.setOfSkills.save()
-    return res.json(member);
+    .then(member=>{res.json(member)})
+    .catch(err=>{err:{res.status(404).json({SaveError:'An error occurred while saving'})}})
+    
 });
 
 // @route POST api/profiles/member/interests/add/:id
@@ -113,16 +109,20 @@ router.post('/skills/add/:id',(req,res)=>{
 router.post('/Interests/add/:id',(req,res)=>{
     const interest = req.body.interest;
     const id = req.params.id;
-    const member = members.findone(element => {
-        return element.id == id;
-    });
+    const member = Member.findone(id)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!interest) return res.status(400).send({ err: 'Interest field is required' });
-
+        const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    }})
     member.interests.push(interest);
-    return res.json(member);
+    Member.findOneAndUpdate(
+        {member1:id},
+        {$set: member},
+        {new: true})
+        .then(member=>{return res.json(member);})
+        .catch(err=>{err:{res.status(404).json({Posterror:'Could not update'})}})
 });
 
 // @route POST api/profiles/member/past-events/add/:id
@@ -132,23 +132,22 @@ router.post('/past-events/add/:id',(req,res)=>{
     const {eventName,description,date} = req.body;
     const id = req.params.id;
 
-    const member = members.findone(element => {
-        return element.id == id;
-    });
+    const member1 = members.findone(id)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!eventName) return res.status(400).send({ err: 'Event Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Event Description field is required' });
-
-
+        const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    
+    }})
+    .catch(err=>{err:(res.status.json({Cannotfind:'Member Not found'}))})
     const pastEvent = {
         eventName,
         description,
         date
     };
-    member.pastEvents.push(pastEvent);
-    return res.json(member);
+    member1.pastEvents.push(pastEvent);
+    return res.json(member1.pastEvents);
 });
 
 
@@ -158,25 +157,23 @@ router.post('/past-events/add/:id',(req,res)=>{
 router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
     const memberID = req.params.id;
     const taskID = req.params.id2;
-    const member = members.findone(element => {
-        return element.id == id;
-    });
-    if(!member){
+    const member = members.findone(memberID)
+    .then(member=>{    if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    const task = Task.findone(element => {
-        return element.id == id;
-    });
+    }})
+    .catch(err=>{err:(status(404).json({memberNotFound:'Member Not Found'}))})
+    const task = Task.findone(taskID)
+    .then(task=>{
     if(!task){
         return res.status(400).json({ profile: 'There is no such Task' });
-    };
+    }})
     for(let applicant of task.applicants){
         if(applicant.member == member ){
             member.tasksCompleted.push(task);
-            return res.json(member);
+            return res.json(member.tasksCompleted);
         }
     }
-    return res.status(400).json({err: 'This Member is not assigned to this Task'});
+    //return res.status(400).json({err: 'This Member is not assigned to this Task'});
 
 });
 
@@ -186,18 +183,15 @@ router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
 router.post('/certificates/add/:id',(req,res)=>{
     const {name,date,entity,description} = req.body;
     const id = req.params.id;
-    const member = members.findone(element => {
-        return element.id == id;
-    });
+    const member = Member.findone(id)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!date) return res.status(400).send({ err: 'Date field is required' });
-    if (!entity) return res.status(400).send({ err: 'Entity field is required' });
-    if (!description) return res.status(400).send({ err: 'Description field is required' });
-
-
+        const isValidated = validator.submitValidation(req.body);
+            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    
+    }})
+    .catch(err=>{err:(status(404).json({memberNotFound:'Member Not Found'}))})
     const certificate = {
         name,
         date,
@@ -214,25 +208,25 @@ router.post('/certificates/add/:id',(req,res)=>{
 router.post('/masterclasses/add/:id/:id2',(req,res)=>{
     const memberID = req.params.id;
     const masterclassID = req.params.id2;
-    const member = Member.findone(element => {
-        return element.id == id;
-    });
+    const member = Member.findone(memberID)
+    .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    const masterclass = masterclasses.findone(element => {
-        return element.id == id;
-    });
+    }})
+    .catch(err=>{err:(status(404).json({memberNotFound:'Member Not Found'}))})
+    const masterclass = Masterclass.findone(masterclassID)
+    .then(masterclass=>{
     if(!masterclass){
         return res.status(400).json({ profile: 'There is no such Masterclass' });
-    };
+    }})
+    .catch(err=>{err:(status(404).json({masterclassNotFound:'Masterclass not found'}))})
     for(let applicant of masterclass.applicants){
         if(applicant.member == member ){
             member.masterclasses.push(masterclass);
             return res.json(member);
         }
     }
-    return res.status(400).json({err: 'This Member has not completed this Masterclass'});
+  //  return res.status(400).json({err: 'This Member has not completed this Masterclass'});
 });
 
 
@@ -255,4 +249,3 @@ router.delete('/delete/:id',(req,res) => {
 
 
 module.exports = router;
-*/
