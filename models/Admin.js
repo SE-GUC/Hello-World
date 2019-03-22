@@ -9,7 +9,7 @@ const mongoose = require('mongoose')
 const schema = mongoose.Schema
 const AdminSchema = new schema({
     name:{
-        type:string,
+        type:String,
         required:true
     },
     User:{
