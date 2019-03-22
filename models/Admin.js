@@ -4,7 +4,6 @@ const AdminSchema = new Schema({
     name:{
         type:String,
         required:true,
-        max: 40
     },
     user:{
         type:Schema.Types.ObjectId,

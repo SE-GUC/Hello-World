@@ -1,3 +1,5 @@
+/*
+
 const express = require('express');
 const router = express.Router();
 
@@ -167,3 +169,4 @@ router.put('/assess/:id/:id2',(req,res)=>{
     return res.json({data: member.recommendedMasterclasses});
 });
 module.exports = router;
+*/

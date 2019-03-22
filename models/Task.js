@@ -2,7 +2,7 @@ mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const taskSchema = new Schema({
    application:{
-       type: Object.Types.ObjectId,
+       type: Schema.Types.ObjectId,
        ref: 'applications'
    },
     levelOfCommitment: {
@@ -25,12 +25,16 @@ const taskSchema = new Schema({
     applicants: [
         {
             member: {
-                type: Object.Types.ObjectId,
+                type: Schema.Types.ObjectId,
                 ref: 'members'
             },
             status: {
                 type: String,
                 default: 'pending'
+            },
+            date: {
+                type: Date,
+                default: Date.now()
             }
         }
     ],
@@ -40,6 +44,14 @@ const taskSchema = new Schema({
     },
     extra: {
        type: [String]
+    },
+    date: {
+       type: Date,
+        default: Date.now()
+    },
+    status: {
+       type: String,
+        default: 'Awaiting Reviewing'
     }
 });
 

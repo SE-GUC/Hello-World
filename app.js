@@ -52,7 +52,6 @@ app.get('/about', (req, res) => {
     res.json({msg: 'About Us'});
 });
 
-
 // Use Routes
 app.use('/api/users',users);
 app.use('/api/tasks',tasks);

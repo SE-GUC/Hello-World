@@ -1,58 +1,67 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
-partnerschema = new Schema({
-    partners:[{
-        type:Schema.Types.ObjectId,
-            ref: 'partners',
-    }],
-    boardMembers:[{
-        type:schema.Types.ObjectId,
-        ref:'partners',
-    }],
+
+mongoose = require('mongoose');
+Schema = mongoose.Schema;
+
+const partnerSchema = new Schema({
+    organization: {
+      type: Schema.Types.ObjectId,
+        ref: 'organizations'
+    },
+    partners: {
+        type: [Schema.Types.ObjectId],
+        ref: 'partners'
+    },
+    boardMembers: [
+        {
+            name:{
+                type: String,
+                required: true
+            },
+            position:{
+                type: String,
+                required: true
+            }
+        }
+    ],
     events:[
         {
-            title: {
+            title:{
                 type: String,
                 required: true
             },
-            description: {
+            description:{
                 type: String,
                 required: true
             },
-            date: {
+            date:{
                 type: Date,
                 required: true
-            },
-            location: {
-                type: String
             }
         }
     ],
-    fieldOfWork:{
-        type:String,
-        required:true
-        },
-    pastProjects:[
+    fieldOfWork: {
+        type: String,
+        required: true
+    },
+    pastProjects: {
+        type: [Schema.Types.ObjectId],
+        ref: 'tasks'
+    },
+    feedback: [
         {
-            description:{
-                type:String,
+            member: {
+                type: Schema.Types.ObjectId,
+                ref: 'members'
+            },
+            review: {
+                type: String,
                 required: true
-            },
-            link:{
-                type:String,
-                required:true
-            },
-            rating:{
-                type:BigInt,
-                required:true
             }
         }
     ],
-    feedback:[{
-        type:String,
-        required:true
-    }]
-})
 
 
-module.exports = Partner = mongoose.model('partners',partnerschema);
+});
+
+
+module.exports = Partner = mongoose.model('partners',partnerSchema);

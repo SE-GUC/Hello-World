@@ -10,7 +10,7 @@ const memberSchema = new Schema({
     name: {
         type: String,
         required: true,
-        max: 40
+        max:40
     },
     age: {
         type: Number,
@@ -70,8 +70,6 @@ const memberSchema = new Schema({
             },
             rating: {
                 type: Number,
-                min: 0,
-                max: 5,
                 required: true
             },
             review: {

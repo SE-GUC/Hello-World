@@ -1,3 +1,4 @@
+/*
 const express = require('express');
 const router = express.Router();
 const _ = require('underscore');
@@ -447,3 +448,5 @@ router.put('/consultant/respond/:id/:id2/:id3',(req,res)=>{
 });
 
 module.exports = router;
+
+*/

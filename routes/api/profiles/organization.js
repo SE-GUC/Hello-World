@@ -1,3 +1,4 @@
+/*
 const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
@@ -50,3 +51,4 @@ router.post('/create/:id',(req,res)=>{
     return res.json({data: organization});
 });
  module.exports = router;
+*/
