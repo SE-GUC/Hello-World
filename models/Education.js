@@ -1,11 +1,70 @@
-class Education {
-    constructor(id) {
-        this.id = id;
-        this.courses = [];
-        this.trainers = [];
-        this.certificates = [];
-        this.trainigPrograms = [];
-    };
-}
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const educationSchema = new Schema({
+        organization: {
+            type: Schema.Types.ObjectId,
+            ref: 'organizations'
+        },
+        courses: [
+            {
+                title:{
+                    type: String,
+                    required: true
+                },
+                description:{
+                    type: String,
+                    required: true
+                },
+                price: {
+                    type: Number,
+                    required: true
+                }
+            }
+        ],
+        trainers: [
+            {
+                name:{
+                    type: String,
+                    require: true
+                },
+                bio:{
+                    type: String,
+                    required: true
+                }
+            }
+        ],
+    certificates: [
+        {
+            title: {
+                type: String,
+                required: true
+            },
+            description: {
+                type: String,
+                required: true
+            }
+        }
+    ],
+    trainingPrograms: [
+        {
+            title: {
+                type: String,
+                required: true
+            },
+            description: {
+                type: String,
+                required: true
+            },
+            trainers: {
+                type: [String],
+                required: true
+            }
+        }
+    ],
+    date:{
+            type: Date,
+            default: Date.now()
+    }
+})
 
-module.exports = Education;
+module.exports = Education = mongoose.model('educations',educationSchema);

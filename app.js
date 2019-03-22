@@ -30,7 +30,6 @@ mongoose
     .catch(err => console.log(err));
 
 
-
 // @route   GET /home
 // @desc    Home Page
 // @access  public
@@ -48,13 +47,13 @@ app.get('/about', (req, res) => {
 
 
 // Use Routes
-//app.use('/api/users',users);
+app.use('/api/users',users);
 // app.use('/api/tasks',tasks);
 // app.use('/api/profiles/member',member);
-// app.use('/api/profiles/organization',organization);
-// app.use('/api/profiles/partner',partner);
-// app.use('/api/profiles/consultant',consultant);
-// app.use('/api/profiles/education',education);
+ app.use('/api/profiles/organization',organization);
+ app.use('/api/profiles/partner',partner);
+ app.use('/api/profiles/consultant',consultant);
+ app.use('/api/profiles/education',education);
 // app.use('/api/masterclasses',masterclasses);
  app.use('/api/applications',applications);
 

@@ -1,94 +1,48 @@
-/*
-
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
 
-//Load Consultant Model
+//Load Models
 const User = require('../../../models/User');
 const Organization = require('../../../models/Organization');
 const Consultant = require('../../../models/Consultant');
 const Partner = require('../../../models/Partner');
 
-// Temporary Data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-];
+// Load Validation
+const validator = require('../../../validation/consultantValidation');
 
-const organizations = [
-    new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
-    new Organization('auc', 'El Tagamo3 El Khames', 'auc@mail.com', 11, 2),
-    new Organization('miu', '3obor', 'miu@mail.com', 12, 3),
-    new Organization('aast', 'Sheraton', 'aast@mail.com', 13, 4),
-];
 
-const consultants = [
-    new Consultant(1),
-    new Consultant(2),
-    new Consultant(3),
-];
-
-const partners = [
-    new Partner('Software Development', 1),
-    new Partner('Civil Engineering', 2),
-    new Partner('Graphic Design', 3),
-    new Partner('Online Banking', 4),
-];
-// @route   POST api/profiles/consultant/create/:id
+// @route   POST api/profiles/consultant/:id
 // @desc    Creates Consultant Profile
 // @access  Private
-router.post('/create/:id', (req,res)=>{
-    const id = req.params.id;
-    const organization = organizations.find(element => {
-        return element.id == id;
-    });
-    if(!organization)   return res.status(404).json({ profile: 'There is no Organization profile for this user' });
-    const newConsultant = {
-        id
-    };
-    consultants.push(newConsultant);
-    return res.json({ data: newConsultant });
+router.post('/:id',async (req,res)=>{
+    try {
+        const organization = await Organization.findById(req.params.id);
+        if (!organization) return res.status(404).send({error: 'Organization not found'});
+
+        const fields = {};
+        fields.organization = req.params.id;
+        const newConsultant = await Consultant.create(fields);
+        res.json({msg:'Consultant was created successfully', data: newConsultant})
+    }
+    catch(error) {
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+    }
 });
 
 
 // @route   GET api/profiles/consultant/:id
 // @desc    Get consultant's profile by ID
 // @access  private
-router.get('/:id',(req,res)=>{
-    const id = req.params.id;
-    const consultant = consultants.find(element => {
-        return element.id == id;
-    });
-    if(!consultant){
-        return res.status(404).json({ profile: 'There is no Consultant profile for this user' });
+router.get('/:id',async (req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id).populate('organization');
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'})
+        res.json({data: consultant})
     }
-    else{
-        return res.json({data: consultant});
+    catch (error) {
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
     }
-
 });
-
-
-// @route   PUT api/profiles/consultant/edit/:id
-// @desc    Edit consultant's Profile
-// @access  Private
-router.put('/edit/:id',(req,res)=>{
-    const id = req.params.id;
-    const consultant = consultants.find(element => {
-        return element.id == id;
-    });
-    if(!consultant){
-        return res.status(404).json({ profile: 'There is no Consultant profile for this user' });
-    }
-    else{
-        return res.json({data: consultant});
-    }
-
-});
-
 
 // @route POST api/profiles/consultant/board-members/add/:id
 // @decs Adds Board Member To Consultant's Profile
@@ -221,4 +175,3 @@ router.delete('/delete/:id',(req,res)=>{
 
 module.exports = router;
 
-*/

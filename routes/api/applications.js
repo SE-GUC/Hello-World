@@ -22,7 +22,7 @@ const validator = require('../../validation/applicationsValidation');
 // @desc    Submits an Application of a task
 // @access  Private
 router.post('/:id',(req,res)=>{
-    Partner.findOne({organization: req.params.id})
+    Partner.findById({organization: req.params.id})
         .then(partner=>{
             if(!partner) return res.status(404).send({error: 'Partner does not exist'});
             const isValidated = validator.submitValidation(req.body);
@@ -36,6 +36,8 @@ router.post('/:id',(req,res)=>{
                 .then({msg:'Application was submitted successfully', data: newApp});
         })
         .catch(err => {res.status(404).json({ partnernotfound: 'No partner found' })});
+
+
 });
 
 
@@ -161,46 +163,22 @@ router.post('/admin/negotiate/:id/:appID',(req,res)=>{
                     return res.json({msg:'Message Sent Successfully',data:application.messages});
                 }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
         }).catch(err=>{err: {res.status(404).json({ partnernotfound: 'No Partner found' })}})
-
-
-    const text = req.body.text;
-    const adminID = req.params.id;
-    const appID = req.params.id2;
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such Application'});
-
-    const newMessage = {
-        name: admin.name,
-        text,
-    };
-    application.messages.push(newMessage);
-    return res.json({data: application.messages});
 });
 
 
-// @route   GET api/applications/admin/negotiation/:id/:id2
+// @route   GET api/applications/admin/negotiation/:id/:appID
 // @desc    Views Negotiation Over An Application
 // @access  Private
-router.get('/admin/negotiation/:id/:id2',(req,res)=>{
-    const text = req.body.text;
-    const adminID = req.params.id;
-    const appID = req.params.id2;
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({profile: 'There is no such Application'});
-
-    return res.json({data: application.messages});
+router.get('/admin/negotiation/:id/:appID',(req,res)=>{
+    Admin.findOne({organization: req.params.id})
+        .then(admin=>{
+            if(!admin) return res.status(404).json({profile: 'There is no admin profile for this user'});
+            Application.findById(req.params.appID)
+                .then(application=>{
+                    if (!application) return res.status(404).send({error: 'Application does not exist'});
+                    return res.json({data: application});
+                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
+        }).catch(err=>{err: {res.status(404).json({ adminnotfound: 'No Partner found' })}})
 });
 
 
