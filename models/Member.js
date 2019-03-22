@@ -65,7 +65,7 @@ const memberSchema = new Schema({
         {
             partner: {
                 type: Schema.Types.ObjectId,
-                ref: 'partners'
+                ref: 'partner'
             },
             rating: {
                 type: Number,
@@ -158,4 +158,4 @@ const memberSchema = new Schema({
 
 
 
-module.exports = Member = mongoose.model('members',memberSchema);
+module.exports = Member = mongoose.model('member',memberSchema);

@@ -5,7 +5,6 @@ module.exports = {
         const submitSchema = {
             description: Joi.string().min(40).max(1000).required(),
             needConsultancy: Joi.boolean().required(),
-            reviewed: Joi.boolean().required()
         }
 
         return Joi.validate(request, submitSchema)
@@ -15,20 +14,25 @@ module.exports = {
         const updateSchema = {
             description: Joi.string().min(40).max(1000).required(),
             needConsultancy: Joi.boolean().required(),
-            reviewed: Joi.boolean().required()
         }
 
         return Joi.validate(request, updateSchema)
     },
 
     messageValidation: request => {
-        const updateSchema = {
-            status: Joi.string().valid('partner','admin').required(),
-            name: Joi.string().min(3).max(40).required(),
+        const messageSchema = {
             text: Joi.string().required()
         }
 
-        return Joi.validate(request, updateSchema)
+        return Joi.validate(request, messageSchema)
     },
+    respondValidation: request => {
+        const respondSchema = {
+            response: Joi.string().valid('accepted', 'rejected').required(),
+        }
+
+        return Joi.validate(request, respondSchema)
+    },
+
 
 };

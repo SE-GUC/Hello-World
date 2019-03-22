@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const taskSchema = new Schema({
    application:{
        type: Schema.Types.ObjectId,
-       ref: 'applications'
+       ref: 'application'
    },
     levelOfCommitment: {
        type: Number,
@@ -55,4 +55,4 @@ const taskSchema = new Schema({
     }
 });
 
-module.exports = Task = mongoose.model('tasks',taskSchema);
+module.exports = Task = mongoose.model('task',taskSchema);

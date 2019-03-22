@@ -4,6 +4,8 @@ const router = express.Router();
 
 // Load Models
 const Admin = require('../../models/Admin');
+const User = require('../../models/User');
+
 
 // To Be Used For Register & Login
 
@@ -19,11 +21,26 @@ router.post('/register',async (req,res)=>{
                 username: username,
                 password: password
             });
-            res.json({msg: 'User was created successfully', data: newUser})
+            res.json({msg: 'User created successfully', data: newUser})
         }
         catch (e) {
             res.status(404).json(err)
         }
+})
+
+router.post('/admin/:id',async (req,res)=>{
+    const name = req.body.name;
+    const user = req.params.id;
+    try {
+        const newAdmin = await Admin.create({
+            name,
+            user
+        });
+        res.json({msg: 'Admin created successfully', data: newAdmin})
+    }
+    catch (err) {
+        res.status(404).json(err)
+    }
 })
 
 

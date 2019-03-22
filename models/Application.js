@@ -4,7 +4,7 @@ const  Schema = mongoose.Schema;
 const applicationSchema = new Schema({
     partner:{
       type: Schema.Types.ObjectId,
-      ref: 'partners'
+      ref: 'partner'
     },
     description:{
         type: String,
@@ -14,7 +14,7 @@ const applicationSchema = new Schema({
         {
             consultant: {
                 type: Schema.Types.ObjectId,
-                ref: 'consultants'
+                ref: 'consultant'
             },
             status: {
                 type: String,
@@ -60,4 +60,4 @@ const applicationSchema = new Schema({
     }
 });
 
-module.exports = Application = mongoose.model('applications',applicationSchema);
+module.exports = Application = mongoose.model('application',applicationSchema);

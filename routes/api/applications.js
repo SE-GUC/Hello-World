@@ -21,251 +21,275 @@ const validator = require('../../validation/applicationsValidation');
 // @route   POST api/applications/:id
 // @desc    Submits an Application of a task
 // @access  Private
-router.post('/:id',(req,res)=>{
-    Partner.findById({organization: req.params.id})
-        .then(partner=>{
-            if(!partner) return res.status(404).send({error: 'Partner does not exist'});
-            const isValidated = validator.submitValidation(req.body);
-            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-            const newApp = new Application({
-                description: req.body.description,
-                needConsultancy: req.body.needConsultancy,
-                reviewed: req.body.reviewed
-            });
-            newApp.save()
-                .then({msg:'Application was submitted successfully', data: newApp});
-        })
-        .catch(err => {res.status(404).json({ partnernotfound: 'No partner found' })});
+router.post('/:id',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
 
+        const isValidated = validator.submitValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
+        const fields = {};
+        fields.partner = req.params.id;
+        fields.description = req.body.description;
+        fields.needConsultancy = req.body.needConsultancy;
+
+        const newApp = await Application.create(fields);
+        return res.json({msg:'Application was created successfully', data: newApp});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 
 // @route   PUT api/applications/:id/:appID
 // @desc    Partner Edits an Application of a task
 // @access  Private
-router.put('/:id/:appID',(req,res)=>{
-    Partner.findOne({organization: req.params.id})
-        .then(partner =>{
-            if (!partner) return res.status(404).send({error: 'Partner does not exist'});
-            const isValidated = validator.updateValidation(req.body);
-            if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if (!application) return res.status(404).send({error: 'Application does not exist'});
-                        const appFields = {};
-                        appFields.description = req.body.description;
-                        appFields.needConsultancy = req.body.needConsultancy;
-                        appFields.reviewed = req.body.reviewed;
-                        Application.findOneAndUpdate(
-                            {partner: req.params.id},
-                            {$set: appFields},
-                            {new: true}
-                        ).then(application=>{
-                            return res.json({msg: 'Application Was Updated Successfully',data: application});
-                        })
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ partnernotfound: 'No Partner found' })}})
+router.put('/:id/:appID',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if(!partner) return res.status(404).send({error: 'Partner does not exist'});
+        const application = await Application.findById(req.params.appID);
+        if(!application) return res.status(404).send({error: 'Application does not exist'});
+
+        if(application.partner != req.params.id){
+            res.status(400).json({ Unauthorized: 'This Partner is not responsible for this Application' });
+        }
+
+        const isValidated = validator.updateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const fields = {};
+        fields.needConsultancy = req.body.needConsultancy;
+        fields.description = req.body.description;
+        const updatedApplication = await Application.findByIdAndUpdate(req.params.appID,{$set: fields});
+        return res.json({msg: 'Application updated successfully'});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 // @route   POST api/applications/partner/negotiate/:id/:appID
 // @desc    Partner Negotiates Over An Application
 // @access  Private
-router.post('/partner/negotiate/:id/:appID',(req,res)=>{
-    Partner.findOne({organization: req.params.id})
-        .then(partner=>{
-            if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
-            const isValidated = validator.messageValidation(req.body);
-            if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if (!application) return res.status(404).send({error: 'Application does not exist'});
-                    if(application.partner !== req.params.id) return res.status(400).send({error: 'This Partner is not responsible for this Application'});
-                    const newMessage = {
-                        status: 'partner',
-                        name: req.body.name,
-                        text: req.body.text
-                    }
-                    application.messages.unshift();
-                    return res.json({msg:'Message Sent Successfully',data:application.messages});
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ partnernotfound: 'No Partner found' })}})
+router.post('/partner/negotiate/:id/:appID',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organization');
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+
+        const isValidated = validator.messageValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const newMessage = {
+            status: 'partner',
+            text: req.body.text,
+            name: partner.organization.name
+    };
+        application.messages.unshift(newMessage);
+
+        application.save();
+
+        return res.json({msg:'Message Sent successfully',data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 
 // @route   GET api/applications/partner/negotiation/:id/:appID
 // @desc    Views Negotiation Over An Application
 // @access  Private
-router.get('/partner/negotiation/:id/:appID',(req,res)=>{
-    Partner.findOne({organization: req.params.id})
-        .then(partner=>{
-            if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if (!application) return res.status(404).send({error: 'Application does not exist'});
-                    if(application.partner !== req.params.id) return res.status(400).send({error: 'This Partner is not responsible for this Application'});
-                    return res.json({data: application});
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ partnernotfound: 'No Partner found' })}})
+router.get('/partner/negotiation/:id/:appID',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organization');
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        return res.json({data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 // @route   GET api/applications/admin/:id
 // @desc    Gets All Applications
 // @access  Private
-router.get(':id',(req,res)=>{
-    Admin.findOne({user: req.params.id})
-        .then(admin=>{
-            if(!admin) return res.status(404).json({profile: 'There is no admin profile for this user'});
-            Application.find()
-                .then(applications=>{
-                    return res.json({data: applications});
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ adminnotfound: 'No Admin found' })}})
+router.get('/admin/:id',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const applications = await Application.find({});
+        return res.json({data: applications})
+    }
+    catch (error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
+    }
 });
 
 
-// @route   POST api/applications/review/:id/appID
+// @route   POST api/applications/admin/:id/appID
 // @desc    Admin Reviews Application
 // @access  Private
-router.post('/review/:id/:appID',(req,res)=>{
-    Admin.findOne({user: req.params.id})
-        .then(admin=>{
-            if(!admin) return res.status(404).json({profile: 'There is no admin profile for this user'});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if(!application) return res.status(404).json({application: 'There is no application for this user'});
-                    application.reviewed = true;
-                    return res.json({msg:'Application Reviewd Successfully',data:application});
-                }).catch(err=>{err: {res.status(404).json({applicationnotfound: 'No Application found'})}})
-        }).catch(err=>{err: {res.status(404).json({ adminnotfound: 'No Admin found' })}})
+router.post('/admin/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
 
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        application.reviewed = true;
+
+        application.save();
+
+        return res.json({msg:'Application Reviewed Successfully',data:application});
+    }
+    catch(error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
+    }
 });
 
 
 // @route   POST api/applications/admin/negotiate/:id/:appID
 // @desc    Admin Negotiates Over An Application
 // @access  Private
-router.post('/admin/negotiate/:id/:appID',(req,res)=>{
-    Admin.findOne({user: req.params.id})
-        .then(admin=>{
-            if(!admin) return res.status(404).json({profile: 'There is no admin profile for this user'});
-            const isValidated = validator.messageValidation(req.body);
-            if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if (!application) return res.status(404).send({error: 'Application does not exist'});
-                    const newMessage = {
-                        status: 'admin',
-                        name: req.body.name,
-                        text: req.body.text
-                    }
-                    application.messages.unshift();
-                    return res.json({msg:'Message Sent Successfully',data:application.messages});
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ partnernotfound: 'No Partner found' })}})
+router.post('/admin/negotiate/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+
+        const isValidated = validator.messageValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const newMessage = {
+            status: 'admin',
+            text: req.body.text,
+            name: admin.name
+        };
+        application.messages.unshift(newMessage);
+
+        application.save();
+
+        return res.json({msg:'Message Sent successfully',data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Admin not found' });
+    }
 });
 
 
 // @route   GET api/applications/admin/negotiation/:id/:appID
 // @desc    Views Negotiation Over An Application
 // @access  Private
-router.get('/admin/negotiation/:id/:appID',(req,res)=>{
-    Admin.findOne({organization: req.params.id})
-        .then(admin=>{
-            if(!admin) return res.status(404).json({profile: 'There is no admin profile for this user'});
-            Application.findById(req.params.appID)
-                .then(application=>{
-                    if (!application) return res.status(404).send({error: 'Application does not exist'});
-                    return res.json({data: application});
-                }).catch(err=>{err: {res.status(404).json({ applicationnotfound: 'No Application found' })}})
-        }).catch(err=>{err: {res.status(404).json({ adminnotfound: 'No Partner found' })}})
+router.get('/admin/negotiation/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        return res.json({data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
+    }
 });
-
-
-// @route   PUT api/applications/respond/:id/:id2/:id3
-// @desc    Admin Responds to Consultant Requests
-// @access  Private
-router.put('/respond/:id/:id2/:id3',(req,res)=>{
-    const response = req.body.response;
-    const applicationID = req.params.id;
-    const consultantID = req.params.id2;
-    const adminID = req.params.id3;
-
-    const application = applications.find(element => {
-        return element.id == applicationID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
-
-    const consultant = consultants.find(element => {
-        return element.id == consultantID;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant Profile For This User'});
-
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-
-    const applicant = application.applicants.find(element => {
-        return element.consultant == consultant;
-    });
-
-    if(!applicant) return res.status(404).json({application: 'This Consultant did not apply for this application'});
-    applicant.status = response;
-
-    if(applicant.status == 'accepted') application.consultant = consultantID;
-
-    if(!response) return res.status(404).json({err: 'Response Field is Required'});
-    return res.json({data: applicant});
-});
-
 
 
 // @route   GET api/applications/consultant/all/:id
 // @desc    Gets All Reviewed Applications
 // @access  Private
-router.get('/consultant/all/:id',(req,res)=>{
-    const id = req.params.id;
-    const consultant = consultants.find(element => {
-        return element.id == id;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant profile for this user'});
+router.get('/all/:id',async (req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id);
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'});
 
-    const reviewedApplications = applications.filter(function(element) {
-        return element.reviewed == true;
-    });
-
-    return res.json({data: reviewedApplications});
-
+        const applications = await Application.find({reviewed:true});
+        return res.json({data: applications})
+    }
+    catch (error) {
+        return res.status(404).json({ consultantnotfound: 'Consultant not found' });
+    }
 });
 
-// @route   POST api/applications/apply/:id/:id2
+// @route   POST api/applications/apply/:id/:appID
 // @desc    Apply For an Application
 // @access  Private
-router.post('/apply/:id/:id2',(req,res)=>{
-    const appID = req.params.id;
-    const consultantID =req.params.id2;
-    const consultant = consultants.find(element => {
-        return element.id == consultantID;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant profile for this user'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
+router.post('/apply/:id/:appID',async(req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id);
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'});
 
-    const organization = organizations.find(element => {
-        return element.id = consultant.id;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
 
-    const applicant = {
-        organization: organization,
-        consultant: consultant,
-        status: 'pending'
+        const applicant = {
+            consultant: req.params.id,
+            status: 'pending'
+        }
+
+        application.applicants.unshift(applicant);
+        application.save();
+
+        return res.json({msg:'Your Application was submitted successfully', data: application.applicants});
     }
-    application.applicants.push(applicant);
-    return res.json({data: application});
+    catch(error) {
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+        console.log(error)
+    }
 });
+
+// @route   PUT api/applications/respond/:id/:id2/:id3
+// @desc    Admin Responds to Consultant Requests
+// @access  Private
+router.post('/respond/:id/:id2/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const consultant = await Consultant.findById(req.params.id2);
+        if (!admin) return res.status(404).send({error: 'Consultant not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        const isValidated = validator.respondValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const applicant = application.applicants.find(element => {
+            return element.consultant == req.params.id2;
+        });
+
+        if(!applicant) return res.status(404).json({error:'This Consultant did not apply for This Task'});
+
+        applicant.status = req.body.response;
+
+        application.save();
+
+        return res.json({msg:'Response Saved',data:application});
+    }
+    catch(error) {
+        res.status(404).json({ adminnotfound: 'Admin not found' });
+        console.log(error);
+    }
+});
+
+
+
 
 module.exports = router;

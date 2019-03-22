@@ -56,17 +56,14 @@ router.get('/:id',async(req,res)=>{
 // @access  Private
 router.put('/:id',async (req,res)=>{
     try {
-        const id = req.body.id;
-        const partner = await Partner.findOne({id});
+        const partner = await Partner.findById(req.params.id);
         if(!partner) return res.status(404).send({error: 'Partner does not exist'});
         const isValidated = validator.updateValidation(req.body);
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-
         const fields = {};
         fields.fieldOfWork = req.body.fieldOfWork;
-
-        const updatedPartner = await Partner.updateOne(fields);
-        res.json({msg: 'Partner updated successfully',data: partner});
+        const updatedPartner = await Partner.findByIdAndUpdate(req.params.id,{$set: fields});
+        res.json({msg: 'Partner updated successfully'});
     }
     catch(error) {
         res.status(404).json({ partnernotfound: 'Partner not found' });

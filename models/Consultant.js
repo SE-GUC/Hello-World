@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 const consultantSchema = new Schema({
     organization: {
       type: Schema.Types.ObjectId,
-      ref: 'organizations'
+      ref: 'organization'
     },
     boardMembers: [
         {
@@ -35,7 +35,7 @@ const consultantSchema = new Schema({
     ],
     partners: {
         type: [Schema.Types.ObjectId],
-        ref: 'partners'
+        ref: 'partner'
     },
     reports: {
         type: [String]
@@ -50,4 +50,4 @@ const consultantSchema = new Schema({
     }
 })
 
-module.exports = Consultant = mongoose.model('consultants',consultantSchema);
+module.exports = Consultant = mongoose.model('consultant',consultantSchema);
