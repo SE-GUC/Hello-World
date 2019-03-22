@@ -18,7 +18,7 @@ const validator = require('../../validation/memberValidation');
 // @access private
 router.get('/:id',(req,res)=>{
     const id = req.params.id;
-    members.findone(id)
+    Member.findone(id)
     .then(member=>{
   res.json({data: member})
     })
