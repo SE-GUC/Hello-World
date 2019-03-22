@@ -2,7 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
 const mongoose = require('mongoose');
 //Load Models
 const Member = require('../../../models/Member');
@@ -12,7 +11,7 @@ const Masterclass = require('../../../models/Masterclass');
 
 
 // Validation
-const validator = require('../../validation/memberValidation');
+const validator = require('../../../validation/memberValidation');
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
 // @access private
@@ -32,20 +31,22 @@ router.get('/:id',(req,res)=>{
 router.post('/create/:id',(req,res)=>{
     const { name, age, email, phone}  = req.body
     const id = req.params.id
-    const user = users.findone(id)
+    const user = User.findById(id)
     .then(user=>{
     if(!user) return res.status(400).json({profile: 'User Does Not Exist'});
     const isValidated = validator.submitValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-    const member = new Member(
+        })
+        .catch(err => res.json({error: '1'}))
+      const member1 = new Member(
         name,
         age,
         email,
         phone,
         user.id
-    )})
-    member.save()
-    .then({msg:'Application was submitted successfully', data: newApp})
+    )
+    member1.save()
+    .then({msg:'Application was submitted successfully', data: member1})
     .catch(err => res.json({error: 'Can not create user'}))
 });
 
@@ -57,7 +58,7 @@ router.put('/edit/:id',(req,res)=>{
     const id = req.params.id;
 
     
-    const member1 = Member.findone(id)
+    const member1 = Member.findById(id)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
@@ -87,7 +88,7 @@ router.put('/edit/:id',(req,res)=>{
 router.post('/skills/add/:id',(req,res)=>{
     const skill = req.body.skill;
     const id = req.params.id;
-    const member = Member.findone(id)
+    const member = Member.findById(id)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
@@ -109,7 +110,7 @@ router.post('/skills/add/:id',(req,res)=>{
 router.post('/Interests/add/:id',(req,res)=>{
     const interest = req.body.interest;
     const id = req.params.id;
-    const member = Member.findone(id)
+    const member = Member.findById(id)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
@@ -132,7 +133,7 @@ router.post('/past-events/add/:id',(req,res)=>{
     const {eventName,description,date} = req.body;
     const id = req.params.id;
 
-    const member1 = members.findone(id)
+    const member1 = members.findById(id)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
@@ -157,7 +158,7 @@ router.post('/past-events/add/:id',(req,res)=>{
 router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
     const memberID = req.params.id;
     const taskID = req.params.id2;
-    const member = members.findone(memberID)
+    const member = members.findById(memberID)
     .then(member=>{    if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
     }})
@@ -183,7 +184,7 @@ router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
 router.post('/certificates/add/:id',(req,res)=>{
     const {name,date,entity,description} = req.body;
     const id = req.params.id;
-    const member = Member.findone(id)
+    const member = Member.findById(id)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
@@ -208,7 +209,7 @@ router.post('/certificates/add/:id',(req,res)=>{
 router.post('/masterclasses/add/:id/:id2',(req,res)=>{
     const memberID = req.params.id;
     const masterclassID = req.params.id2;
-    const member = Member.findone(memberID)
+    const member = Member.findById(memberID)
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });

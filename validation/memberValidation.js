@@ -21,5 +21,6 @@ module.exports = {
             }
     
             return Joi.validate(request, submitSchema)
-        }}
+        }
+    };
         

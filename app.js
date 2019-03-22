@@ -55,7 +55,7 @@ app.use('/api/profiles/member',member);
 //app.use('/api/profiles/consultant',consultant);
 //app.use('/api/profiles/education',education);
 //app.use('/api/masterclasses',masterclasses);
-//app.use('/api/applications',applications);
+app.use('/api/applications',applications);
 
 const port = process.env.PORT || 5000;
 
