@@ -1,7 +1,15 @@
-class Expert {
-    constructor(id){
-        this.id = id;
-        this.requests = [];
+const mongoose = require('mongoose')
+
+const ExpertSchema = new Schema({
+  requests:[{
+    member: {
+      type: String
+    },
+    status: {
+      type:String
     }
-}
-module.exports = Expert;
+  }]
+
+})
+
+module.exports = Expert = mongoose.model('expert', ExpertSchema)

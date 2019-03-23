@@ -39,71 +39,122 @@ const experts = [
 // @desc    View Masterclasses
 // @access  Private
 router.get('/all/:id',(req,res)=>{
+
     const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member Profile For This User'});
-    return res.json({data: masterclasses});
+
+    Masterclass.findById(id)
+        .then( (newClass) => {
+            if ( newClass != null ) {
+                return res.status(200)
+                    .json({
+                        msg: "Master Class Fetched",
+                        data: newClass
+                    })
+            } else {
+                return res.status(404)
+                    .json({
+                        errMsg: "No such Master Class ID"
+                    })
+            }
+        }).catch( (error) => {
+            return res.status(422)
+                .json({
+                    errMsg: "Error Trying To Fetch Master Class",
+                    err: error
+                })
+        })
+
 });
+
 
 // @route   POST api/masterclasses/require/:id/:id2
 // @desc    Member Requires Assessment From An Expert
 // @access  Private
-router.post('/require/:id/:id2',(req,res)=>{
-    const memberID = req.params.id;
-    const expertID = req.params.id2;
-    const member = members.find(element => {
-        return element.id == memberID;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member Profile For This User'});
+router.post('/require',(req,res)=>{
+    const memberID = req.body.memberID;
+    const expertID = req.body.expertID;
 
-    const expert = experts.find(element => {
-        return element.id == expertID;
-    });
-    if(!expert) return res.status(404).json({expert: 'This User is not An Expert'});
+    Member.findById(memberID)
+        .then( (member) => {
+            if( member != null ) {
+                Expert.findById(expertID)
+                    .then( (expert) => {
+                        if( expert != null ) {
+                            var request = {
+                                member: memberID,
+                                status: "Pending"
+                            }
+                            expert.requests.push(request);
 
-    const request = {
-        member,
-        status: 'pending'
-    };
+                            expert.save()
+                                .then( () => {
+                                    return res.status(200)
+                                        .json({
+                                            msg: "Request Sumbitted"
+                                        })
+                                })
+                        } else {
+                            return res.status(404)
+                                .json({
+                                    msg: "No Such Expert Exists"
+                                })
+                        }
+                    })
+            } else {
+                return res.status(404)
+                    .json({
+                        msg: "No Such Member Exists"
+                    })
+            }
+        })
 
-    expert.requests.push(request);
-    return res.json({data: expert.requests});
 });
+
 
 
 // @route   PUT api/masterclasses/respond/:id/:id2
 // @desc    Expert Responds to Requests
 // @access  Private
-router.put('/respond/:id/:id2',(req,res)=>{
-    const response = req.body.response;
-    const memberID = req.params.id;
-    const expertID = req.params.id2;
-    const member = members.find(element => {
-        return element.id == memberID;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member Profile For This User'});
+router.put('/respond/',(req,res)=>{
+    const memberID = req.body.memberID;
+    const expertID = req.body.expertID;
 
-    const expert = experts.find(element => {
-        return element.id == expertID;
-    });
-    if(!expert) return res.status(404).json({expert: 'This User is not An Expert'});
+    Member.findById(memberID)
+        .then((member) => {
+            if (member != null){
+                Expert.findById(expertID)
+                    .then((expert) => {
+                        if (expert != null){
+                            var i = 0;
+                            while(i < Expert.requests){
+                                if(memberID === request.memberID){
+                                    var request = {
+                                        member: memberID,
+                                        status: "Respond"
+                                    }
+                                }
+                                i++;
+                            }
+                            //Expert.requests.find(request)
+                        }
+                        else {
+                           return res.status(404)
+                               .json({
+                                   msg: "No Such Expert Exists"
+                               })
+                       }
+                    })
+            }
+            else {
+                return res.status(404)
+                    .json({
+                        msg: "No Such Member Exists"
+                    })
+            }
 
-    if(!response) return res.status(404).json({err: 'Response Field is Required'});
-
-    const request = expert.requests.find(element => {
-        return element.member = member;
-    });
-    if(!request) return res.status(404).json({profile: 'There is no Request by this User'});
-
-    request.status = response;
-
-    if(request.status=='accepted'){
-        member.notifications.push(`Your Request has been accepted by Expert ${expertID}`);
-    }
-    return res.json({data: request});
+        })
 });
+
 
 
 // @route   POST api/masterclasses/apply/:id/:id2
