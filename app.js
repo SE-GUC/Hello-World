@@ -20,21 +20,15 @@ const masterclasses = require('./routes/api/masterclasses');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 // DB Config
 const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
-const MongoClient = require('mongodb').MongoClient;
-const client = new MongoClient(db, { useNewUrlParser: true });
-client.connect(err => {
-    const client = new MongoClient(db, { useNewUrlParser: true });
-    client.connect(err => {
-        const collection = client.db("test").collection("devices");
-        console.log("MongoDB Connected");
-        client.close();
-    });
-});
+mongoose
+    .connect(db)
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
+
 
 
 // @route   GET /home
@@ -54,15 +48,15 @@ app.get('/about', (req, res) => {
 
 
 // Use Routes
-app.use('/api/users',users);
-app.use('/api/tasks',tasks);
-app.use('/api/profiles/member',member);
-app.use('/api/profiles/organization',organization);
-app.use('/api/profiles/partner',partner);
-app.use('/api/profiles/consultant',consultant);
-app.use('/api/profiles/education',education);
-app.use('/api/masterclasses',masterclasses);
-app.use('/api/applications',applications);
+//app.use('/api/users',users);
+// app.use('/api/tasks',tasks);
+// app.use('/api/profiles/member',member);
+// app.use('/api/profiles/organization',organization);
+// app.use('/api/profiles/partner',partner);
+// app.use('/api/profiles/consultant',consultant);
+// app.use('/api/profiles/education',education);
+// app.use('/api/masterclasses',masterclasses);
+ app.use('/api/applications',applications);
 
 const port = process.env.PORT || 5000;
 

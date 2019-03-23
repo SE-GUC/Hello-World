@@ -13,38 +13,67 @@
 }
 
 module.exports = Application;*/
-const mongoose = require('mongoose')
-const schema = mongoose.Schema
-const ApplicationSchema = new schema({
-    description:{
-        type:String,
-        required:true
-    },
+
+mongoose = require('mongoose');
+const  Schema = mongoose.Schema;
+
+const applicationSchema = new Schema({
     partner:{
-        type:String,
+      type: Schema.Types.ObjectId,
+      ref: 'partners'
+    },
+    description:{
+        type: String,
+        required: 'true'
+    },
+    applicants: [
+        {
+            consultant: {
+                type: Schema.Types.ObjectId,
+                ref: 'consultants'
+            },
+            status: {
+                type: String,
+                default: 'pending'
+            },
+            date: {
+                type: Date,
+                default: Date.now()
+            }
+        }
+    ],
+    messages: [
+        {
+            status:{
+                type: String,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            text: {
+                type: String,
+                required: true
+            },
+            date: {
+                type: Date,
+                default: Date.now()
+            }
+        }
+    ],
+    needConsultancy: {
+        type: Boolean,
         required:true
     },
-    applicants:{
-        type:[String],
-        required:true
+    reviewed: {
+        type: Boolean,
+        default: false
     },
-    messages:{
-        type:[String]
-    },
-    consultant:{
-        type:String
-    },
-    needConsultancy:{
-        type:Boolean,
-        required:true
-    },
-    reviewed:{
-        type:Boolean,
-        required:true
-    },
-    User:{
-        type:Schema.Type.ObjectId,
-        ref:'users'
+    date: {
+        type: Date,
+        default: Date.now()
     }
-})
-module.exports = Application = mongoose.module('applications',ApplicationSchema)
+});
+
+module.exports = Application = mongoose.model('applications',applicationSchema);

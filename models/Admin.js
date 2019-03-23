@@ -1,20 +1,18 @@
-/*class Admin{
-    constructor(name,id){
-        this.name = name;
-        this.id = id;
-    }
-}
-module.exports = Admin;*/
-const mongoose = require('mongoose')
-const schema = mongoose.Schema
-const AdminSchema = new schema({
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema
+const AdminSchema = new Schema({
     name:{
         type:String,
         required:true
+
     },
-    User:{
-        type:Schema.Type.ObjectId,
+    user:{
+        type:Schema.Types.ObjectId,
         ref:'users'
+    },
+    date: {
+        type: String,
+        default: Date.now()
     }
 })
-module.exports = Admin = mongoose.module('admins',AdminSchema)
+module.exports = Admin = mongoose.model('admins',AdminSchema)
