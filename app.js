@@ -4,15 +4,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 
-const users = require('./routes/api/users');
-const tasks = require('./routes/api/tasks');
+//const users = require('./routes/api/users');
+//const tasks = require('./routes/api/tasks');
 const member = require('./routes/api/profiles/member');
-const organization = require('./routes/api/profiles/organization');
-const partner = require('./routes/api/profiles/partner');
-const consultant = require('./routes/api/profiles/consultant');
-const education = require('./routes/api/profiles/education');
+//const organization = require('./routes/api/profiles/organization');
+//const partner = require('./routes/api/profiles/partner');
+//const consultant = require('./routes/api/profiles/consultant');
+//const education = require('./routes/api/profiles/education');
 const applications = require('./routes/api/applications');
-const masterclasses = require('./routes/api/masterclasses');
+//const masterclasses = require('./routes/api/masterclasses');
 
 
 

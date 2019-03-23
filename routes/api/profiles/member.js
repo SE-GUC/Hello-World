@@ -28,79 +28,76 @@ router.get('/:id',(req,res)=>{
 // @route post api/profiles/member/create/:id
 // @desc Creates Member Profile
 // @access private
-router.post('/create/:id',(req,res)=>{
-    const { name, age, email, phone}  = req.body
+
+router.post('/create/:id',async(req,res)=>{
+    try{
+        const { name, age, email, phone}  = req.body
     const id = req.params.id
-    const user = User.findById(id)
-    .then(user=>{
-    if(!user) return res.status(400).json({profile: 'User Does Not Exist'});
-    const isValidated = validator.submitValidation(req.body);
-            if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-        })
-        .catch(err => res.json({error: '1'}))
-      const member1 = new Member(
-        name,
-        age,
+    const user1 =await User.findById(id)
+    
+    if(!user1) return res.status(400).json({profile: 'User Does Not Exist'});
+   // const isValidated = validator.createValidation(req.body);
+   // if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+    
+        
+      const member1 = new Member({
+         name,
         email,
         phone,
-        user.id
-    )
+        age,
+        user:id    })
     member1.save()
-    .then({msg:'Application was submitted successfully', data: member1})
-    .catch(err => res.json({error: 'Can not create user'}))
+    res.json({msg:'Created',data:member1})
+      }   
+    catch(err){
+        console.log(err)
+    }
 });
 
 // @route PUT api/profiles/member/edit/:id
 // @desc Edit Member's Profile
 // @access private
-router.put('/edit/:id',(req,res)=>{
-    const { name, age, email, phone}  = req.body
+router.put('/edit/:id',async(req,res)=>{
+    const {name,age,phone,email} = req.body
     const id = req.params.id;
-
-    
-    const member1 = Member.findById(id)
-    .then(member=>{
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-        const isValidated = validator.submitValidation(req.body);
+    const member1 =await Member.findById(id)
+    if(!member1){
+        return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.UpdateValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-    
-    }})
-    .catch(err=>{err: {res.status(404).json({ memberNotFound: 'Member Not Found' })}})
-        member1.name = name;
-        member1.age = age;
-        member1.email = email;
-        member1.phone = phone;
-        Member.findOneAndUpdate(
-            {member: req.params.id},
-            {$set: member1},
-            {new: true})
-            .then(member=>{
-                return res.json({msg: 'updated',data: member})})
-                .catch(err=>{err:{res.status(404).json({MemberNotFound:'Could not find member'})}})
-    
-})
+       
+     member1.name = req.body.name;
+        member1.age = req.body.age;
+        member1.email = req.body.email;
+        member1.phone = req.body.phone;
+        Member.findOneAndUpdate({id}, {$set:member1},{new: true},function(err, doc){
+            if(err){
+                console.log("Something wrong when updating data!");
+            }  console.log(doc);
+        })
+                 res.json({msg: 'updated',data: member1})
+        
+                        })
 
 
 // @route POST api/profiles/member/skills/add/:id
 // @desc Adds A Skill To Member's Profile
 // @access private
 router.post('/skills/add/:id',(req,res)=>{
-    const skill = req.body.skill;
+  try{  const skill = req.body.skill;
     const id = req.params.id;
     const member = Member.findById(id)
-    .then(member=>{
     if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-        const isValidated = validator.submitValidation(req.body);
+        return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.skillValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-    
-    }})
-    .catch(err=>{err:{res.status(404).json({MemberNotFound:'Member not found'})}})
-    
-    member.setOfSkills.save()
-    .then(member=>{res.json(member)})
-    .catch(err=>{err:{res.status(404).json({SaveError:'An error occurred while saving'})}})
+            member.skills.push({skill}) 
+    Member.findOneAndUpdate({id},{$set:member1},{new: true})
+    res.json(member.setOfSkills)}
+
+catch(err){
+    console.log(err)
+}
     
 });
 
@@ -114,12 +111,12 @@ router.post('/Interests/add/:id',(req,res)=>{
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-        const isValidated = validator.submitValidation(req.body);
+        const isValidated = validator.createValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
     }})
     member.interests.push(interest);
     Member.findOneAndUpdate(
-        {member1:id},
+        {id},
         {$set: member},
         {new: true})
         .then(member=>{return res.json(member);})
@@ -137,7 +134,7 @@ router.post('/past-events/add/:id',(req,res)=>{
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-        const isValidated = validator.submitValidation(req.body);
+        const isValidated = validator.createValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
     
     }})
@@ -188,7 +185,7 @@ router.post('/certificates/add/:id',(req,res)=>{
     .then(member=>{
     if(!member){
         return res.status(400).json({ profile: 'There is no Member profile for this user' });
-        const isValidated = validator.submitValidation(req.body);
+        const isValidated = validator.createValidation(req.body);
             if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
     
     }})

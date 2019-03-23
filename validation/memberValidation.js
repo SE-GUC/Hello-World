@@ -1,26 +1,32 @@
 const Joi = require('joi');
 module.exports = {
-    submitValidation: request => {
-        const submitSchema = {
-            name: Joi.string().max(18).min(3).required(),
-            age: Joi.number().max(2).min(1).required(),
-            email: Joi.string().max(60).min(10).required(),
-            phone: Joi.number().max(11).min(11).required()
+    createValidation: request => {
+        const createSchema = {
+            name: Joi.string().max(60).min(3).required(),
+            age: Joi.number().max(100).min(1).required(),
+            email: Joi.string().email().required(),
+            phone: Joi.number().required()
         }
 
-        return Joi.validate(request, submitSchema)
+        return Joi.validate(request, createSchema)
     },
 
  
         UpdateValidation: request => {
-            const submitSchema = {
-                name: Joi.string().max(18).min(3).required(),
-                age: Joi.number().max(2).min(1).required(),
-                email: Joi.string().max(60).min(10).required(),
-                phone: Joi.number().max(11).min(11).required()
+            const updateSchema = {
+                name: Joi.string().max(60).min(3),
+                age: Joi.number().max(100).min(1),
+                email: Joi.string().email(),
+                phone: Joi.number()
             }
     
-            return Joi.validate(request, submitSchema)
+            return Joi.validate(request, updateSchema)
+        },
+        skillValidation: request => {
+            const skillSchema = {
+                skill: Joi.string().max(100)
+            }
+            return Joi.validate(request,skillSchema)
         }
     };
         
