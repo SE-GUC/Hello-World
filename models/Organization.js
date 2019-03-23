@@ -1,27 +1,51 @@
-/*class Organization {
-    constructor(name,age,id) {
-    this.name = name;
-    this.age = age;
-    this.id = id;
-    };
-}*/
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-// Create the schema
-const OrganizationSchema = new Schema({
+const organizationSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref:'users'
+    },
     name: {
         type: String,
         required: true
     },
-   age: {
-        type: int,
+   phone: {
+        type: Number,
         required: true
     },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref:'users'
+    email: {
+        type: String,
+        required: true
+    },
+    address: {
+        type: String,
+        require: true
+    },
+    social: {
+        youtube: {
+            type: String
+        },
+        twitter: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        linkedin: {
+            type: String
+        },
+        instagram: {
+            type: String
+        },
+    },
+    avatar: {
+        type: String
+    },
+    date: {
+        type: Date,
+        default: Date.now()
     }
-})
+});
 
-module.exports = Organization = mongoose.model('organizations', OrganizationSchema)
+module.exports = Organization = mongoose.model('organization', organizationSchema);

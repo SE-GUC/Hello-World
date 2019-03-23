@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
 
 
 //Load Models
@@ -10,245 +9,181 @@ const User = require('../../../models/User');
 const Application = require('../../../models/Application');
 const Task = require('../../../models/Task');
 
-// Temporary Data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-];
+// Load Validation
+const validator = require('../../../validation/partnerValidation');
 
-const organizations = [
-    new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
-    new Organization('auc', 'El Tagamo3 El Khames', 'auc@mail.com', 11, 2),
-    new Organization('miu', '3obor', 'miu@mail.com', 12, 3),
-    new Organization('aast', 'Sheraton', 'aast@mail.com', 13, 4),
-];
 
-const partners = [
-    new Partner('Software Development', 1),
-    new Partner('Civil Engineering', 2),
-    new Partner('Graphic Design', 3),
-    new Partner('Online Banking', 4),
-];
-const applications = [
-    new Application('Freelancing Website',1,1,false),
-    new Application('Online Hotel Booking Website',2,2,true),
-    new Application('Cryptocurrency website',3,3,true),
-];
-const tasks = [
-    new Task('High','Medium',['node','express','react'],1500,1),
-    new Task('Medium','High',['java','unit testing'],1000,2),
-    new Task('Low','Low',['HTML','CSS','Javascript'],500,3),
-];
 
 // @route   POST api/profiles/partner/create/:id
 // @desc    Creates Partner Profile
 // @access  Private
-router.post('/create/:id', (req,res)=>{
-    const id = req.params.id;
-    const fieldOfWork = req.body.fieldOfWork;
+router.post('/create/:id', async (req,res)=>{
+    try {
+        const organization = await Organization.findById(req.params.id);
+       // if (!organization) return res.status(404).send({error: 'Organization not found'})
+        //const isValidated = validator.createValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
 
-    if (!fieldOfWork) return res.status(400).send({ err: 'Field Of Work field is required' });
-    if (typeof fieldOfWork !== 'string') return res.status(400).send({ err: 'Invalid value for Field Of Work' });
-    const organization = organizations.find(element => {
-        return element.id == id;
-    });
-    if(!organization){
-        return res.status(404).json({ profile: 'There is no Organization profile for this user' });
+        const newPartner =Partner({
+            fieldOfWork,
+            organization:id
+        })
+        newPartner.save()
+        res.json({msg:'Partner was created successfully', data: newPartner})
     }
-
-
-    const newPartner = {
-        fieldOfWork,
-        id
-    };
-    partners.push(newPartner);
-    return res.json({ data: newPartner });
+    catch(error) {
+        return res.status(404).json({ organizationnotfound: 'Organization not found' });
+    }
 });
 
 
-// @route   GET api/profiles/partner/:id
+// @route   GET api/profiles/partner/show/:id
 // @desc    Get Partner's profile by ID
 // @access  private
-router.get('/:id',(req,res)=>{
-    const id = req.params.id;
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(404).json({ profile: 'There is no Partner profile for this user' });
+router.get('/show/:id',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organization');
+        if (!partner) return res.status(404).send({error: 'Partner not found'})
+        return res.json({data: partner})
     }
-    else{
-        return res.json({data: partner});
+    catch (error) {
+       return res.status(404).json({ partnernotfound: 'Partner not found' });
     }
-
 });
 
 
-// @route   PUT api/profiles/partner/edit/:id
+// @route   PUT api/profiles/partner/:id
 // @desc    Edit Partner's Profile
 // @access  Private
-router.put('/edit/:id',(req,res)=>{
-    const fieldOfWork = req.body.fieldOfWork;
-    const id = req.params.id;
-
-    if (!fieldOfWork) return res.status(400).send({ err: 'Field Of Work field is required' });
-    if (typeof fieldOfWork !== 'string') return res.status(400).send({ err: 'Invalid value for Field Of Work' });
-
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(404).json({ profile: 'There is no profile for this user' });
+router.put('/:id',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if(!partner) return res.status(404).send({error: 'Partner does not exist'});
+        const isValidated = validator.updateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const fields = {};
+        fields.fieldOfWork = req.body.fieldOfWork;
+        const updatedPartner = await Partner.findByIdAndUpdate(req.params.id,{$set: fields});
+        return res.json({msg: 'Partner updated successfully'});
     }
-    else{
-        partner.fieldOfWork = fieldOfWork;
-        return res.json({data: partner});
+    catch(error) {
+       return res.status(404).json({ partnernotfound: 'Partner not found' });
     }
-
 });
 
 // @route POST api/profiles/partner/board-members/add/:id
 // @decs Adds Board Member To Partner's Profile
 // @access private
-router.post('/board-members/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const phone = req.body.phone;
-    const email = req.body.email;
-    const id = req.params.id;
+router.post('/board-members/:id',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+        const isValidated = validator.boardValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const boardMember = {
+            name: req.body.name,
+            position: req.body.position
+        };
+        partner.boardMembers.unshift(boardMember);
 
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!age) return res.status(400).send({ err: 'Age field is required' });
-    if (!phone) return res.status(400).send({ err: 'Phone field is required' });
-    if (!email) return res.status(400).send({ err: 'Email field is required' });
+        partner.save();
 
-
-    const boardMember ={
-        name,
-        age,
-        phone,
-        email
-    };
-    partner.boardMembers.push(boardMember);
-    return res.json(partner);
+        return res.json({msg:'Board Member successfully added', data: partner.boardMembers});
+    }
+    catch(error) {
+       return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 
 // @route POST api/profiles/partner/events/add/:id
 // @decs Adds Event To Partner's Profile
 // @access private
-router.post('/events/add/:id',(req,res)=>{
-    const eventName = req.body.eventName;
-    const description = req.body.description;
-    const date = req.body.date;
-    const id = req.params.id;
+router.post('/events/:id',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+        const isValidated = validator.eventValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
 
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
-    };
+        const newevent = {
+            title: req.body.title,
+            description: req.body.description,
+        };
+        partner.events.unshift(newevent);
 
-    if (!eventName) return res.status(400).send({ err: 'Event Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Event Description field is required' });
+        partner.save();
 
-    const event = {
-        eventName,
-        description,
-        date
-    };
-    partner.events.push(event);
-    return res.json(partner);
+        return res.json({msg:'Event successfully added', data: partner.events});
+    }
+catch(error) {
+       return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
-// @route POST api/profiles/partner/partners/add/:id/:id2
+// @route POST api/profiles/partner/partners/:id/:id2
 // @decs Adds Partner to Partner's Profile
 // @access private
-router.post('/partners/add/:id/:id2',(req,res)=>{
-    const id = req.params.id;
-    const id2 = req.params.id2;
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
-    };
-    const partner2 = partners.find(element => {
-        return element.id == id2;
-    });
-    if(!partner2){
-        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
-    };
-    const organization2 = organizations.find(element => {
-        return element.id == id2;
-    });
-    if(!organization2){
-        return res.status(400).json({ profile: 'There is no Organization profile for this user' });
-    };
-    const myPartner = {
-        name: organization2.name,
-        email: organization2.email,
-        phone: organization2.phone,
-        address: organization2.address,
-    };
-    partner.partners.push(myPartner);
-    return res.json(partner);
+router.post('/partners/:id/:id2',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+
+        const partner2 = await Partner.findById(req.params.id2);
+        if (!partner2) return res.status(404).send({error: 'Partner not found'});
+
+        partner.partners.unshift(req.params.id2);
+        partner.save();
+
+       return res.json({msg:'Partner successfully added', data: partner.partners});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
-// @route POST api/profiles/partner/past-projects/add/:id/:id2
+// @route POST api/profiles/partner/past-projects/:id/:taskID
 // @decs Adds Past Project To Partner's Profile
 // @access private
-router.post('/past-projects/add/:id/:id2s',(req,res)=>{
-    const partnerID = req.params.id;
-    const taskID = req.params.id2;
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner){
-        return res.status(400).json({ profile: 'There is no Partner profile for this user' });
-    };
-    const task = tasks.find(element => {
-        return element.id == id;
-    });
-    if(!task){
-        return res.status(400).json({ profile: 'There is no such Task' });
-    };
-    const application = applications.find(element => {
-        return element.id == id;
-    });
-    if(!application){
-        return res.status(400).json({ profile: 'There is no such Application' });
-    };
+router.post('/past-projects/:id/:taskID',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
 
-    if(application.partner !== partner){
-        return res.status(400).json({err: 'This Task is not Submitted by this Partner'});
+        const task = await Task.findById(req.params.taskID).populate('application');
+        if (!task) return res.status(404).send({error: 'Task not found'});
+
+        if(task.application.partner != req.params.id){
+            return res.status(400).send({Unauthorized: 'This Task does not belong to this Partner'});
+        }
+
+        partner.pastProjects.unshift(req.params.taskID);
+        partner.save();
+
+        return res.json({msg:'Past Project successfully added', data: partner.pastProjects});
     }
-    partner.pastProjects.add(task);
+    catch(error) {
+        res.status(404).json({ partnernotfound: 'Partner not found' });
+        console.log(error)
+    }
 });
 
 // @route   DELETE api/profiles/partner/delete/:id
 // @desc    Delete Partner's Profile
 // @access  Private
-router.delete('/delete/:id',(req,res)=>{
-    const id = req.params.id;
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    partners.splice( partners.indexOf(partner), 1 );
-    if(!partner){
-        return res.status(404).json({ profile: 'There is no Partner profile for this user' });
+router.delete('/:id',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organiaztion');
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+
+        const deletedPartner = await Partner.findByIdAndRemove(req.params.id);
+        const deletedOrganization = await Organization.findByIdAndRemove(partner.organization);
+        const deletedUser = await User.findByIdAndRemove(partner.organization.user);
+
+        res.json({msg:'Profile Successfully deleted', data: deletedPartner})
     }
-    else{
-        return res.json({data: partners});
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
     }
 });
 

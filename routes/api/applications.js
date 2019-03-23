@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
 
 // Load Models
@@ -12,335 +12,288 @@ const Partner = require('../../models/Partner');
 const Consultant = require('../../models/Consultant');
 const Admin = require('../../models/Admin');
 
-// Temporary Data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-    new User('gaafar80','gaafarPassword',5),
-    new User('mahmoud','mahmoudPassword',6),
-];
 
-const members = [
-    new Member('Karim', 21, 'Karim@mail.com', 10, 1),
-    new Member('Youssef', 65, 'youssef@mail.com', 11, 2),
-    new Member('Moataz', 25, 'moataz@mail.com', 12, 3),
-    new Member('Kashlan', 13, 'kashlan@mail.com', 13, 4),
-];
-
-const organizations = [
-    new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
-    new Organization('auc', 'El Tagamo3 El Khames', 'auc@mail.com', 11, 2),
-    new Organization('miu', '3obor', 'miu@mail.com', 12, 3),
-    new Organization('aast', 'Sheraton', 'aast@mail.com', 13, 4),
-];
-
-const partners = [
-    new Partner('Software Development', 1),
-    new Partner('Civil Engineering', 2),
-    new Partner('Graphic Design', 3),
-    new Partner('Online Banking', 4),
-];
-const applications = [
-    new Application('Freelancing Website',1,1,false),
-    new Application('Online Hotel Booking Website',2,2,true),
-    new Application('Cryptocurrency website',3,3,true),
-];
-const admins = [
-    new Admin('Gaafar', 5),
-    new Admin('Mahmoud', 6),
-];
-const consultants = [
-    new Consultant(1),
-    new Consultant(2),
-    new Consultant(3),
-];
+// Validation
+const validator = require('../../validation/applicationsValidation');
 
 
-// @route   POST api/applications/submit/:id
+
+// @route   POST api/applications/:id
 // @desc    Submits an Application of a task
 // @access  Private
-router.post('/submit/:id',(req,res)=>{
-    const description = req.body.description;
-    const needConsultancy = req.body.needConsultancy;
-    const id = req.params.id;
+router.post('/:id',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
 
-    if (!description) return res.status(400).send({ err: 'Application Description is required' });
-    if (typeof description !== 'string') return res.status(400).send({ err: 'Invalid value for Description' });
+        const isValidated = validator.submitValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
-    if (!needConsultancy) return res.status(400).send({ err: 'Application Should Verify Whether You Need Consultancy or not' });
-    if (needConsultancy !== 'true' && needConsultancy !== 'false' ) return res.status(400).send({ err: 'Invalid value for needConsultancy' });
+        const fields = {};
+        fields.partner = req.params.id;
+        fields.description = req.body.description;
+        fields.needConsultancy = req.body.needConsultancy;
 
-    const partner = partners.find(element => {
-        return element.id == id;
-    });
-    if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
-    else{
-        const newApp = new Application(
-            description,
-            id,
-            uuid.v4(),
-            needConsultancy
-        );
-        applications.push(newApp);
-        return res.json({data: newApp});
+        const newApp = await Application.create(fields);
+        return res.json({msg:'Application was created successfully', data: newApp});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
     }
 });
 
 
-// @route   PUT api/applications/edit/:id/:id2
-// @desc    Edits an Application of a task
+// @route   PUT api/applications/:id/:appID
+// @desc    Partner Edits an Application of a task
 // @access  Private
-router.put('/edit/:id/:id2',(req,res)=>{
-    const description = req.body.description;
-    const needConsultancy = req.body.needConsultancy;
-    const partnerID = req.params.id;
-    const appID = req.params.id2;
+router.put('/:id/:appID',async(req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id);
+        if(!partner) return res.status(404).send({error: 'Partner does not exist'});
+        const application = await Application.findById(req.params.appID);
+        if(!application) return res.status(404).send({error: 'Application does not exist'});
 
-    if (!description) return res.status(400).send({ err: 'Application Description is required' });
-    if (typeof description !== 'string') return res.status(400).send({ err: 'Invalid value for Description' });
+        if(application.partner != req.params.id){
+            return res.status(400).json({ Unauthorized: 'This Partner is not responsible for this Application' });
+        }
 
-    if (!needConsultancy) return res.status(400).send({ err: 'Application Should Verify Whether You Need Consultancy or not' });
-    if (needConsultancy !== 'true' && needConsultancy !== 'false' ) return res.status(400).send({ err: 'Invalid value for needConsultancy' });
+        if(application.reviewed){
+            return res.status(400).json({ error: 'Cant edit application after it has been reviewed'});
+        }
 
-    const partner = partners.find(element => {
-        return element.id == partnerID;
-    });
-    if(!partner) return res.status(400).json({profile: 'There is no partner profile for this user'});
-
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(400).json({application: 'There is no application submitted by this partner'});
-
-    if(partner.id !== application.partner) return res.status(400).json({data: 'This Partner Doesnt have access to this Application'});
-
-    application.description = description;
-    if(needConsultancy === 'true') application.needConsultancy = true;
-    if(needConsultancy === 'false') application.needConsultancy = false;
-    application.reviewed = false;
-    return res.json({data: application});
-
+        const isValidated = validator.updateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const fields = {};
+        fields.needConsultancy = req.body.needConsultancy;
+        fields.description = req.body.description;
+        const updatedApplication = await Application.findByIdAndUpdate(req.params.appID,{$set: fields});
+        return res.json({msg: 'Application updated successfully'});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
-// @route   POST api/applications/partner/negotiate/:id/:id2
+// @route   POST api/applications/partner/negotiate/:id/:appID
 // @desc    Partner Negotiates Over An Application
 // @access  Private
-router.post('/partner/negotiate/:id/:id2',(req,res)=>{
-    const text = req.body.text;
-    const partnerID = req.params.id;
-    const appID = req.params.id2;
-    const partner = partners.find(element => {
-        return element.id == partnerID;
-    });
-    if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such Application'});
+router.post('/partner/negotiate/:id/:appID',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organization');
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
 
-    if(application.partner !== partner.id) return res.status(400).json({err: 'This Partner Doesnt have access to this Application'});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
 
-    const member = members.find(element => {
-        return element.id == partner.id;
-    });
 
-    const newMessage = {
-        name: member.name,
-        text
+        const isValidated = validator.messageValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const newMessage = {
+            status: 'partner',
+            text: req.body.text,
+            name: partner.organization.name
     };
-    application.messages.push(newMessage);
-    return res.json({data: application.messages});
+        application.messages.unshift(newMessage);
+
+        application.save();
+
+        return res.json({msg:'Message Sent successfully',data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 
-// @route   GET api/applications/partner/negotiation/:id/:id2
+// @route   GET api/applications/partner/negotiation/:id/:appID
 // @desc    Views Negotiation Over An Application
 // @access  Private
-router.get('/partner/negotiation/:id/:id2',(req,res)=>{
-    const text = req.body.text;
-    const partnerID = req.params.id;
-    const appID = req.params.id2;
-    const partner = partners.find(element => {
-        return element.id == partnerID;
-    });
-    if(!partner) return res.status(404).json({profile: 'There is no partner profile for this user'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({profile: 'There is no such Application'});
+router.get('/partner/negotiation/:id/:appID',async (req,res)=>{
+    try {
+        const partner = await Partner.findById(req.params.id).populate('organization');
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
 
-    if(application.partner !== partner.id) return res.status(400).json({err: 'This Partner Doesnt have access to this Application'});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
 
-    return res.json({data: application.messages});
+        return res.json({data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
-// @route   GET api/applications/admin/all/:id
+// @route   GET api/applications/admin/:id
 // @desc    Gets All Applications
 // @access  Private
-router.get('/admin/all/:id',(req,res)=>{
-    const id = req.params.id;
-    const admin = admins.find(element => {
-        return element.id == id;
-    });
-    if(!admin) return res.status(404).json({admin: 'This User does not have access to this Page'});
-    else {
-        return res.json({data: applications});
+router.get('/admin/:id',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const applications = await Application.find({});
+        return res.json({data: applications})
+    }
+    catch (error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
     }
 });
 
 
-// @route   PUT api/applications/admin/review/:id/:id2
+// @route   POST api/applications/admin/:id/appID
 // @desc    Admin Reviews Application
 // @access  Private
-router.put('/admin/review/:id/:id2',(req,res)=>{
-    const appID = req.params.id;
-    const adminID = req.params.id2;
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({admin: 'This User does not have access to this Page'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
-    else {
+router.post('/admin/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
         application.reviewed = true;
-        return res.json({data: application});
+
+        application.save();
+
+        return res.json({msg:'Application Reviewed Successfully',data:application});
+    }
+    catch(error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
     }
 });
 
 
-// @route   POST api/applications/admin/negotiate/:id/:id2
+// @route   POST api/applications/admin/negotiate/:id/:appID
 // @desc    Admin Negotiates Over An Application
 // @access  Private
-router.post('/admin/negotiate/:id/:id2',(req,res)=>{
-    const text = req.body.text;
-    const adminID = req.params.id;
-    const appID = req.params.id2;
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such Application'});
+router.post('/admin/negotiate/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
 
-    const newMessage = {
-        name: admin.name,
-        text,
-    };
-    application.messages.push(newMessage);
-    return res.json({data: application.messages});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+
+        const isValidated = validator.messageValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const newMessage = {
+            status: 'admin',
+            text: req.body.text,
+            name: admin.name
+        };
+        application.messages.unshift(newMessage);
+
+        application.save();
+
+        return res.json({msg:'Message Sent successfully',data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Admin not found' });
+    }
 });
 
 
-// @route   GET api/applications/admin/negotiation/:id/:id2
+// @route   GET api/applications/admin/negotiation/:id/:appID
 // @desc    Views Negotiation Over An Application
 // @access  Private
-router.get('/admin/negotiation/:id/:id2',(req,res)=>{
-    const text = req.body.text;
-    const adminID = req.params.id;
-    const appID = req.params.id2;
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({profile: 'There is no such Application'});
+router.get('/admin/negotiation/:id/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
 
-    return res.json({data: application.messages});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        return res.json({data:application.messages});
+    }
+    catch(error) {
+        return res.status(404).json({ adminnotfound: 'Admin not found' });
+    }
 });
-
-
-// @route   PUT api/applications/respond/:id/:id2/:id3
-// @desc    Admin Responds to Consultant Requests
-// @access  Private
-router.put('/respond/:id/:id2/:id3',(req,res)=>{
-    const response = req.body.response;
-    const applicationID = req.params.id;
-    const consultantID = req.params.id2;
-    const adminID = req.params.id3;
-
-    const application = applications.find(element => {
-        return element.id == applicationID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
-
-    const consultant = consultants.find(element => {
-        return element.id == consultantID;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant Profile For This User'});
-
-    const admin = admins.find(element => {
-        return element.id == adminID;
-    });
-    if(!admin) return res.status(404).json({profile: 'This User has no access to this Page'});
-
-    const applicant = application.applicants.find(element => {
-        return element.consultant == consultant;
-    });
-
-    if(!applicant) return res.status(404).json({application: 'This Consultant did not apply for this application'});
-    applicant.status = response;
-
-    if(applicant.status == 'accepted') application.consultant = consultantID;
-
-    if(!response) return res.status(404).json({err: 'Response Field is Required'});
-    return res.json({data: applicant});
-});
-
 
 
 // @route   GET api/applications/consultant/all/:id
 // @desc    Gets All Reviewed Applications
 // @access  Private
-router.get('/consultant/all/:id',(req,res)=>{
-    const id = req.params.id;
-    const consultant = consultants.find(element => {
-        return element.id == id;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant profile for this user'});
+router.get('/all/:id',async (req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id);
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'});
 
-    const reviewedApplications = applications.filter(function(element) {
-        return element.reviewed == true;
-    });
-
-    return res.json({data: reviewedApplications});
-
+        const applications = await Application.find({reviewed:true});
+        return res.json({data: applications})
+    }
+    catch (error) {
+        return res.status(404).json({ consultantnotfound: 'Consultant not found' });
+    }
 });
 
-// @route   POST api/applications/apply/:id/:id2
+// @route   POST api/applications/apply/:id/:appID
 // @desc    Apply For an Application
 // @access  Private
-router.post('/apply/:id/:id2',(req,res)=>{
-    const appID = req.params.id;
-    const consultantID =req.params.id2;
-    const consultant = consultants.find(element => {
-        return element.id == consultantID;
-    });
-    if(!consultant) return res.status(404).json({profile: 'There is no consultant profile for this user'});
-    const application = applications.find(element => {
-        return element.id == appID;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
+router.post('/apply/:id/:appID',async(req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id);
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'});
 
-    const organization = organizations.find(element => {
-        return element.id = consultant.id;
-    });
-    if(!application) return res.status(404).json({application: 'There is no such application'});
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
 
-    const applicant = {
-        organization: organization,
-        consultant: consultant,
-        status: 'pending'
+        const applicant = {
+            consultant: req.params.id,
+            status: 'pending'
+        }
+
+        application.applicants.unshift(applicant);
+        application.save();
+
+        return res.json({msg:'Your Application was submitted successfully', data: application.applicants});
     }
-    application.applicants.push(applicant);
-    return res.json({data: application});
+    catch(error) {
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+        console.log(error)
+    }
 });
+
+// @route   PUT api/applications/respond/:id/:id2/:id3
+// @desc    Admin Responds to Consultant Requests
+// @access  Private
+router.post('/respond/:id/:id2/:appID',async(req,res)=>{
+    try {
+        const admin = await Admin.findById(req.params.id);
+        if (!admin) return res.status(404).send({error: 'Admin not found'});
+
+        const consultant = await Consultant.findById(req.params.id2);
+        if (!admin) return res.status(404).send({error: 'Consultant not found'});
+
+        const application = await Application.findById(req.params.appID);
+        if (!application) return res.status(404).send({error: 'Application not found'});
+
+        const isValidated = validator.respondValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
+
+        const applicant = application.applicants.find(element => {
+            return element.consultant == req.params.id2;
+        });
+
+        if(!applicant) return res.status(404).json({error:'This Consultant did not apply for This Task'});
+
+        applicant.status = req.body.response;
+
+        application.save();
+
+        return res.json({msg:'Response Saved',data:application});
+    }
+    catch(error) {
+        res.status(404).json({ adminnotfound: 'Admin not found' });
+        console.log(error);
+    }
+});
+
+
+
 
 module.exports = router;

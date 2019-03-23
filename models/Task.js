@@ -1,15 +1,57 @@
-class Task {
-    constructor(levelOfCommitment, experienceLevel, setOfSkills, monetaryCompensation, id) {
-        this.levelOfCommitment = levelOfCommitment;
-        this.experienceLevel = experienceLevel;
-        this.setOfSkills = setOfSkills;
-        this.monetaryCompensation = monetaryCompensation;
-        this.id = id;
-        this.applicants = [];
-        this.acceptedApplicants = [];
-        this.reviewed = false;
-        this.extra = [];
-    };
-};
+mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const taskSchema = new Schema({
+   application:{
+       type: Schema.Types.ObjectId,
+       ref: 'application'
+   },
+    consultant:{
+      type: Schema.Types.ObjectId,
+      ref: 'consultant'
+    },
+    levelOfCommitment: {
+       type: Number,
+        required: true
+    },
+    experienceLevel: {
+       type: Number,
+        required: true
+    },
+    skills: {
+       type: [String],
+        required: true
+    },
+    monetaryCompensation: {
+       type: Number,
+        required: true
+    },
+    applicants: [
+        {
+            member: {
+                type: Schema.Types.ObjectId,
+                ref: 'members'
+            },
+            status: {
+                type: String,
+                default: 'pending'
+            },
+            date: {
+                type: Date,
+                default: Date.now()
+            }
+        }
+    ],
+    reviewed:{
+       type: Boolean,
+        default: false
+    },
+    extra: {
+       type: [String]
+    },
+    date: {
+       type: Date,
+        default: Date.now()
+    }
+});
 
-module.exports = Task;
+module.exports = Task = mongoose.model('task',taskSchema);
