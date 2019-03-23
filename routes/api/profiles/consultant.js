@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
 =======
 >>>>>>> profile
+=======
+
+>>>>>>> 12676bf3a6caf9cc308bb89fe2c0c17ce1de4463
 
 const express = require('express');
 const router = express.Router();
@@ -183,8 +187,11 @@ router.delete('/delete/:id',(req,res)=>{
 });
 
 module.exports = router;
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 */
 =======
 >>>>>>> profile
+=======
+>>>>>>> 12676bf3a6caf9cc308bb89fe2c0c17ce1de4463

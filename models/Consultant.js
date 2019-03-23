@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 class Consultant {
     constructor(id) {
         this.id = id;
@@ -10,6 +11,8 @@ class Consultant {
     };
 };
 =======
+=======
+>>>>>>> 12676bf3a6caf9cc308bb89fe2c0c17ce1de4463
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const constructorSchema = new Schema({
@@ -39,8 +42,11 @@ const constructorSchema = new Schema({
 		 required: true}
 })
 		 
+<<<<<<< HEAD
 >>>>>>> profile
 
 
+=======
+>>>>>>> 12676bf3a6caf9cc308bb89fe2c0c17ce1de4463
 
 module.exports = Consultant= mongoose.model('Consultant', ConsultantSchema)
