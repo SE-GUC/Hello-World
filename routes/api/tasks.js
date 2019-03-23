@@ -18,7 +18,7 @@ const Admin = require('../../models/Admin');
 const validator = require('../../validation/tasksValidation');
 
 
-// @route   GET api/tasks/all/:id
+// @route   GET api/tasks/all/
 // @desc    Gets all tasks
 // @access  public
 router.get('/all',async (req,res)=>{
@@ -37,14 +37,14 @@ router.get('/all',async (req,res)=>{
 // @access  private
 router.post('/apply/:id/:taskID',async(req,res)=>{
     try {
-        const memeber = await Member.findById(req.params.id);
-        if (!member) return res.status(404).send({error: 'Member not found'});
+        const m = await Member.findById(req.params.id);
+        if (!m) return res.status(404).send({error: 'Member not found'});
 
         const task = await Task.findById(req.params.taskID);
         if (!task) return res.status(404).send({error: 'Task not found'});
 
         for(let skill of task.skills){
-            if(!member.skills.includes(skill)) return res.status(400).json({data:'Member is not Eligible to Apply for this Task'});
+            if(!m.skills.includes(skill)) return res.status(400).json({data:'Member is not Eligible to Apply for this Task'});
         }
 
         const applicant = {
@@ -73,9 +73,9 @@ router.get('/recommended/:id', async(req,res)=>{
 
         const tasks = Task.find();
         const recommendedTasks = [];
-        for(let skill of member.setOfSkills){
+        for(let skill of member.skills){
             for(let task of tasks){
-                for(let skill2 of task.setOfSkills){
+                for(let skill2 of task.skills){
                     if(skill == skill2) recommendedTasks.push(task);
                 }
             }
@@ -84,7 +84,8 @@ router.get('/recommended/:id', async(req,res)=>{
         return res.json({data:recommendedTasks});
     }
     catch(error) {
-        return res.status(404).json({ membernotfound: 'Member not found' });
+       res.status(404).json({ membernotfound: 'Member not found' });
+       console.log(error)
     }
 });
 
@@ -114,7 +115,7 @@ router.delete('/:id/:taskID',async(req,res)=>{
 // @route   POST api/tasks/partner/:id/:appID
 // @desc    Partner Posts a Task
 // @access  private
-router.post('partner/:id/:appID',async(req,res)=>{
+router.post('/partner/:id/:appID',async(req,res)=>{
     try {
         const partner = await Partner.findById(req.params.id);
         if (!partner) return res.status(404).send({error: 'Partner not found'});

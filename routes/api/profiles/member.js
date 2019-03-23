@@ -1,4 +1,4 @@
-/*
+
 const express = require('express');
 const router = express.Router();
 const uuid = require('uuid');
@@ -9,110 +9,98 @@ const User = require('../../../models/User');
 const Task = require('../../../models/Task');
 const Masterclass = require('../../../models/Masterclass');
 
-// Temporary Data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-];
-
-const members = [
-    new Member('Karim', 21, 'Karim@mail.com', 10, 1),
-    new Member('Youssef', 65, 'youssef@mail.com', 11, 2),
-    new Member('Moataz', 25, 'moataz@mail.com', 12, 3),
-    new Member('Kashlan', 13, 'kashlan@mail.com', 13, 4),
-];
-const tasks = [
-    new Task('High','Medium',['node','express','react'],1500,1),
-    new Task('Medium','High',['java','unit testing'],1000,2),
-    new Task('Low','Low',['HTML','CSS','Javascript'],500,3),
-];
-
-const masterclasses = [
-    new Masterclass('Javascript', 'Master Javascript in 10 Days!', 1),
-    new Masterclass('Python', 'From Zero To Hero - Become A Python Expert', 2),
-    new Masterclass('React', 'React Course For Complete Beginners', 3)
-];
+//Load Validation
+const validator = require('../../../validation/memberValidation');
 
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
 // @access private
-router.get('/:id',(req,res)=>{
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member profile for this user'});
-    else {
-        return res.json({data: member});
+router.get('/:id',async(req,res)=>{
+    try {
+        const member = await Member.findById(req.params.id);
+        if (!member) return res.status(404).send({error: 'Member not found'})
+        return res.json({data: member})
+    }
+    catch (error) {
+        return res.status(404).json({ membernotfound: 'Member not found' });
     }
 });
 
 
-// @route post api/profiles/member/create/:id
+// @route post api/profiles/member/:id
 // @desc Creates Member Profile
 // @access private
-router.post('/create/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const id = req.params.id;
+router.post('/:id',async(req,res)=>{
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).send({error: 'User does not exist'});
+        const isValidated = validator.createValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
-    if (!name) return res.status(400).send({ err: 'name field is required' });
-    if (!age) return res.status(400).send({ err: 'age field is required' });
-    if (!email) return res.status(400).send({ err: 'email field is required' });
-    if (!phone) return res.status(400).send({ err: 'phone field is required' });
+        const memberFields = {};
+        memberFields.name = req.body.name;
+        memberFields.phone = req.body.phone;
+        memberFields.email = req.body.email;
+        memberFields.age = req.body.age;
+        memberFields.user = req.params.id;
+        memberFields.skills = req.body.skills.split(',');
+        memberFields.interests = req.body.interests.split(',');
 
-    const user = users.find(element => {
-        return element.id == id;
-    });
 
-    if(!user) return res.status(400).json({profile: 'User Does Not Exist'});
-    const member = new Member(
-        name,
-        age,
-        email,
-        phone,
-        user.id
-    );
-    members.push(member);
-    return res.json({data: member});
+        memberFields.social = {};
+        if(req.body.youtube) memberFields.social.youtube = req.body.youtube;
+        if(req.body.facebook) memberFields.social.facebook = req.body.facebook;
+        if(req.body.twitter) memberFields.social.twitter = req.body.twitter;
+        if(req.body.linkedin) memberFields.social.linkedin = req.body.linkedin;
+        if(req.body.instagram) memberFields.social.instagram = req.body.instagram;
+
+        if(req.body.avatar) memberFields.avatar = req.body.avatar;
+
+
+        const newMember = await Member.create(memberFields);
+        return res.json({msg: 'Member was created successfully', data: newMember});
+
+    }
+    catch (err) {
+        res.status(404).json({ usernotfound: 'User not found' })
+        console.log(err)
+    }
 });
 
-// @route PUT api/profiles/member/edit/:id
+// @route PUT api/profiles/member/:id
 // @desc Edit Member's Profile
 // @access private
-router.put('/edit/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const id = req.params.id;
+router.put('/:id',async (req,res)=>{
+    try {
+        const member = await Member.findById(req.params.id);
+        if (!member) return res.status(404).send({error: 'Member does not exist'});
+        const isValidated = validator.updateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
-    if (!name) return res.status(400).send({ err: 'name field is required' });
-    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
-    if (!age) return res.status(400).send({ err: 'age field is required' });
-    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
-    if (!email) return res.status(400).send({ err: 'email field is required' });
-    if (typeof name !== 'string') return res.status(400).send({err: 'Invalid value for name'});
-    if (!phone) return res.status(400).send({ err: 'phone field is required' });
-    if (isNaN(age)) return res.status(400).send({err: 'Invalid value for age'});
+        const memberFields = {};
+        if(req.body.name) memberFields.name = req.body.name;
+        if(req.body.phone) memberFields.phone = req.body.phone;
+        if(req.body.email) memberFields.email = req.body.email;
+        if(req.body.age) memberFields.age = req.body.age;
+        memberFields.user = req.params.id;
 
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
+
+        memberFields.social = {};
+        if(req.body.youtube) memberFields.social.youtube = req.body.youtube;
+        if(req.body.facebook) memberFields.social.facebook = req.body.facebook;
+        if(req.body.twitter) memberFields.social.twitter = req.body.twitter;
+        if(req.body.linkedin) memberFields.social.linkedin = req.body.linkedin;
+        if(req.body.instagram) memberFields.social.instagram = req.body.instagram;
+
+        if(req.body.avatar) memberFields.avatar = req.body.avatar;
+
+
+        const updatedMember = await Member.findByIdAndUpdate(req.params.id,{$set: memberFields});
+        return res.json({msg: 'Member updated successfully'});
+
     }
-    else {
-        member.name = name;
-        member.age = age;
-        member.email = email;
-        member.phone = phone;
-
-        return res.json({data: members});
+    catch (err) {
+        return res.status(404).json({ usernotfound: 'User not found' })
     }
 });
 
@@ -289,4 +277,3 @@ router.delete('/delete/:id',(req,res) => {
 
 
 module.exports = router;
-*/

@@ -22,10 +22,10 @@ router.post('/:id',async (req,res)=>{
         const fields = {};
         fields.organization = req.params.id;
         const newConsultant = await Consultant.create(fields);
-        res.json({msg:'Consultant was created successfully', data: newConsultant})
+        return res.json({msg:'Consultant was created successfully', data: newConsultant})
     }
     catch(error) {
-        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+        return res.status(404).json({ consultantnotfound: 'Consultant not found' });
     }
 });
 

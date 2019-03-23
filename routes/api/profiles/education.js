@@ -39,7 +39,7 @@ router.post('/:id',async (req,res)=>{
 router.get('/:id',async(req,res)=>{
     try {
         const education = await Education.findById(req.params.id).populate('organization');
-        if (!education) return res.status(404).send({error: 'Educational Organization not found'})
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
         res.json({data: education})
     }
     catch (error) {
@@ -49,158 +49,126 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-// @route POST api/profiles/education/courses/add/:id
+// @route POST api/profiles/education/courses/:id
 // @decs Adds A Course To Educational Organization's Profile
 // @access private
-router.post('/courses/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const description = req.body.description;
-    const duration = req.body.duration;
-    const price  = req.body.price;
-    const educator = req.body.educator;
-    const link  = req.body.link;
+router.post('/courses/:id',async (req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.courseValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const course = {
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price
+        };
+        education.courses.unshift(course);
 
-    const id = req.params.id;
-    const education = educations.find(element => {
-        return element.id == id;
-    });
-    if(!education){
-        return res.status(400).json({ profile: 'There is no Educational Organization profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Description field is required' });
-    if (!duration) return res.status(400).send({ err: 'Duration field is required' });
-    if (!price) return res.status(400).send({ err: 'Price field is required' });
-    if (!educator) return res.status(400).send({ err: 'Educator field is required' });
-    if (!link) return res.status(400).send({ err: 'Link field is required' });
+        education.save();
 
-
-    const course = {
-        name,
-        description,
-        duration,
-        price,
-        educator,
-        link
-    };
-
-    education.courses.push(course);
-    return res.json(education);
+        return res.json({msg:'Course successfully added', data: education.courses});
+    }
+    catch(error) {
+        res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+        console.log(error)
+    }
 });
 
 
-// @route POST api/profiles/education/trainers/add/:id
+// @route POST api/profiles/education/trainers/:id
 // @decs Adds A Trainer To Educational Organization's Profile
 // @access private
-router.post('/trainers/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const age = req.body.age;
-    const phone = req.body.phone;
-    const email = req.body.email;
+router.post('/trainers/:id',async (req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.trainerValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const trainer = {
+            name: req.body.name,
+            bio: req.body.bio,
+        };
+        education.trainers.unshift(trainer);
 
-    const id = req.params.id;
-    const education = educations.find(element => {
-        return element.id == id;
-    });
-    if(!education){
-        return res.status(400).json({ profile: 'There is no Educational Organization profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!age) return res.status(400).send({ err: 'Age field is required' });
-    if (!phone) return res.status(400).send({ err: 'Phone field is required' });
-    if (!email) return res.status(400).send({ err: 'Email field is required' });
+        education.save();
 
-    const trainer = {
-        name,
-        age,
-        phone,
-        email,
-    };
-
-    education.trainers.push(trainer);
-    return res.json(education);
+        return res.json({msg:'Trainer successfully added', data: education.trainers});
+    }
+    catch(error) {
+        return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+    }
 });
 
 
-// @route POST api/profiles/education/certificates/add/:id
+// @route POST api/profiles/education/certificates/:id
 // @decs Adds Certificates To Educational Organization's Profile
 // @access private
-router.post('/certificates/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const description = req.body.description;
-    const id = req.params.id;
+router.post('/certificates/:id',async(req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.certificateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const certificate = {
+            title: req.body.title,
+            description: req.body.description,
+        };
+        education.trainers.unshift(certificate);
 
-    const education = educations.find(element => {
-        return element.id == id;
-    });
-    if(!education){
-        return res.status(400).json({ profile: 'There is no Education profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Description field is required' });
+        education.save();
 
-    const certificate = {
-        name,
-        description
-    };
-    education.certificates.push(certificate);
-    return res.json(education);
+        return res.json({msg:'Certificate successfully added', data: education.certificates});
+    }
+    catch(error) {
+        return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+    }
 });
 
 
-// @route POST api/profiles/education/training-programs/add/:id
+// @route POST api/profiles/education/training-programs/:id
 // @decs Adds A Training Program To Educational Organization's Profile
 // @access private
-router.post('/training-programs/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const description = req.body.description;
-    const duration = req.body.duration;
-    const price  = req.body.price;
-    const trainer = req.body.trainer;
-    const link  = req.body.link;
+router.post('/training-programs/:id',async(req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.programValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const program = {
+            title: req.body.title,
+            description: req.body.description,
+            trainers: req.body.trainers.split(',')
+        };
+        education.trainingPrograms.unshift(program);
 
-    const id = req.params.id;
-    const education = educations.find(element => {
-        return element.id == id;
-    });
-    if(!education){
-        return res.status(400).json({ profile: 'There is no Educational Organization profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Description field is required' });
-    if (!duration) return res.status(400).send({ err: 'Duration field is required' });
-    if (!price) return res.status(400).send({ err: 'Price field is required' });
-    if (!trainer) return res.status(400).send({ err: 'Trainer field is required' });
-    if (!link) return res.status(400).send({ err: 'Link field is required' });
+        education.save();
 
-
-    const trainingProgram = {
-        name,
-        description,
-        duration,
-        price,
-        trainer,
-        link
-    };
-
-    education.trainigPrograms.push(trainingProgram);
-    return res.json(education);
+        return res.json({msg:'Training Program successfully added', data: education.trainingPrograms});
+    }
+    catch(error) {
+        return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+    }
 });
 
 
-// @route   DELETE api/profiles/education/delete/:id
+// @route   DELETE api/profiles/education/:id
 // @desc    Delete education's Profile
 // @access  Private
-router.delete('/delete/:id',(req,res)=>{
-    const id = req.params.id;
-    const education = educations.find(element => {
-        return element.id == id;
-    });
-    if(!education){
-        return res.status(404).json({ profile: 'There is no Educational Organization profile for this user' });
+router.delete('/:id',async(req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+
+        const deletedEducation = await Education.findByIdAndRemove(req.params.id);
+        const deletedOrganization = await Organization.findByIdAndRemove(education.organization);
+        const deletedUser = await User.findByIdAndRemove(education.organization.user);
+
+        res.json({msg:'Profile Successfully deleted', data: deletedEducation})
     }
-    educations.splice( educations.indexOf(education), 1 );
-    return res.json({data: educations});
+    catch(error) {
+        return res.status(404).json({ partnernotfound: 'Partner not found' });
+    }
 });
 
 module.exports = router;
