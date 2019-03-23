@@ -35,7 +35,7 @@ const masterclasses = [
 ];
 
 // @route GET api/profiles/member/:id
-// @decs Get Member's Profile by ID
+// @desc Get Member's Profile by ID
 // @access private
 router.get('/:id',(req,res)=>{
     const id = req.params.id;
@@ -50,7 +50,7 @@ router.get('/:id',(req,res)=>{
 
 
 // @route post api/profiles/member/create/:id
-// @decs Creates Member Profile
+// @desc Creates Member Profile
 // @access private
 router.post('/create/:id',(req,res)=>{
     const name = req.body.name;
@@ -81,7 +81,7 @@ router.post('/create/:id',(req,res)=>{
 });
 
 // @route PUT api/profiles/member/edit/:id
-// @decs Edit Member's Profile
+// @desc Edit Member's Profile
 // @access private
 router.put('/edit/:id',(req,res)=>{
     const name = req.body.name;
@@ -117,7 +117,7 @@ router.put('/edit/:id',(req,res)=>{
 
 
 // @route POST api/profiles/member/skills/add/:id
-// @decs Adds A Skill To Member's Profile
+// @desc Adds A Skill To Member's Profile
 // @access private
 router.post('/skills/add/:id',(req,res)=>{
     const skill = req.body.skill;
@@ -135,7 +135,7 @@ router.post('/skills/add/:id',(req,res)=>{
 });
 
 // @route POST api/profiles/member/interests/add/:id
-// @decs Adds Interest To Member's Profile
+// @desc Adds Interest To Member's Profile
 // @access private
 router.post('/Interests/add/:id',(req,res)=>{
     const interest = req.body.interest;
@@ -153,7 +153,7 @@ router.post('/Interests/add/:id',(req,res)=>{
 });
 
 // @route POST api/profiles/member/past-events/add/:id
-// @decs Adds Past Event To Member's Profile
+// @desc Adds Past Event To Member's Profile
 // @access private
 router.post('/past-events/add/:id',(req,res)=>{
     const eventName = req.body.eventName;
@@ -182,7 +182,7 @@ router.post('/past-events/add/:id',(req,res)=>{
 
 
 // @route POST api/profiles/member/tasks-completed/add/:id/:id2
-// @decs Adds Completed Task To Member's Profile
+// @desc Adds Completed Task To Member's Profile
 // @access private
 router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
     const memberID = req.params.id;
@@ -210,7 +210,7 @@ router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
 });
 
 // @route POST api/profiles/member/certificates/add/:id
-// @decs Adds Certificates To Member's Profile
+// @desc Adds Certificates To Member's Profile
 // @access private
 router.post('/certificates/add/:id',(req,res)=>{
     const name = req.body.name;
@@ -241,7 +241,7 @@ router.post('/certificates/add/:id',(req,res)=>{
 });
 
 // @route POST api/profiles/member/masterclasses/add/:id/:id2
-// @decs Adds Masterclass To Member's Profile
+// @desc Adds Masterclass To Member's Profile
 // @access private
 router.post('/masterclasses/add/:id/:id2',(req,res)=>{
     const memberID = req.params.id;
@@ -268,8 +268,8 @@ router.post('/masterclasses/add/:id/:id2',(req,res)=>{
 });
 
 
-
 // @route DELETE api/profiles/member/delete/:id
+// @desc Delete Member's Profile
 // @access private
 router.delete('/delete/:id',(req,res) => {
     const id = req.params.id;
@@ -285,7 +285,6 @@ router.delete('/delete/:id',(req,res) => {
         return res.json({data: members});
     }
 });
-// @decs Delete Member's Profile
 
 
 module.exports = router;
