@@ -1,8 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
-
+const mongoose = require('mongoose');
 //Load Models
 const Member = require('../../../models/Member');
 const User = require('../../../models/User');
@@ -11,6 +10,7 @@ const Masterclass = require('../../../models/Masterclass');
 
 //Load Validation
 const validator = require('../../../validation/memberValidation');
+
 
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
@@ -102,7 +102,7 @@ router.put('/:id',async (req,res)=>{
     catch (err) {
         return res.status(404).json({ usernotfound: 'User not found' })
     }
-});
+                        })
 
 
 // @route POST api/profiles/member/skills/:id
@@ -238,23 +238,23 @@ router.post('/certificates/:id',async (req,res)=>{
 // @desc Adds Masterclass To Member's Profile
 // @access private
 router.post('/masterclasses/add/:id/:id2',async(req,res)=>{
-    try{ const memberID = req.params.id;
-        const masterclassID = req.params.id2;
-        const member =await Member.findById(memberID)
-
-        if(!member){
-            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
-        const masterclass = Masterclass.findById(masterclassID)
-
-        if(!masterclass){
-            return res.status(400).json({ profile: 'There is no such Masterclass' })}
-        for(let applicant of masterclass.applicants){
-            if(applicant.member == member ){
-                member.masterclasses.push(masterclass);
-                member.save()
-                return res.json(member);
-            }
-        }}
+   try{ const memberID = req.params.id;
+    const masterclassID = req.params.id2;
+    const member =await Member.findById(memberID)
+   
+    if(!member){
+        return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+    const masterclass = Masterclass.findById(masterclassID)
+  
+    if(!masterclass){
+        return res.status(400).json({ profile: 'There is no such Masterclass' })}
+    for(let applicant of masterclass.applicants){
+        if(applicant.member == member ){
+            member.masterclasses.push(masterclass);
+            member.save()
+            return res.json(member);
+        }
+    }}
     catch(err){
         console.log(err)
     }

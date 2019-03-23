@@ -172,6 +172,7 @@ router.post('/past-projects/:id/:taskID',async (req,res)=>{
 // @access  Private
 router.delete('/:id',async (req,res)=>{
     try {
+<<<<<<< HEAD
         const partner = await Partner.findById(req.params.id).populate('organiaztion');
         if (!partner) return res.status(404).send({error: 'Partner not found'});
 
@@ -180,6 +181,15 @@ router.delete('/:id',async (req,res)=>{
         const deletedUser = await User.findByIdAndRemove(partner.organization.user);
 
         res.json({msg:'Profile Successfully deleted', data: deletedPartner})
+=======
+        const partner = await Partner.findById(req.params.id);
+        if (!partner) return res.status(404).send({error: 'Partner not found'});
+
+        const deletedPartner = await Partner.findByIdAndRemove(id);
+        const deletedUser = await User.findByIdAndRemove(id);
+
+        res.json({msg:'Profile Successfully deleted', data: deletedTask})
+>>>>>>> dfc52c7bc7d53c92f0163fcd9f82d43a7b1acf20
     }
     catch(error) {
         return res.status(404).json({ partnernotfound: 'Partner not found' });
