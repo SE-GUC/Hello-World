@@ -9,7 +9,7 @@ const MasterclassSchema = new Schema({
         type:String,
         required: true
     },
-    applicants: [
+    requests: [
         {
             member: {
                 type: Schema.Types.ObjectId,

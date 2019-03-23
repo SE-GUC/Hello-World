@@ -105,173 +105,180 @@ router.put('/:id',async (req,res)=>{
 });
 
 
-// @route POST api/profiles/member/skills/add/:id
+// @route POST api/profiles/member/skills/:id
 // @desc Adds A Skill To Member's Profile
 // @access private
-router.post('/skills/add/:id',(req,res)=>{
-    const skill = req.body.skill;
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!skill) return res.status(400).send({ err: 'Skill field is required' });
+router.post('/skills/:id',async(req,res)=>{
+    try{
+        const skill = req.body.skill;
+        const id = req.params.id;
+        const member = await Member.findById(id)
+        if(!member){
+            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.skillValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        member.skills.push(skill)
+        member.save()
+        return res.json(member.skills)}
 
-    member.setOfSkills.push(skill);
-    return res.json(member);
+    catch(err){
+        console.log(err)
+    }
 });
 
-// @route POST api/profiles/member/interests/add/:id
+// @route POST api/profiles/member/interests/:id
 // @desc Adds Interest To Member's Profile
 // @access private
-router.post('/Interests/add/:id',(req,res)=>{
-    const interest = req.body.interest;
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!interest) return res.status(400).send({ err: 'Interest field is required' });
+router.post('/Interests/:id',async (req,res)=>{
+    try{
+        const interest = req.body.interest;
+        const id = req.params.id;
+        const member =await Member.findById(id);
 
-    member.interests.push(interest);
-    return res.json(member);
+        if(!member){
+            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.interestsValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+
+        member.interests.push(interest);
+        member.save()
+        res.json({data:member})
+    }
+    catch(err){
+        console.log(err)
+    }
 });
 
-// @route POST api/profiles/member/past-events/add/:id
+// @route POST api/profiles/member/past-events/:id
 // @desc Adds Past Event To Member's Profile
 // @access private
-router.post('/past-events/add/:id',(req,res)=>{
-    const eventName = req.body.eventName;
-    const description = req.body.description;
-    const date = req.body.date;
-    const id = req.params.id;
+router.post('/past-events/:id',async (req,res)=>{
+    try{  const {title,description,date,location} = req.body;
+        const id = req.params.id;
 
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!eventName) return res.status(400).send({ err: 'Event Name field is required' });
-    if (!description) return res.status(400).send({ err: 'Event Description field is required' });
+        const member1 =await Member.findById(id)
+
+        if(!member1){
+            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.eventValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
 
 
-    const pastEvent = {
-        eventName,
-        description,
-        date
-    };
-    member.pastEvents.push(pastEvent);
-    return res.json(member);
+        const pastEvent = {
+            title,
+            description,
+            date,
+            location
+        };
+        member1.pastEvents.push(pastEvent);
+        member1.save()
+        res.json(member1.pastEvents);
+    }
+    catch(err){
+        console.log(err)
+    }
 });
 
 
-// @route POST api/profiles/member/tasks-completed/add/:id/:id2
+// @route POST api/profiles/member/tasks-completed/:id/:id2
 // @desc Adds Completed Task To Member's Profile
 // @access private
-router.post('/completed-tasks/add/:id/:id2s',(req,res)=>{
-    const memberID = req.params.id;
-    const taskID = req.params.id2;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    const task = tasks.find(element => {
-        return element.id == id;
-    });
-    if(!task){
-        return res.status(400).json({ profile: 'There is no such Task' });
-    };
-    for(let applicant of task.applicants){
-        if(applicant.member == member ){
-            member.tasksCompleted.push(task);
-            return res.json(member);
+router.post('/completed-tasks/:id/:id2s',(req,res)=>{
+    try {
+        const memberID = req.params.id;
+        const taskID = req.params.id2;
+        const member = await
+        Member.findById(memberID)
+        if (!member) {
+            return res.status(400).json({profile: 'There is no Member profile for this user'})
+        }
+        const task = await
+        Task.findById(taskID)
+        if (!task) {
+            return res.status(400).json({profile: 'There is no such Task'})
+        }
+
+
+        for (let applicant of task.applicants) {
+            if (applicant.member == member) {
+                member.tasksCompleted.push(task);
+                member.save()
+                return res.json({data: member});
+            }
         }
     }
-    return res.status(400).json({err: 'This Member is not assigned to this Task'});
-
+    catch(err){console.log(err)}
 });
 
-// @route POST api/profiles/member/certificates/add/:id
+// @route POST api/profiles/member/certificates/:id
 // @desc Adds Certificates To Member's Profile
 // @access private
-router.post('/certificates/add/:id',(req,res)=>{
-    const name = req.body.name;
-    const date = req.body.date;
-    const entity = req.body.entity;
-    const description = req.body.description;
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    if (!name) return res.status(400).send({ err: 'Name field is required' });
-    if (!date) return res.status(400).send({ err: 'Date field is required' });
-    if (!entity) return res.status(400).send({ err: 'Entity field is required' });
-    if (!description) return res.status(400).send({ err: 'Description field is required' });
+router.post('/certificates/add/:id',async (req,res)=>{
+    try{const {title,date,entity,description} = req.body;
+        const id = req.params.id;
+        const member =await Member.findById(id)
 
-
-    const certificate = {
-        name,
-        date,
-        entity,
-        description
-    };
-    member.certificates.push(certificate);
-    return res.json(member);
+        if(!member){
+            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const isValidated = validator.certificatesValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const certificate = {
+            title,
+            date,
+            entity,
+            description
+        };
+        member.certificates.push(certificate);
+        member.save()
+        res.json({data:member});
+    }
+    catch(err){
+        console.log(err)
+    }
 });
 
 // @route POST api/profiles/member/masterclasses/add/:id/:id2
 // @desc Adds Masterclass To Member's Profile
 // @access private
-router.post('/masterclasses/add/:id/:id2',(req,res)=>{
-    const memberID = req.params.id;
-    const masterclassID = req.params.id2;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member){
-        return res.status(400).json({ profile: 'There is no Member profile for this user' });
-    };
-    const masterclass = masterclasses.find(element => {
-        return element.id == id;
-    });
-    if(!masterclass){
-        return res.status(400).json({ profile: 'There is no such Masterclass' });
-    };
-    for(let applicant of masterclass.applicants){
-        if(applicant.member == member ){
-            member.masterclasses.push(masterclass);
-            return res.json(member);
-        }
+router.post('/masterclasses/add/:id/:id2',async(req,res)=>{
+    try{ const memberID = req.params.id;
+        const masterclassID = req.params.id2;
+        const member =await Member.findById(memberID)
+
+        if(!member){
+            return res.status(400).json({ profile: 'There is no Member profile for this user' })}
+        const masterclass = Masterclass.findById(masterclassID)
+
+        if(!masterclass){
+            return res.status(400).json({ profile: 'There is no such Masterclass' })}
+        for(let applicant of masterclass.applicants){
+            if(applicant.member == member ){
+                member.masterclasses.push(masterclass);
+                member.save()
+                return res.json(member);
+            }
+        }}
+    catch(err){
+        console.log(err)
     }
-    return res.status(400).json({err: 'This Member has not completed this Masterclass'});
 });
 
 
 // @route DELETE api/profiles/member/delete/:id
 // @desc Delete Member's Profile
 // @access private
-router.delete('/delete/:id',(req,res) => {
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
+router.delete('/delete/:id',async(req,res) => {
+    try {
+        const member = await Member.findById(req.params.id).populate('user');
+        if (!member) return res.status(404).send({error: 'Member not found'});
 
-    if(!member){
-        return res.status(404).json({ profile: 'There is no Member profile for this user' });
+        const deletedMember = await Member.findByIdAndRemove(req.params.id);
+        const deletedUser = await User.findByIdAndRemove(User.organization.user);
+
+        res.json({msg:'Profile Successfully deleted', data: deletedEducation})
     }
-    else{
-        members.splice( members.indexOf(member), 1 );
-        return res.json({data: members});
+    catch(error) {
+        return res.status(404).json({ membernotfound: 'Member not found' });
     }
 });
 

@@ -157,7 +157,7 @@ router.post('/training-programs/:id',async(req,res)=>{
 // @access  Private
 router.delete('/:id',async(req,res)=>{
     try {
-        const education = await Education.findById(req.params.id);
+        const education = await Education.findById(req.params.id).populate('organization');
         if (!education) return res.status(404).send({error: 'Educational Organization not found'});
 
         const deletedEducation = await Education.findByIdAndRemove(req.params.id);
@@ -167,7 +167,7 @@ router.delete('/:id',async(req,res)=>{
         res.json({msg:'Profile Successfully deleted', data: deletedEducation})
     }
     catch(error) {
-        return res.status(404).json({ partnernotfound: 'Partner not found' });
+        return res.status(404).json({ membernotfound: 'Member not found' });
     }
 });
 
