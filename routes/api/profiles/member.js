@@ -183,37 +183,34 @@ router.post('/past-events/:id',async (req,res)=>{
 // @route POST api/profiles/member/tasks-completed/:id/:id2
 // @desc Adds Completed Task To Member's Profile
 // @access private
-router.post('/completed-tasks/:id/:id2s',(req,res)=>{
+router.post('/completed-tasks/:id/:taskID',async (req,res)=>{
     try {
-        const memberID = req.params.id;
-        const taskID = req.params.id2;
-        const member = await
-        Member.findById(memberID)
-        if (!member) {
-            return res.status(400).json({profile: 'There is no Member profile for this user'})
-        }
-        const task = await
-        Task.findById(taskID)
-        if (!task) {
-            return res.status(400).json({profile: 'There is no such Task'})
+        const member = await Member.findById(req.params.id);
+        if (!member) return res.status(404).send({error: 'Member not found'});
+
+        const task = await Task.findById(req.params.taskID).populate('application');
+        if (!task) return res.status(404).send({error: 'Task not found'});
+
+        const completedTask = {
+            task: req.params.taskID
         }
 
 
-        for (let applicant of task.applicants) {
-            if (applicant.member == member) {
-                member.tasksCompleted.push(task);
-                member.save()
-                return res.json({data: member});
-            }
-        }
+        member.tasksCompleted.unshift(completedTask);
+        member.save();
+
+        return res.json({msg:'Completed Task successfully added', data: partner.pastProjects});
     }
-    catch(err){console.log(err)}
+    catch(error) {
+        res.status(404).json({ partnernotfound: 'Member not found' });
+        console.log(error)
+    }
 });
 
 // @route POST api/profiles/member/certificates/:id
 // @desc Adds Certificates To Member's Profile
 // @access private
-router.post('/certificates/add/:id',async (req,res)=>{
+router.post('/certificates/:id',async (req,res)=>{
     try{const {title,date,entity,description} = req.body;
         const id = req.params.id;
         const member =await Member.findById(id)
