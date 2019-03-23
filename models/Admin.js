@@ -15,4 +15,4 @@ const AdminSchema = new Schema({
         default: Date.now()
     }
 })
-module.exports = Admin = mongoose.model('admins',AdminSchema)
+module.exports = Admin = mongoose.model('admin',AdminSchema);

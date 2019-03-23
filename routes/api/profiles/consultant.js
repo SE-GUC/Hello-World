@@ -1,13 +1,19 @@
+<<<<<<< HEAD
 
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+=======
+const express = require('express');
+const router = express.Router();
+>>>>>>> origin/task
 
-//Load Consultant Model
+//Load Models
 const User = require('../../../models/User');
 const Organization = require('../../../models/Organization');
 const Consultant = require('../../../models/Consultant');
 const Partner = require('../../../models/Partner');
+<<<<<<< HEAD
 //validator
 const validator = require('../../../validation/applicationsValidation');
 // @route   POST api/profiles/consultant/create/:id
@@ -22,12 +28,36 @@ router.post('/create/:id', (req,res)=>{
     Consultant.push(newConsultant);
     newConsultant.save()
     return res.json({ data: newConsultant });
+=======
+
+// Load Validation
+const validator = require('../../../validation/consultantValidation');
+
+
+// @route   POST api/profiles/consultant/:id
+// @desc    Creates Consultant Profile
+// @access  Private
+router.post('/:id',async (req,res)=>{
+    try {
+        const organization = await Organization.findById(req.params.id);
+        if (!organization) return res.status(404).send({error: 'Organization not found'});
+
+        const fields = {};
+        fields.organization = req.params.id;
+        const newConsultant = await Consultant.create(fields);
+        return res.json({msg:'Consultant was created successfully', data: newConsultant})
+    }
+    catch(error) {
+        return res.status(404).json({ consultantnotfound: 'Consultant not found' });
+    }
+>>>>>>> origin/task
 });
 
 
 // @route   GET api/profiles/consultant/:id
 // @desc    Get consultant's profile by ID
 // @access  private
+<<<<<<< HEAD
 router.get('/:id',(req,res)=>{
     const id = req.params.id;
     const consultant = Consultant.findById(id)
@@ -55,6 +85,19 @@ router.put('/edit/:id',async(req,res)=>{
 });
 
 
+=======
+router.get('/:id',async (req,res)=>{
+    try {
+        const consultant = await Consultant.findById(req.params.id).populate('organization');
+        if (!consultant) return res.status(404).send({error: 'Consultant not found'})
+        res.json({data: consultant})
+    }
+    catch (error) {
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+    }
+});
+
+>>>>>>> origin/task
 // @route POST api/profiles/consultant/board-members/add/:id
 // @decs Adds Board Member To Consultant's Profile
 // @access private
