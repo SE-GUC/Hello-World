@@ -1,14 +1,13 @@
-mongoose = require('mongoose');
-Schema = mongoose.Schema;
-
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 const partnerSchema = new Schema({
     organization: {
-      type: Schema.Types.ObjectId,
-        ref: 'organizations'
+        type: Schema.Types.ObjectId,
+        ref: 'organization'
     },
     partners: {
         type: [Schema.Types.ObjectId],
-        ref: 'partners'
+        ref: 'partner'
     },
     boardMembers: [
         {
@@ -34,7 +33,7 @@ const partnerSchema = new Schema({
             },
             date:{
                 type: Date,
-                required: true
+                default: Date.now()
             }
         }
     ],
@@ -58,9 +57,12 @@ const partnerSchema = new Schema({
             }
         }
     ],
-
+    date: {
+        type: Date,
+        default: Date.now()
+    }
 
 });
 
 
-module.exports = Partner = mongoose.model('partners',partnerSchema);
+module.exports = Partner = mongoose.model('partner',partnerSchema);
