@@ -1,48 +1,36 @@
-const Joi = require('joi')
+const Joi = require('joi');
+
 module.exports = {
-	editValidation: request => {
-	   const editSchema ={
-	     id: Joi.number().required() ,
-		 workPosition: Joi.string() , 
-		 status: Joi.string() , 
-		 boardMembers: Joi.string() , 
-		 events: Joi.string() , 
-		 partners: Joi.string() , 
-		 reports: Joi.string() , 
-		 applications: Joi.string() 
-		 }
-		 return Joi.validate(request, editSchema)
-	},
-	
-     addboardmembersValidation: request => {
-	   const addboardmembersSchema ={
-	     
-		 boardMembers: Joi.string() , 
-		 
-		 }
-	 return Joi.validate(request, addboardmembersSchema)},
-	 
-	 addpartnersValidation: request => {
-	   const addpartnersSchema ={
-	     
-		 partners: Joi.string() , 
-		 
-		 }
-	 return Joi.validate(request, addpartnersSchema)},
-	 
-	  addreportsValidation: request => {
-	   const addreportsSchema ={
-	     
-		 reports: Joi.string() , 
-		 
-		 }
-	 return Joi.validate(request, addreportsSchema)},
-	 
-	 addeventsValidation: request => {
-	   const addeventsSchema ={
-	     
-		 events: Joi.string() , 
-		 
-		 }
-	 return Joi.validate(request, addeventsSchema)},
-	 }
+    boardmembersValidation: request => {
+        const submitmemberSchema = {
+            name: Joi.string().max(60).min(3).required(),
+            age: Joi.number().max(100).min(1).required(),
+            email: Joi.string().email().required(),
+            phone: Joi.number().required()
+        }
+
+        return Joi.validate(request, submitmemberSchema)
+    },
+    eventValidation:request=>{
+        const eventSchema ={
+            title: Joi.string().required(),
+            description: Joi.string().required(),
+            date: Joi.date().required(),
+
+        }
+        return Joi.validate(request,eventSchema)
+    },
+    reportValidation:request=>{
+        const reportSchema = {
+            report:Joi.string().required()
+        }
+        return Joi.validate(request,reportSchema)
+    },
+    updateValidation:request=>{
+        const updateSchema = {
+            workPosition:Joi.string(),
+            report:Joi.string()
+        }
+    return Joi.validate(request,updateSchema)
+    }
+}
