@@ -54,7 +54,11 @@ router.put('/:id/:appID',async(req,res)=>{
         if(!application) return res.status(404).send({error: 'Application does not exist'});
 
         if(application.partner != req.params.id){
-            res.status(400).json({ Unauthorized: 'This Partner is not responsible for this Application' });
+            return res.status(400).json({ Unauthorized: 'This Partner is not responsible for this Application' });
+        }
+
+        if(application.reviewed){
+            return res.status(400).json({ error: 'Cant edit application after it has been reviewed'});
         }
 
         const isValidated = validator.updateValidation(req.body);

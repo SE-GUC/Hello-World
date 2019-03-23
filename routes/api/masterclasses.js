@@ -1,5 +1,4 @@
 /*
-
 const express = require('express');
 const router = express.Router();
 
@@ -134,6 +133,8 @@ router.post('/apply/:id/:id2',(req,res)=>{
 // @desc    Member View his Recommended Masterclasses
 // @access  Private
 router.get('/recommended/:id',(req,res)=>{
+
+
     const id = req.params.id;
     const member = members.find(element => {
         return element.id == id;

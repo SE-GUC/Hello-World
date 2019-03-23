@@ -48,7 +48,7 @@ app.get('/about', (req, res) => {
 
 // Use Routes
 app.use('/api/users',users);
-// app.use('/api/tasks',tasks);
+app.use('/api/tasks',tasks);
 // app.use('/api/profiles/member',member);
  app.use('/api/profiles/organization',organization);
  app.use('/api/profiles/partner',partner);
