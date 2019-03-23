@@ -1,54 +1,44 @@
-/*
+
 const express = require('express');
 const router = express.Router();
-const uuid = require('uuid');
 
 // Load Models
 const User = require('../../../models/User');
 const Organization = require('../../../models/Organization');
 
-//Temporary data
-const users = [
-    new User('karim13','karimPassword',1),
-    new User('youssef12','youssefPassword',2),
-    new User('moataz11','moatazPassword',3),
-    new User('kashlan10','kashlanPassword',4),
-];
+//Load Validation
+const validator = require('../../../validation/organizationValidation');
 
-const organizations = [
-    new Organization('guc', 'El Tagamoo3 El Talet', 'guc@mail.com', 10, 1),
-    new Organization('auc', 'El Tagamo3 El Khames', 'auc@mail.com', 11, 2),
-    new Organization('miu', '3obor', 'miu@mail.com', 12, 3),
-    new Organization('aast', 'Sheraton', 'aast@mail.com', 13, 4),
-];
-
-// @route POST api/users/organization/create/:id
+// @route POST api/profiles/organization/:id
 // @decs Creates an Organization's Profile
 // @access private
-router.post('/create/:id',(req,res)=>{
-    const name = req.body.name;
-    const email = req.body.email;
-    const address = req.body.address;
-    const phone = req.body.phone;
-    const id = req.params.id;
+router.post('/:id',async (req,res)=> {
+     try {
+         const user = await User.findById(req.params.id)
+         if (!user) return res.status(404).send({error: 'User does not exist'})
+         const isValidated = validator.createValidation(req.body);
+         if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
-    if (!name) return res.status(400).send({ err: 'name field is required' });
-    if (!email) return res.status(400).send({ err: 'email field is required' });
-    if (!address) return res.status(400).send({ err: 'address field is required' });
-    if (!phone) return res.status(400).send({ err: 'phone field is required' });
-    const organization = new Organization(
-        name,
-        address,
-        email,
-        phone,
-        id
-    );
-    const user = users.find(element => {
-        return element.id == id;
-    });
-    if(!user) return res.status(404).json({profile: 'User Does not exist'});
-    organizations.push(organization);
-    return res.json({data: organization});
+         const organizationFields = {};
+         organizationFields.name = req.body.name;
+         organizationFields.phone = req.body.phone;
+         organizationFields.email = req.body.email;
+         organizationFields.address = req.body.address;
+         organizationFields.user = req.params.id;
+
+         organizationFields.social = {};
+         if(req.body.youtube) organizationFields.social.youtube = req.body.youtube;
+         if(req.body.facebook) organizationFields.social.facebook = req.body.facebook;
+         if(req.body.twitter) organizationFields.social.twitter = req.body.twitter;
+         if(req.body.linkedin) organizationFields.social.linkedin = req.body.linkedin;
+         if(req.body.instagram) organizationFields.social.instagram = req.body.instagram;
+
+         const newOrg = await Organization.create(organizationFields);
+         res.json({msg: 'Organization was created successfully', data: newOrg});
+
+     }
+     catch (err) {
+         res.status(404).json({ usernotfound: 'User not found' })
+     }
 });
  module.exports = router;
-*/

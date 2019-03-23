@@ -3,17 +3,19 @@ const Schema = mongoose.Schema;
 const taskSchema = new Schema({
    application:{
        type: Schema.Types.ObjectId,
-       ref: 'applications'
+       ref: 'application'
    },
+    consultant:{
+      type: Schema.Types.ObjectId,
+      ref: 'consultant'
+    },
     levelOfCommitment: {
        type: Number,
-        min: 1,
-        max: 5
+        required: true
     },
     experienceLevel: {
        type: Number,
-        min: 1,
-        max: 5
+        required: true
     },
     skills: {
        type: [String],
@@ -21,6 +23,7 @@ const taskSchema = new Schema({
     },
     monetaryCompensation: {
        type: Number,
+        required: true
     },
     applicants: [
         {
@@ -48,11 +51,7 @@ const taskSchema = new Schema({
     date: {
        type: Date,
         default: Date.now()
-    },
-    status: {
-       type: String,
-        default: 'Awaiting Reviewing'
     }
 });
 
-module.exports = Task = mongoose.model('tasks',taskSchema);
+module.exports = Task = mongoose.model('task',taskSchema);
