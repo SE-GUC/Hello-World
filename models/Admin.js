@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 const AdminSchema = new Schema({
     name:{
         type:String,
-        required:true,
+        required:true
+
     },
     user:{
         type:Schema.Types.ObjectId,
