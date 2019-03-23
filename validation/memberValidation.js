@@ -27,6 +27,28 @@ module.exports = {
                 skill: Joi.string().max(100)
             }
             return Joi.validate(request,skillSchema)
-        }
+        },interestsValidation: request => {
+            const interestSchema = {
+                interest: Joi.string().max(100)
+            }
+            return Joi.validate(request,interestSchema)},
+            eventValidation:request=>{
+                const eventSchema ={
+                    title: Joi.string().required(),
+                    description: Joi.string().required(),
+                    date: Joi.date().required(),
+                    location: Joi.string().required()
+                }
+                return Joi.validate(request,eventSchema)
+            },
+            certificatesValidation:request=>{
+                const cerSchema ={
+                    title:Joi.string().required(),
+                    entity:Joi.string().required(),
+                    date:Joi.date().required(),
+                    description:Joi.string().required()
+                }
+                return Joi.validate(request,cerSchema)
+            }
     };
         
