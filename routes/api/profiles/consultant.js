@@ -92,7 +92,7 @@ router.post('/board-members/add/:id',async(req,res)=>{
 // @decs Adds Event To Consultant's Profile
 // @access private
 router.post('/events/add/:id',async (req,res)=>{
-    const title = req.body.eventName;
+    const eventName = req.body.eventName;
     const description = req.body.description;
     const date = req.body.date;
     const id = req.params.id;
