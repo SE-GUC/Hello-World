@@ -1,34 +1,15 @@
-<<<<<<< HEAD
 
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-=======
 const express = require('express');
 const router = express.Router();
->>>>>>> origin/task
 
 //Load Models
 const User = require('../../../models/User');
 const Organization = require('../../../models/Organization');
 const Consultant = require('../../../models/Consultant');
 const Partner = require('../../../models/Partner');
-<<<<<<< HEAD
-//validator
-const validator = require('../../../validation/applicationsValidation');
-// @route   POST api/profiles/consultant/create/:id
-// @desc    Creates Consultant Profile
-// @access  Private
-router.post('/create/:id', (req,res)=>{
-    const id = req.params.id;
-    const organization = Organization.findById(id)
-    if(!organization)   return res.status(404).json({ profile: 'There is no Organization profile for this user' });
-    const newConsultant = {
-    };
-    Consultant.push(newConsultant);
-    newConsultant.save()
-    return res.json({ data: newConsultant });
-=======
 
 // Load Validation
 const validator = require('../../../validation/consultantValidation');
@@ -50,23 +31,9 @@ router.post('/:id',async (req,res)=>{
     catch(error) {
         return res.status(404).json({ consultantnotfound: 'Consultant not found' });
     }
->>>>>>> origin/task
 });
 
 
-// @route   GET api/profiles/consultant/:id
-// @desc    Get consultant's profile by ID
-// @access  private
-<<<<<<< HEAD
-router.get('/:id',(req,res)=>{
-    const id = req.params.id;
-    const consultant = Consultant.findById(id)
-    if(!consultant){
-        return res.status(404).json({ profile: 'There is no Consultant profile for this user' });
-    }
-        return res.json({data: consultant});
-
-});
 
 
 // @route   PUT api/profiles/consultant/edit/:id
@@ -85,7 +52,6 @@ router.put('/edit/:id',async(req,res)=>{
 });
 
 
-=======
 router.get('/:id',async (req,res)=>{
     try {
         const consultant = await Consultant.findById(req.params.id).populate('organization');
@@ -97,7 +63,6 @@ router.get('/:id',async (req,res)=>{
     }
 });
 
->>>>>>> origin/task
 // @route POST api/profiles/consultant/board-members/add/:id
 // @decs Adds Board Member To Consultant's Profile
 // @access private
@@ -206,6 +171,7 @@ router.post('/reports/add/:id',async(req,res)=>{
 router.delete('/delete/:id',async(req,res)=>{
     const id = req.params.id;
     const consultant =await Consultant.findById(id)
+
     if(!consultant){
         return res.status(404).json({ profile: 'There is no Consultant profile for this user' });
     }
@@ -214,4 +180,3 @@ router.delete('/delete/:id',async(req,res)=>{
 });
 
 module.exports = router;
-

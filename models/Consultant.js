@@ -48,4 +48,4 @@ const constructorSchema = new Schema({
 
 
 
-module.exports = Consultant= mongoose.model('consultants', constructorSchema)
+module.exports = Consultant= mongoose.model('Consultant', ConsultantSchema)
