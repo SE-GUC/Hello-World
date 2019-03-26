@@ -72,6 +72,7 @@ router.put('/respond/:id/:id2',async (req,res)=>{
 // @route   POST api/masterclasses/apply/:id/:id2
 // @desc    Member Apply For a Masterclass
 // @access  Private
+
 router.post('/:id/:id2',async (req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
@@ -93,11 +94,13 @@ router.post('/:id/:id2',async (req,res)=>{
         return res.status(404).json({ masterclassnotfound: 'Masterclass not found' });
     }
 
+
 });
 
 // @route   GET api/masterclasses/recommended/:id
 // @desc    Member View his Recommended Masterclasses
 // @access  Private
+
 router.get('/recommended/:id',async (req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
@@ -108,32 +111,27 @@ router.get('/recommended/:id',async (req,res)=>{
     catch(error) {
         return res.status(404).json({ membernotfound: 'Member not found' });
     }
+
 });
 
 // @route   PUT api/masterclasses/assess/:id/:id2
 // @desc    Expert Assess Member
 // @access  Private
-router.put('/assess/:id/:id2',(req,res)=>{
-    const memberID = req.params.id;
-    const expertID = req.params.id2;
+router.put('/assess/:id/:id2',async(req,res)=>{
+    try{const member = await Member.findById(req.params.id);
+        if(!member) return res.status(404).send({error: 'Member does not exist'});
+    const expert = await Expert.findById(req.params.id2);
+        if(!expert) return res.status(404).send({error: 'this User is not an Expert'});
     const recommendedMasterclass = req.body.masterclass;
-    const member = members.find(element => {
-        return element.id == memberID;
-    });
-    if (!member) return res.status(404).json({profile: 'there is no Member Profile for this User'});
-
-    const expert = experts.find(element => {
-        return element.id == expertID;
-    });
-    if (!expert) return res.status(404).json({expert: 'this User is not an Expert'});
-
-    const masterclass = masterclasses.find(element => {
+    const masterclass = masterclasses.findById(element => {
         return element.id == recommendedMasterclass;
     });
     if (!masterclass) return res.status(404).json({masterclass: 'there is no Such Masterclass'});
-
-
     member.recommendedMasterclasses.push(masterclass);
     return res.json({data: member.recommendedMasterclasses});
+    }
+    catch(error) {
+        return res.status(404).json({ membernotfound: 'Member not found' });
+    }
 });
 module.exports = router;

@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
+const uuid = require('uuid');
 
 //Load Consultant Model
 const User = require('../../../models/User');
@@ -49,7 +49,6 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-
 // @route POST api/profiles/education/courses/:id
 // @decs Adds A Course To Educational Organization's Profile
 // @access private
@@ -74,6 +73,8 @@ router.post('/courses/:id',async (req,res)=>{
         res.status(404).json({ educationnotfound: 'Educational Organization not found' });
         console.log(error)
     }
+});
+
 
 // @route POST api/profiles/education/trainers/:id
 // @decs Adds A Trainer To Educational Organization's Profile
@@ -97,6 +98,7 @@ router.post('/trainers/:id',async (req,res)=>{
     catch(error) {
         return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
     }
+});
 
 
 // @route POST api/profiles/education/certificates/:id
@@ -121,7 +123,7 @@ router.post('/certificates/:id',async(req,res)=>{
     catch(error) {
         return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
     }
-
+});
 
 
 // @route POST api/profiles/education/training-programs/:id
@@ -147,6 +149,8 @@ router.post('/training-programs/:id',async(req,res)=>{
     catch(error) {
         return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
     }
+});
+
 
 // @route   DELETE api/profiles/education/:id
 // @desc    Delete education's Profile
@@ -165,6 +169,6 @@ router.delete('/:id',async(req,res)=>{
     catch(error) {
         return res.status(404).json({ membernotfound: 'Member not found' });
     }
-  
-module.exports = router;
+});
 
+module.exports = router;

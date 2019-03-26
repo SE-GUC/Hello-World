@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
 const users = require('./routes/api/users');
-const task = require('./routes/api/tasks');
+const task = require('./routes/api/task');
 const member = require('./routes/api/profiles/member');
 const organization = require('./routes/api/profiles/organization');
 const partner = require('./routes/api/profiles/partner');
@@ -48,7 +48,11 @@ app.get('/about', (req, res) => {
 
 // Use Routes
 app.use('/api/users',users);
+<<<<<<< HEAD
 app.use('/api/tasks',task);
+=======
+app.use('/api/task',tasks);
+>>>>>>> development
 app.use('/api/profiles/member',member);
 
 app.use('/api/profiles/organization',organization);
