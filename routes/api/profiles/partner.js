@@ -14,21 +14,22 @@ const validator = require('../../../validation/partnerValidation');
 
 
 
-// @route   POST api/profiles/partner/:id
+// @route   POST api/profiles/partner/create/:id
 // @desc    Creates Partner Profile
 // @access  Private
-router.post('/:id', async (req,res)=>{
+router.post('/create/:id', async (req,res)=>{
     try {
         const organization = await Organization.findById(req.params.id);
-        if (!organization) return res.status(404).send({error: 'Organization not found'})
-        const isValidated = validator.createValidation(req.body);
+       // if (!organization) return res.status(404).send({error: 'Organization not found'})
+        //const isValidated = validator.createValidation(req.body);
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-        const fields = {};
-        fields.fieldOfWork = req.body.fieldOfWork;
-        fields.organization = req.params.id;
 
-        const newPartner = await Partner.create(fields);
-        return res.json({msg:'Partner was created successfully', data: newPartner})
+        const newPartner =Partner({
+            fieldOfWork,
+            organization:id
+        })
+        newPartner.save()
+        res.json({msg:'Partner was created successfully', data: newPartner})
     }
     catch(error) {
         return res.status(404).json({ organizationnotfound: 'Organization not found' });
@@ -36,10 +37,10 @@ router.post('/:id', async (req,res)=>{
 });
 
 
-// @route   GET api/profiles/partner/:id
+// @route   GET api/profiles/partner/show/:id
 // @desc    Get Partner's profile by ID
 // @access  private
-router.get('/:id',async(req,res)=>{
+router.get('/show/:id',async(req,res)=>{
     try {
         const partner = await Partner.findById(req.params.id).populate('organization');
         if (!partner) return res.status(404).send({error: 'Partner not found'})

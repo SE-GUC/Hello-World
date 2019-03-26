@@ -50,6 +50,7 @@ app.get('/about', (req, res) => {
 app.use('/api/users',users);
 app.use('/api/tasks',task);
 app.use('/api/profiles/member',member);
+
 app.use('/api/profiles/organization',organization);
 app.use('/api/profiles/partner',partner);
 app.use('/api/profiles/consultant',consultant);

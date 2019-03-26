@@ -10,19 +10,6 @@ const Expert = require('../../models/Expert');
 // LOAD VALIDATION
 const validator = require('../../validation/masterclassValidation');
 
-
-// @route   GET api/masterclasses/all/:id
-// @desc    View Masterclasses
-// @access  Private
-router.get('/all/:id',(req,res)=>{
-    const id = req.params.id;
-    const member = members.find(element => {
-        return element.id == id;
-    });
-    if(!member) return res.status(404).json({profile: 'There is no Member Profile For This User'});
-    return res.json({data: masterclasses});
-});
-
 // @route   POST api/masterclasses/require/:id/:expertID
 // @desc    Member Requires Assessment From An Expert
 // @access  Private
@@ -70,7 +57,7 @@ router.put('/respond/:id/:id2',async (req,res)=>{
         });
 
         request.status = Response;
-                                                                                                                                                          xpert.requests.unshift(request);
+                                                                                                                                                          expert.requests.unshift(request);
         expert.save();
 
         return res.json({msg:'Your Request was submitted successfully', data: expert.requests});
@@ -79,6 +66,7 @@ router.put('/respond/:id/:id2',async (req,res)=>{
         return res.status(404).json({ membernotfound: 'Member not found' });
     }
 });
+
 
 
 // @route   POST api/masterclasses/apply/:id/:id2
