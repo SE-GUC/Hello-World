@@ -1,7 +1,6 @@
 const Joi = require('joi');
 
 module.exports = {
-<<<<<<< HEAD
     boardmembersValidation: request => {
         const submitmemberSchema = {
             name: Joi.string().max(60).min(3).required(),
@@ -35,8 +34,3 @@ module.exports = {
     return Joi.validate(request,updateSchema)
     }
 }
-=======
-
-
-};
->>>>>>> origin/task

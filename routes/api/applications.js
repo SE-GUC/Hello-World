@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 
 // Load Models
 const Application = require('../../models/Application');
-const User = require('../../models/User');
-const Member = require('../../models/Member');
-const Organization = require('../../models/Organization');
 const Partner = require('../../models/Partner');
 const Consultant = require('../../models/Consultant');
 const Admin = require('../../models/Admin');
@@ -38,7 +35,7 @@ router.post('/:id',async(req,res)=>{
         return res.json({msg:'Application was created successfully', data: newApp});
     }
     catch(error) {
-        return res.status(404).json({ partnernotfound: 'Partner not found' });
+        return res.status(404).json(error);
     }
 });
 
@@ -101,7 +98,8 @@ router.post('/partner/negotiate/:id/:appID',async (req,res)=>{
         return res.json({msg:'Message Sent successfully',data:application.messages});
     }
     catch(error) {
-        return res.status(404).json({ partnernotfound: 'Partner not found' });
+     res.status(404).json({ partnernotfound: 'Partner not found' });
+     console.log(error);
     }
 });
 
@@ -258,7 +256,7 @@ router.post('/apply/:id/:appID',async(req,res)=>{
     }
 });
 
-// @route   PUT api/applications/respond/:id/:id2/:id3
+// @route   POST api/applications/respond/:id/:id2/:id3
 // @desc    Admin Responds to Consultant Requests
 // @access  Private
 router.post('/respond/:id/:id2/:appID',async(req,res)=>{
@@ -285,7 +283,7 @@ router.post('/respond/:id/:id2/:appID',async(req,res)=>{
 
         application.save();
 
-        return res.json({msg:'Response Saved',data:application});
+        return res.json({msg:'Response Saved',data:applicant});
     }
     catch(error) {
         res.status(404).json({ adminnotfound: 'Admin not found' });
