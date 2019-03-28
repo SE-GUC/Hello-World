@@ -59,3 +59,15 @@ const funcs = require('./applications_fn');
 //     expect(response.data.length).toBe(2);
 // });
 
+// test('Applications Should be submitted successfully', async ()=>{
+//     expect.assertions(1);
+//     const response = await funcs.apply();
+//     expect(response.msg).toBe('Your Application was submitted successfully');
+// });
+
+test(`Response Should be 'accepted'` ,async ()=>{
+    const theResponse = 'accepted';
+    expect.assertions(1);
+    const response = await funcs.respond(theResponse);
+    expect(response.data.status).toBe(theResponse);
+});
