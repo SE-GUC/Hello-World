@@ -53,11 +53,11 @@ const funcs = require('./applications_fn');
 // });
 
 
-// test('Applications Should be 2', async ()=>{
-//     expect.assertions(1);
-//     const response = await funcs.getReviewedApplications();
-//     expect(response.data.length).toBe(2);
-// });
+test('Applications Should be 2', async ()=>{
+    expect.assertions(1);
+    const response = await funcs.getReviewedApplications();
+    expect(response.data.length).toBe(2);
+});
 
 // test('Applications Should be submitted successfully', async ()=>{
 //     expect.assertions(1);
@@ -65,9 +65,9 @@ const funcs = require('./applications_fn');
 //     expect(response.msg).toBe('Your Application was submitted successfully');
 // });
 
-test(`Response Should be 'accepted'` ,async ()=>{
-    const theResponse = 'accepted';
-    expect.assertions(1);
-    const response = await funcs.respond(theResponse);
-    expect(response.data.status).toBe(theResponse);
-});
+// test(`Response Should be 'accepted'` ,async ()=>{
+//     const theResponse = 'accepted';
+//     expect.assertions(1);
+//     const response = await funcs.respond(theResponse);
+//     expect(response.data.status).toBe(theResponse);
+// });

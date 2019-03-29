@@ -118,7 +118,7 @@ const memberSchema = new Schema({
         {
             sender: {
                 type: Schema.Types.ObjectId,
-                ref: 'members'
+                ref: 'partner'
             },
             text: {
                 type: String,
