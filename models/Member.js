@@ -43,7 +43,7 @@ const memberSchema = new Schema({
             },
             date: {
                 type: Date,
-                required: true
+                default: Date.now()
             },
             location: {
                 type: String
@@ -58,7 +58,7 @@ const memberSchema = new Schema({
             },
             date: {
                 type: Date,
-                required: true
+                default: Date.now()
             }
         }
     ],
@@ -90,7 +90,7 @@ const memberSchema = new Schema({
             },
             date: {
                 type: Date,
-                required: true
+                default: Date.now()
             },
             description: {
                 type: String,

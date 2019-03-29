@@ -48,10 +48,18 @@ module.exports = {
         const eventSchema ={
             title: Joi.string().required(),
             description: Joi.string().required(),
-            date: Joi.date().required(),
             location: Joi.string().required()
         }
         return Joi.validate(request,eventSchema)
+    },
+    certificateValidation: request => {
+        const certificateSchema = {
+            title: Joi.string().required(),
+            entity: Joi.string().required(),
+            description: Joi.string().required(),
+        }
+
+        return Joi.validate(request, certificateSchema)
     },
 
 };

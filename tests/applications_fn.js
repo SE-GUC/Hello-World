@@ -138,8 +138,41 @@ const functions = {
             console.log(e)
         }
     },
-
-
+    apply: async () => {
+        try{
+            const response = await fetch('http://localhost:5000/api/applications/apply/5c9d123a7477172a50c75da0/5c9bfa4aae4b8b53f8b647c6', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
+    respond: async (theResponse) => {
+        try{
+            const data = {
+                response: theResponse
+            }
+            const body = JSON.stringify(data);
+            const response = await fetch('http://localhost:5000/api/applications/respond/5c9539cd14a8d3e8cca0c9c7/5c9d123a7477172a50c75da0/5c9bfa4aae4b8b53f8b647c6', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
 
 };
 module.exports = functions;

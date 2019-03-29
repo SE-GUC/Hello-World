@@ -256,7 +256,7 @@ router.post('/apply/:id/:appID',async(req,res)=>{
     }
 });
 
-// @route   PUT api/applications/respond/:id/:id2/:id3
+// @route   POST api/applications/respond/:id/:id2/:id3
 // @desc    Admin Responds to Consultant Requests
 // @access  Private
 router.post('/respond/:id/:id2/:appID',async(req,res)=>{
@@ -283,7 +283,7 @@ router.post('/respond/:id/:id2/:appID',async(req,res)=>{
 
         application.save();
 
-        return res.json({msg:'Response Saved',data:application});
+        return res.json({msg:'Response Saved',data:applicant});
     }
     catch(error) {
         res.status(404).json({ adminnotfound: 'Admin not found' });
