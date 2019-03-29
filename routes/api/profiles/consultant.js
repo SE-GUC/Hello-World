@@ -4,44 +4,50 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 //Load Consultant Model
+const Member = require('../../../models/Member');
 const User = require('../../../models/User');
 const Organization = require('../../../models/Organization');
 const Consultant = require('../../../models/Consultant');
 const Partner = require('../../../models/Partner');
 //validator
-const validator = require('../../../validation/applicationsValidation');
+const validator =require('../../../validation/consultantValidation');
 // @route   POST api/profiles/consultant/create/:id
 // @desc    Creates Consultant Profile
 // @access  Private
-router.post('/create/:id', (req,res)=>{
-    const id = req.params.id;
-    const organization = organizations.find(element => {
-        return element.id == id;
-    });
-    if(!organization)   return res.status(404).json({ profile: 'There is no Organization profile for this user' });
-    const newConsultant = {
-        id
-    };
-    consultants.push(newConsultant);
-    return res.json({ data: newConsultant });
+router.post('/create/:id',async (req,res)=>{
+   try{ const id = req.params.id;
+    const organization =await Organization.findById(id)
+    if(!organization)   
+    return res.status(404).json({ profile: 'There is no Organization profile for this user' });
+    const consfields ={}
+    consfields.id = id;
+    const consultant = await Consultant.create(consfields)
+    res.json({ data: consultant });
+   }
+   catch(err){
+       console.log(err)
+   }
 });
 
 
 // @route   GET api/profiles/consultant/:id
 // @desc    Get consultant's profile by ID
 // @access  private
-router.get('/:id',(req,res)=>{
+router.get('/:id',async(req,res)=>{
+    try{
     const id = req.params.id;
-    const consultant = consultants.find(element => {
-        return element.id == id;
-    });
+    const consultant = await Consultant.findById(id)
+ 
     if(!consultant){
         return res.status(404).json({ profile: 'There is no Consultant profile for this user' });
     }
-    else{
-        return res.json({data: consultant});
-    }
 
+   res.json({data:consultant})
+}
+catch(err)
+{
+    console.log(err)
+}
 });
 
 
@@ -49,42 +55,45 @@ router.get('/:id',(req,res)=>{
 // @desc    Edit consultant's Profile
 // @access  Private
 router.put('/edit/:id',async(req,res)=>{
-    const {workPosition,reports} = req.body
+   try{ const {reports,workPosistion}= req.body
     const id = req.params.id;
-    const consultant =await Cousultant.findById(id)
+    const consultant = await Consultant.findById(id)
     if(!consultant){
         return res.status(404).json({ profile: 'There is no Consultant profile for this user' });}
         const isvalidated = validator.updateValidation(req.body);
-        if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
-        await consultant.findOneAndUpdate(req.params.id, {$set:{workPosition,reports}},{new:true})
+        if (isvalidated.error) return res.status(400).send({error:isvalidated.error.details[0].message});
+        await consultant.findOneAndUpdate(req.params.id, {$set:{reports,workPosistion}},{new:true})
         res.json({msg:'updated',data:consultant})
-});
+    }
+    catch(err){
+        console.log(err)
+    }
+    });
 
 
-// @route POST api/profiles/consultant/board-members/add/:id
+// @route POST api/profiles/consultant/board-members/add/:id/:id2
 // @decs Adds Board Member To Consultant's Profile
 // @access private
-router.post('/board-members/add/:id',async(req,res)=>{
-    const {name,age,phone,email} = req.body;
+router.post('/board-members/add/:id/:id2',async(req,res)=>{
+   try{
     const id = req.params.id;
 
     const consultant = await Consultant.findById(id)
     if(!consultant){
         return res.status(400).json({ profile: 'There is no Consultant profile for this user' });
+    }
+    const id2 = req.params.id2;
+    const member = await Member.findById(id2)
+    if(!member){
+        return res.status(400).json({ profile: 'There is no member profile for this user' });
     };
-    const isValidated = validator.boardmembersValidation(req.body);
-    if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
-
-
-    const boardMember ={
-        name,
-        age,
-        phone,
-        email
-    };
-    consultant.boardMembers.push(boardMember);
+    consultant.boardMembers.push(member);
     consultant.save()
-    return res.json(consultant);
+    res.json({data:consultant});
+   }
+   catch(err){
+       console.log(err)
+   }
 });
 
 
@@ -92,6 +101,7 @@ router.post('/board-members/add/:id',async(req,res)=>{
 // @decs Adds Event To Consultant's Profile
 // @access private
 router.post('/events/add/:id',async (req,res)=>{
+    try{
     const eventName = req.body.eventName;
     const description = req.body.description;
     const date = req.body.date;
@@ -112,6 +122,10 @@ router.post('/events/add/:id',async (req,res)=>{
     consultant.events.push(event);
     consultant.save()
     return res.json(consultant);
+    }
+    catch(err){
+        console.log(err)
+    }
 });
 
 // @route POST api/profiles/consultant/partners/add/:id/:id2
