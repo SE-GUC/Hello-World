@@ -29,7 +29,7 @@ const consultantSchema = new Schema({
             },
             date:{
                 type: Date,
-                required: true
+                default: Date.now()
             }
         }
     ],
@@ -40,10 +40,6 @@ const consultantSchema = new Schema({
     reports: {
         type: [String]
     },
-    // applications: {
-    //     type: [String],
-    //     required: true
-    // },
     date:{
         type: Date,
         default: Date.now()

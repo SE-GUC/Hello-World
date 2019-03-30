@@ -57,15 +57,15 @@ const funcs = require('./tasks_fn');
 //     expect(response.error).toBe('This Application has not been reviewed yet');
 // });
 
-// test(`Message Should be 'This application can only be posted by a consultant'` , async ()=>{
-//     const levelOfCommitment = 3;
-//     const monetaryCompensation = 2500;
-//     const experienceLevel = 4;
-//     const skills = 'java,python,c++';
-//     expect.assertions(1);
-//     const response = await funcs.partnerPostTaskNeedConsultancy(levelOfCommitment,monetaryCompensation,experienceLevel,skills);
-//     expect(response.Unauthorized).toBe('This application can only be posted by a consultant');
-// });
+test(`Message Should be 'This application can only be posted by a consultant'` , async ()=>{
+    const levelOfCommitment = 3;
+    const monetaryCompensation = 2500;
+    const experienceLevel = 4;
+    const skills = 'java,python,c++';
+    expect.assertions(1);
+    const response = await funcs.partnerPostTaskNeedConsultancy(levelOfCommitment,monetaryCompensation,experienceLevel,skills);
+    expect(response.Unauthorized).toBe('This application can only be posted by a consultant');
+});
 
 // test(`Message Should be 'Response Saved'` , async ()=>{
 //     const theReponse = 'accepted';
