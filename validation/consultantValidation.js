@@ -1,24 +1,21 @@
 const Joi = require('joi');
 
 module.exports = {
-    boardmembersValidation: request => {
-        const submitmemberSchema = {
-            name: Joi.string().max(60).min(3).required(),
-            age: Joi.number().max(100).min(1).required(),
-            email: Joi.string().email().required(),
-            phone: Joi.number().required()
+    boardValidation: request => {
+        const boardSchema = {
+            name: Joi.string().required(),
+            position: Joi.string().required()
         }
 
-        return Joi.validate(request, submitmemberSchema)
+        return Joi.validate(request, boardSchema)
     },
-    eventValidation:request=>{
-        const eventSchema ={
+    eventValidation: request => {
+        const eventSchema = {
             title: Joi.string().required(),
-            description: Joi.string().required(),
-            date: Joi.date().required(),
-
+            description: Joi.string().required()
         }
-        return Joi.validate(request,eventSchema)
+
+        return Joi.validate(request, eventSchema)
     },
     reportValidation:request=>{
         const reportSchema = {
@@ -26,11 +23,4 @@ module.exports = {
         }
         return Joi.validate(request,reportSchema)
     },
-    updateValidation:request=>{
-        const updateSchema = {
-            workPosition:Joi.string(),
-            report:Joi.string()
-        }
-    return Joi.validate(request,updateSchema)
-    }
 }

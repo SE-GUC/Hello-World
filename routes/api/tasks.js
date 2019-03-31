@@ -6,9 +6,7 @@ const _ = require('underscore');
 // Load Models
 const Task = require('../../models/Task');
 const Application = require('../../models/Application');
-const User = require('../../models/User');
 const Member = require('../../models/Member');
-const Organization = require('../../models/Organization');
 const Partner = require('../../models/Partner');
 const Consultant = require('../../models/Consultant');
 const Admin = require('../../models/Admin');
@@ -27,7 +25,7 @@ router.get('/all',async (req,res)=>{
         return res.json({data: tasks})
     }
     catch (error) {
-        return res.status(404).json({ applicationnotfound: 'No Applications found' });
+        return res.status(404).json({ tasknotfound: 'No Tasks found' });
     }
 });
 
@@ -37,14 +35,14 @@ router.get('/all',async (req,res)=>{
 // @access  private
 router.post('/apply/:id/:taskID',async(req,res)=>{
     try {
-        const m = await Member.findById(req.params.id);
-        if (!m) return res.status(404).send({error: 'Member not found'});
+        const member = await Member.findById(req.params.id);
+        if (!member) return res.status(404).send({error: 'Member not found'});
 
         const task = await Task.findById(req.params.taskID);
         if (!task) return res.status(404).send({error: 'Task not found'});
 
         for(let skill of task.skills){
-            if(!m.skills.includes(skill)) return res.status(400).json({data:'Member is not Eligible to Apply for this Task'});
+            if(!member.skills.includes(skill)) return res.status(400).json({msg:'Member is not Eligible to Apply for this Task'});
         }
 
         const applicant = {
@@ -71,17 +69,18 @@ router.get('/recommended/:id', async(req,res)=>{
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
 
-        const tasks = Task.find();
-        const recommendedTasks = [];
-        for(let skill of member.skills){
-            for(let task of tasks){
-                for(let skill2 of task.skills){
-                    if(skill == skill2) recommendedTasks.push(task);
-                }
-            }
-        }
+        let recommendedTasks = [];
+        Task.find({}).stream()
+            .on('data', function(task){
+                for(let skill of member.skills){
+                    for(let skill2 of task.skills){
+                        if(String(skill) == String(skill2)) recommendedTasks.push(task._id);
+                    }
 
-        return res.json({data:recommendedTasks});
+                }
+            });
+
+        return res.json({data:output});
     }
     catch(error) {
        res.status(404).json({ membernotfound: 'Member not found' });
@@ -102,7 +101,7 @@ router.delete('/:id/:taskID',async(req,res)=>{
         if (!task) return res.status(404).send({error: 'Task not found'});
 
         task.applicants = _.reject(task.applicants,element=>{
-            return element.member == member;
+            return element.member == req.params.id;
         });
         task.save();
         res.json({msg:'Member application was deleted successfully', data: task.applicants})
@@ -126,12 +125,12 @@ router.post('/partner/:id/:appID',async(req,res)=>{
         const isValidated = validator.postValidation(req.body);
         if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
-        if(!application.needConsultancy){
-            return res.status(400).json({Unauthorized: 'This Partner is not responsible for this task'});
+        if(application.needConsultancy){
+            return res.status(400).json({Unauthorized: 'This application can only be posted by a consultant'});
         }
 
         if(!application.reviewed){
-            return res.status(400).json({error: 'This Application has not been reviewed yet '});
+            return res.status(400).json({error: 'This Application has not been reviewed yet'});
         }
 
         if(application.partner != req.params.id){
@@ -159,10 +158,10 @@ router.post('/partner/:id/:appID',async(req,res)=>{
     }
 });
 
-// @route   PUT api/tasks/partner/respond/:id/:id2/:taskID
+// @route   POST api/tasks/partner/respond/:id/:id2/:taskID
 // @desc    Partner Responds to Member Applications
 // @access  Private
-router.post('partner/respond/:id/:id2/:taskID',async(req,res)=>{
+router.post('/partner/respond/:id/:id2/:taskID',async(req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
@@ -172,13 +171,12 @@ router.post('partner/respond/:id/:id2/:taskID',async(req,res)=>{
 
         const task = await Task.findById(req.params.taskID).populate('application');
         if (!task) return res.status(404).send({error: 'Task not found'});
-
         if(task.application.needConsultancy){
-            return res.status(400).json({Unauthorized: 'This Partner is not responsible for this task'});
+            return res.status(400).json({Unauthorized:'This Task Can Only be posted by a Consultant'});
         }
 
         if(task.application.partner != req.params.id2){
-            return res.status(400).json({Unauthorized: 'This Task Can Only be posted by a Consultant'});
+            return res.status(400).json({Unauthorized: 'This Partner is not responsible for this task'});
         }
 
 
@@ -194,6 +192,15 @@ router.post('partner/respond/:id/:id2/:taskID',async(req,res)=>{
         applicant.status = req.body.response;
 
         task.save();
+
+        if(applicant.status == 'accepted'){
+            const notification  = {
+                sender: req.params.partner,
+                text: `Your Request to apply for task ${req.params.taskID} has been accepted`
+            };
+            member.notifications.unshift();
+            member.save();
+        }
 
         return res.json({msg:'Response Saved',data:task});
     }
@@ -225,15 +232,15 @@ router.post('/admin/:id/:taskID',async(req,res)=>{
     }
 });
 
-// @route   PUT api/tasks/admin/extra/:id/:taskID
+// @route   PUT api/tasks/extra/:id/:taskID
 // @desc    Admin Adds Extra Attribute To Task
 // @access  Private
-router.put('/admin/:id/:taskID',async(req,res)=>{
+router.put('/extra/:id/:taskID',async(req,res)=>{
     try {
         const admin = await Admin.findById(req.params.id);
         if (!admin) return res.status(404).send({error: 'Admin not found'});
 
-        const task = await Task.findById(req.params.appID);
+        const task = await Task.findById(req.params.taskID);
         if (!task) return res.status(404).send({error: 'Task not found'});
 
         const isValidated = validator.extraValidation(req.body);
@@ -254,7 +261,7 @@ router.put('/admin/:id/:taskID',async(req,res)=>{
 // @route   PUT api/tasks/admin/edit/:id/:taskID
 // @desc    Admin Edits Task
 // @access  Private
-router.put('/admin/:id/:taskID',async(req,res)=>{
+router.put('/edit/:id/:taskID',async(req,res)=>{
     try {
         const admin = await Admin.findById(req.params.id);
         if (!admin) return res.status(404).send({error: 'Admin not found'});
@@ -272,18 +279,19 @@ router.put('/admin/:id/:taskID',async(req,res)=>{
         fields.skills = req.body.skills.split(',');
 
         const updatedTask = await Task.findByIdAndUpdate(req.params.taskID,{$set: fields});
-        return res.json({msg:'Task was updated successfully', data: updatedTask});
+        return res.json({msg:'Task was updated successfully'});
     }
     catch(error) {
-        return res.status(404).json({ adminnotfound: 'Admin not found' });
+        res.status(404).json({ adminnotfound: 'Admin not found' });
+        console.log(error)
     }
 });
 
 
-// @route   DELETE api/tasks/admin/delete/:id/:taskID
+// @route   DELETE api/tasks/admin/:id/:taskID
 // @desc    Admin Deletes Task
 // @access  Private
-router.delete('/admin/delete/:id/:taskID',async(req,res)=>{
+router.delete('/admin/:id/:taskID',async(req,res)=>{
     try {
         const admin = await Admin.findById(req.params.id);
         if (!admin) return res.status(404).send({error: 'Admin not found'});
@@ -291,12 +299,13 @@ router.delete('/admin/delete/:id/:taskID',async(req,res)=>{
         const task = await Task.findById(req.params.taskID);
         if (!task) return res.status(404).send({error: 'Task not found'});
 
-        const deletedTask = await Task.findByIdAndRemove(taskID);
+        const deletedTask = await Task.findByIdAndRemove(req.params.taskID);
 
         res.json({msg:'Task Successfully deleted', data: deletedTask})
     }
     catch(error) {
-        return res.status(404).json({ adminnotfound: 'Admin not found' });
+        res.status(404).json({ adminnotfound: 'Admin not found' });
+        console.log(error)
     }
 });
 
@@ -316,16 +325,13 @@ router.post('/consultant/:id/:appID',async(req,res)=>{
         if (isValidated.error) return res.status(400).send({error: isValidated.error.details[0].message});
 
         if(!application.needConsultancy){
-            return res.status(400).json({Unauthorized: 'This Partner is not responsible for this task'});
+            return res.status(400).json({Unauthorized: 'This Task can only be submitted by the Partner'});
         }
 
         if(!application.reviewed){
-            return res.status(400).json({error: 'This Application has not been reviewed yet '});
+            return res.status(400).json({error: 'This Application has not been reviewed yet'});
         }
 
-        if(application.partner != req.params.id){
-            return res.status(400).json({ Unauthorized: 'This Partner is not responsible for this Application' });
-        }
 
         const fields = {};
         fields.application = req.params.appID;
@@ -344,20 +350,21 @@ router.post('/consultant/:id/:appID',async(req,res)=>{
         return res.json({msg:'Task was created successfully', data: newTask});
     }
     catch(error) {
-        return res.status(404).json({ consultantnotfound: 'Consultant not found' });
+        res.status(404).json({ consultantnotfound: 'Consultant not found' });
+        console.log(error)
     }
 });
 
 
-// @route   PUT api/tasks/consultant/respond/:id/:id2/:id3
+// @route   POST api/tasks/consultant/respond/:id/:id2/:id3
 // @desc    Consultant Responds to Member Applications
 // @access  Private
-router.put('/consultant/respond/:id/:id2/:taskID',async(req,res)=>{
+router.post('/consultant/respond/:id/:id2/:taskID',async(req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
 
-        const consultant = await consultant.findById(req.params.id2);
+        const consultant = await Consultant.findById(req.params.id2);
         if (!consultant) return res.status(404).send({error: 'Consultant not found'});
 
         const task = await Task.findById(req.params.taskID).populate('application');
@@ -387,7 +394,8 @@ router.put('/consultant/respond/:id/:id2/:taskID',async(req,res)=>{
         return res.json({msg:'Response Saved',data:task});
     }
     catch(error) {
-        return res.status(404).json({ membernotfound: 'Member not found' });
+        res.status(404).json({ membernotfound: 'Member not found' });
+        console.log(error);
     }
 });
 

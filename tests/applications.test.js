@@ -21,11 +21,11 @@ const funcs = require('./applications_fn');
 //     expect(response.msg).toBe('Message Sent successfully');
 // });
 
-// test('Messages length should be 7' ,async ()=>{
-//     expect.assertions(1);
-//     const response = await funcs.partnerNegotiation();
-//     expect(response.data.length).toBe(7);
-// });
+test('Messages length should be 7' ,async ()=>{
+    expect.assertions(1);
+    const response = await funcs.partnerNegotiation();
+    expect(response.data.length).toBe(7);
+});
 
 // test('Applications Should be 3', async ()=>{
 //     expect.assertions(1);
@@ -46,17 +46,17 @@ const funcs = require('./applications_fn');
 //     expect(response.msg).toBe('Message Sent successfully');
 // });
 
-// test('Messages length should be 7' ,async ()=>{
-//     expect.assertions(1);
-//     const response = await funcs.adminNegotiation();
-//     expect(response.data.length).toBe(7);
-// });
+test('Messages length should be 7' ,async ()=>{
+    expect.assertions(1);
+    const response = await funcs.adminNegotiation();
+    expect(response.data.length).toBe(7);
+});
 
 
-// test('Applications Should be 2', async ()=>{
+// test('Applications Should be 3', async ()=>{
 //     expect.assertions(1);
 //     const response = await funcs.getReviewedApplications();
-//     expect(response.data.length).toBe(2);
+//     expect(response.data.length).toBe(3);
 // });
 
 // test('Applications Should be submitted successfully', async ()=>{
