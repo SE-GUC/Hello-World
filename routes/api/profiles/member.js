@@ -276,7 +276,7 @@ router.delete('/delete/:id',async(req,res) => {
         const deletedMember = await Member.findByIdAndRemove(req.params.id);
         const deletedUser = await User.findByIdAndRemove(User.organization.user);
 
-        res.json({msg:'Profile Successfully deleted', data: deletedEducation})
+        res.json({msg:'deleted', data: deletedEducation})
     }
     catch(error) {
         return res.status(404).json({ membernotfound: 'Member not found' });
@@ -298,7 +298,7 @@ router.delete('/skills/:id',async(req,res)=>{
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
         member.skills.splice( member.skills.indexOf(skill), 1 );
         member.save()
-        return res.json({data: member.skills})}
+        return res.json({msg:'deleted' ,data: member.skills})}
 
     catch(err){
         console.log(err)
@@ -321,7 +321,7 @@ router.delete('/Interests/:id',async (req,res)=>{
 
         member.interests.splice( member.interests.indexOf(interest), 1 );
         member.save()
-        return res.json({data:member.interests})
+        return res.json({msg:'deleted' ,data:member.interests})
     }
     catch(err){
         console.log(err)
@@ -350,7 +350,7 @@ router.delete('/past-events/:id',async (req,res)=>{
         };
         member.pastEvents.splice( member.pastEvents.indexOf(pastEvent), 1 );
         member.save()
-        return res.json(member.pastEvents);
+        return res.json({msg: 'deleted',data: member.pastEvents});
     }
     catch(err){
         console.log(err)
@@ -383,7 +383,7 @@ router.delete('/completed-tasks/:id/:taskID',async (req,res)=>{
         member.tasksCompleted.splice( member.tasksCompleted.indexOf(completedTask), 1 );
         member.save();
 
-        return res.json({msg:'Completed Task successfully added', data: member.tasksCompleted});
+        return res.json({msg:'deleted', data: member.tasksCompleted});
     }
     catch(error) {
         return res.status(404).json({ membernotfound: 'Member not found' });
@@ -410,7 +410,7 @@ router.delete('/certificates/:id',async (req,res)=>{
         };
         member.certificates.splice( member.certificates.indexOf(certificate), 1 );
         member.save()
-        return res.json({data:member.certificates});
+        return res.json({msg:'deleted',data:member.certificates});
     }
     catch(err){
         console.log(err)

@@ -55,12 +55,64 @@ const fun = require('./member_fn')
 //     expect(response.msg).toBe('Event added successfully')
 // })
 
-test(`Messsage Should be 'Certificate added successfully'`,async()=>{
-    const title = 'Test Certificate';
-    const entity = 'Test Entity';
-    const description = 'This is a test Descriptoin';
-    expect.assertions(1);
-    const response = await fun.postCertificates(title,entity,description)
-    expect(response.msg).toBe('Certificate added successfully')
-})
+// test(`Messsage Should be 'Certificate added successfully'`,async()=>{
+//     const title = 'Test Certificate';
+//     const entity = 'Test Entity';
+//     const description = 'This is a test Descriptoin';
+//     expect.assertions(1);
+//     const response = await fun.postCertificates(title,entity,description)
+//     expect(response.msg).toBe('Certificate added successfully')
+// })
+
+// test(`Messsage Should be 'Completed Task successfully added'`,async()=>{
+//     expect.assertions(1);
+//     const response = await fun.postCompletedTask();
+//     expect(response.msg).toBe('Completed Task successfully added')
+// })
+
+// test(`Message Should be 'deleted'`, async ()=>{
+//     const skill = 'testskill'
+//     expect.assertions(1);
+//     const response = await fun.deleteSkill(skill)
+//     expect(response.msg).toBe('deleted');
+//  })
+
+// test(`Message Should be 'deleted'`,async()=>{
+//     const interset ='intersetTest'
+//     expect.assertions(1);
+//     const response = await fun.deleteInterest(interset)
+//     expect(response.msg).toBe('deleted')
+// })
+
+// test(`Message Should be 'deleted'`, async()=>{
+//     const title = 'testTitle';
+//     const description = 'testDesc';
+//     const location = 'testLocation';
+//     expect.assertions(1);
+//     const response = await fun.deleteEvents(title,description,location)
+//     expect(response.msg).toBe('deleted')
+// })
+
+// test(`Messsage Should be 'deleted'`,async()=>{
+//     expect.assertions(1);
+//     const response = await fun.deleteCompletedTask();
+//     expect(response.msg).toBe('deleted')
+// })
+
+// test(`Messsage Should be 'deleted'`,async()=>{
+//     const title = 'Test Certificate';
+//     const entity = 'Test Entity';
+//     const description = 'This is a test Descriptoin';
+//     expect.assertions(1);
+//     const response = await fun.deleteCertificates(title,entity,description)
+//     expect(response.msg).toBe('deleted')
+// })
+
+
+
+// test(`Messsage Should be 'deleted'`,async()=>{
+//     expect.assertions(1);
+//     const response = await fun.deleteMember();
+//     expect(response.msg).toBe('deleted')
+// })
 

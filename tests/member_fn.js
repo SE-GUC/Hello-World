@@ -122,18 +122,13 @@ const functions = {
         console.log(e)
     }
     },
-    postCompeletedTask: async (task) => {
+    postCompletedTask: async () => {
         try{
-            const data = {
-                task:task
-            }
-            const body = JSON.stringify(data);
             const response = await fetch('http://localhost:5000/api/profiles/member/completed-tasks/5c9666a6f17db66cb83411d3/5c962a4c0f3ef52e1974de42',{
                 method:'POST',
                 headers:{
                     'content-Type':'application/json'
-                },
-                body:body
+                }
             });
             const json = await response.json();
             return json;
@@ -184,19 +179,74 @@ const functions = {
         console.log(e)
     }
     },
-    deleteMember: async() =>{
+    deleteSkill: async (skill) => {
         try{
             const data = {
-                title:title,
-                description:description,
-                location:location
+                skill:skill
+            }
+            const body = JSON.stringify(data);
+            const response = await fetch('http://localhost:5000/api/profiles/member/skills/5c9666a6f17db66cb83411d3', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
+    deleteInterest: async (interest) => {
+        try{
+            const data = {
+                interest:interest
+            }
+            const body = JSON.stringify(data);
+            const response = await fetch('http://localhost:5000/api/profiles/member/interests/5c9666a6f17db66cb83411d3',{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch(e) {
+            console.log(e)
+        }
+    },
+    deleteEvents: async (title,description,location) => {
+        try{
+            const data = {
+                title: title,
+                description: description,
+                location: location
             }
             const body = JSON.stringify(data);
             const response = await fetch('http://localhost:5000/api/profiles/member/past-events/5c9666a6f17db66cb83411d3',{
                 method:'DELETE',
                 headers:{
+                    'content-Type':'application/json'
+                },
+                body:body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch(err){
+            console.log(e)
+        }
+    },
+    deleteMember: async() =>{
+        try{
+            const response = await fetch('http://localhost:5000/api/profiles/member/past-events/5ca09b938cf9fa294c6530a4',{
+                method:'DELETE',
+                headers:{
                     'content-Type':'application/json'},
-                    body:body
                 }
             )
             const json = await response.json();
@@ -206,6 +256,43 @@ const functions = {
             console.log(err)
         }
         
-    }
+    },
+    deleteCompletedTask: async () => {
+        try{
+            const response = await fetch('http://localhost:5000/api/profiles/member/completed-tasks/5c9666a6f17db66cb83411d3/5c962a4c0f3ef52e1974de42',{
+                method:'DELETE',
+                headers:{
+                    'content-Type':'application/json'
+                }
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch(err){
+            console.log(e)
+        }
+    },
+    deleteCertificates: async (title, entity, description) => {
+        try{
+            const data = {
+                title: title,
+                entity:entity,
+                description: description
+            }
+            const body = JSON.stringify(data);
+            const response = await fetch('http://localhost:5000/api/profiles/member/certificates/5c9666a6f17db66cb83411d3',{
+                method:'DELETE',
+                headers:{
+                    'content-Type':'application/json'
+                },
+                body:body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch(err){
+            console.log(e)
+        }
+    },
 };
 module.exports = functions;
