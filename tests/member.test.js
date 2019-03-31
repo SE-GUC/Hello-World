@@ -17,20 +17,20 @@ const fun = require('./member_fn')
 //      expect(response.msg).toBe('Member was created successfully');
 //  })
 
- // test(`Message Should be 'Member updated successfully'`, async ()=>{
- //     const name = 'TestName';
- //     const phone = 911;
- //     const email = 'test@tests.com';
- //     const age = 21;
- //         const youtube = 'https://www.youtube.com/';
- //         const twitter = 'https://www.twitter.com/';
- //         const instagram = 'https://www.instagram.com/';
- //         const facebook = 'https://www.facebook.com/';
- //         const linkedin = 'https://www.linkedin.com/';
- //     const avatar = 'tst'
- //    expect.assertions(1);
- //    const response = await fun.updateMember(name,phone,age,email,youtube,facebook,twitter,instagram,linkedin,avatar)
- //    expect(response.msg).toBe('Member updated successfully');})
+ test(`Message Should be 'Member updated successfully'`, async ()=>{
+     const name = 'TestName';
+     const phone = 911;
+     const email = 'test@tests.com';
+     const age = 21;
+         const youtube = 'https://www.youtube.com/';
+         const twitter = 'https://www.twitter.com/';
+         const instagram = 'https://www.instagram.com/';
+         const facebook = 'https://www.facebook.com/';
+         const linkedin = 'https://www.linkedin.com/';
+     const avatar = 'tst'
+    expect.assertions(1);
+    const response = await fun.updateMember(name,phone,age,email,youtube,facebook,twitter,instagram,linkedin,avatar)
+    expect(response.msg).toBe('Member updated successfully');})
 
 // test(`Message Should be Skill added successfully`, async ()=>{
 //     const skill = 'testskill'
