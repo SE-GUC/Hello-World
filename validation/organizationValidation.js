@@ -10,7 +10,9 @@ module.exports = {
             youtube: Joi.string().uri(),
             facebook: Joi.string().uri(),
             twitter: Joi.string().uri(),
-            linkedin: Joi.string().uri()
+            linkedin: Joi.string().uri(),
+            instagram: Joi.string().uri(),
+            avatar: Joi.string()
         }
 
         return Joi.validate(request, createSchema)

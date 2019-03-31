@@ -1,6 +1,4 @@
 const fun = require('./member_fn')
-const Task = require('../models/Task')
-const mongoose = require('mongoose');
 //  test(`Message Should be 'Member was created successfully'` ,async ()=>{
 //      const name = 'TestName';
 //      const phone = 911;
@@ -15,7 +13,7 @@ const mongoose = require('mongoose');
 //          const linkedin = 'https://www.linkedin.com/';
 //      const avatar = 'tst'
 //      expect.assertions(1);
-//      const response = await fun.createMember(name,phone,age,email,skills,interests,youtube,twitter,instagram,facebook,linkedin,avatar);
+//      const response = await fun.createMember(name,phone,age,email,skills,interests,youtube,facebook,twitter,instagram,linkedin,avatar);
 //      expect(response.msg).toBe('Member was created successfully');
 //  })
 
