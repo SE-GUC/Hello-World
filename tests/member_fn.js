@@ -8,6 +8,7 @@ const functions = {
                 phone:phone,
                 email:email,
                 skills:skills,
+                user:user,
                 intersets:intersets
             }
             const body = JSON.stringify(data);
@@ -168,5 +169,28 @@ const functions = {
         console.log(e)
     }
     },
+    deleteMember: async() =>{
+        try{
+            const data = {
+                title:title,
+                description:description,
+                location:location
+            }
+            const body = JSON.stringify(data);
+            const response = await fetch('http://localhost:5000/api/profiles/member/past-events/5c9666a6f17db66cb83411d3',{
+                method:'DELETE',
+                headers:{
+                    'content-Type':'member/json'},
+                    body:body
+                }
+            )
+            const json = await response.json();
+            return json;
+            }
+        catch(err){
+            console.log(err)
+        }
+        
+    }
 };
 module.exports = functions;
