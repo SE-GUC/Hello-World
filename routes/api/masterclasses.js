@@ -3,7 +3,6 @@ const router = express.Router();
 
 //Load Models
 const Member = require('../../models/Member');
-const User = require('../../models/User');
 const Masterclass = require('../../models/Masterclass');
 const Expert = require('../../models/Expert');
 
@@ -41,7 +40,7 @@ router.post('/require/:id/:expertID', async(req,res)=>{
 // @route   PUT api/masterclasses/respond/:id/:expertID
 // @desc    Expert Responds to Requests
 // @access  Private
-router.put('/respond/:id/:id2',async (req,res)=>{
+router.put('/respond/:id/:expertID',async (req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
@@ -53,32 +52,32 @@ router.put('/respond/:id/:id2',async (req,res)=>{
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
 
         const request = expert.requests.find(element => {
-            return element.id == memberID;
+            return element.member == req.params.id;
         });
 
-        request.status = Response;
+        request.status = req.body.response;
                                                                                                                                                           expert.requests.unshift(request);
         expert.save();
 
-        return res.json({msg:'Your Request was submitted successfully', data: expert.requests});
+        return res.json({msg:'Response Saved', data: expert.requests});
     }
     catch(error) {
-        return res.status(404).json({ membernotfound: 'Member not found' });
+        res.status(404).json({ membernotfound: 'Member not found' });
+        console.log(error)
     }
 });
 
 
-
-// @route   POST api/masterclasses/apply/:id/:id2
+// @route   POST api/masterclasses/:id/:masterclassID
 // @desc    Member Apply For a Masterclass
 // @access  Private
 
-router.post('/:id/:id2',async (req,res)=>{
+router.post('/:id/:masterclassID',async (req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
 
-        const masterclass = await Masterclass.findById(req.params.id2);
+        const masterclass = await Masterclass.findById(req.params.masterclassID);
         if (!masterclass) return res.status(404).send({error: 'Masterclass not found'});
 
 
@@ -88,20 +87,20 @@ router.post('/:id/:id2',async (req,res)=>{
 
         masterclass.requests.unshift(request);
 
-        return res.json({msg:'Request was created successfully', data: masterclass.requests});
+        masterclass.save();
+
+        return res.json({msg:'Request was successfully received', data: masterclass.requests});
     }
     catch(error) {
         return res.status(404).json({ masterclassnotfound: 'Masterclass not found' });
     }
-
-
 });
 
 // @route   GET api/masterclasses/recommended/:id
 // @desc    Member View his Recommended Masterclasses
 // @access  Private
 
-router.get('/recommended/:id',async (req,res)=>{
+router.get('/:id',async (req,res)=>{
     try {
         const member = await Member.findById(req.params.id);
         if (!member) return res.status(404).send({error: 'Member not found'});
@@ -109,26 +108,32 @@ router.get('/recommended/:id',async (req,res)=>{
         return res.json({data:member.recommendedMasterclasses});
     }
     catch(error) {
-        return res.status(404).json({ membernotfound: 'Member not found' });
+        res.status(404).json({ membernotfound: 'Member not found' });
+        console.log(error)
     }
 
 });
 
-// @route   PUT api/masterclasses/assess/:id/:id2
+// @route   PUT api/masterclasses/assess/:id/:expertID/:masterclassID
 // @desc    Expert Assess Member
 // @access  Private
-router.put('/assess/:id/:id2',async(req,res)=>{
-    try{const member = await Member.findById(req.params.id);
+router.post('/assess/:id/:expertID/:masterclassID',async(req,res)=>{
+    try{
+
+        const member = await Member.findById(req.params.id);
         if(!member) return res.status(404).send({error: 'Member does not exist'});
-    const expert = await Expert.findById(req.params.id2);
+
+        const expert = await Expert.findById(req.params.expertID);
         if(!expert) return res.status(404).send({error: 'this User is not an Expert'});
-    const recommendedMasterclass = req.body.masterclass;
-    const masterclass = masterclasses.findById(element => {
-        return element.id == recommendedMasterclass;
-    });
-    if (!masterclass) return res.status(404).json({masterclass: 'there is no Such Masterclass'});
-    member.recommendedMasterclasses.push(masterclass);
-    return res.json({data: member.recommendedMasterclasses});
+
+        const masterclass = await Masterclass.findById(req.params.masterclassID);
+        if(!masterclass) return res.status(404).send({error: 'Masterclass not found'});
+
+        member.recommendedMasterclasses.unshift(req.params.masterclassID);
+
+        member.save();
+
+    return res.json({msg: 'Assessment successfully sent' ,data: member.recommendedMasterclasses});
     }
     catch(error) {
         return res.status(404).json({ membernotfound: 'Member not found' });

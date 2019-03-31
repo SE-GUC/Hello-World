@@ -1,11 +1,11 @@
 const funcs = require('./applications_fn');
 
-test('Application Should be created with the specified description' , async ()=>{
-    const desc = 'This Application was created as a test for Create Application Post Request';
-    expect.assertions(1);
-    const response = await funcs.createApplication(desc,false);
-    expect(response.data.description).toBe(desc);
-});
+// test('Application Should be created with the specified description' , async ()=>{
+//     const desc = 'This Application was created as a test for Create Application Post Request';
+//     expect.assertions(1);
+//     const response = await funcs.createApplication(desc,false);
+//     expect(response.data.description).toBe(desc);
+// });
 
 // test('Application Should be updated with the specified description' , async ()=>{
 //     const desc = 'This Application was updated as a test for Update Application Put Request';
@@ -21,11 +21,11 @@ test('Application Should be created with the specified description' , async ()=>
 //     expect(response.msg).toBe('Message Sent successfully');
 // });
 
-// test('Messages length should be 7' ,async ()=>{
-//     expect.assertions(1);
-//     const response = await funcs.partnerNegotiation();
-//     expect(response.data.length).toBe(7);
-// });
+test('Messages length should be 7' ,async ()=>{
+    expect.assertions(1);
+    const response = await funcs.partnerNegotiation();
+    expect(response.data.length).toBe(7);
+});
 
 // test('Applications Should be 3', async ()=>{
 //     expect.assertions(1);
