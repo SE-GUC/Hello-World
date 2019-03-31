@@ -44,7 +44,7 @@ module.exports = {
         const programSchema = {
             title: Joi.string().required(),
             description: Joi.string().required(),
-            trainers: Joi.string.required()
+            trainers: Joi.string().required()
         }
         return Joi.validate(request, programSchema)
     }

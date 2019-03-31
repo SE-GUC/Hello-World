@@ -29,7 +29,7 @@ const taskSchema = new Schema({
         {
             member: {
                 type: Schema.Types.ObjectId,
-                ref: 'members'
+                ref: 'member'
             },
             status: {
                 type: String,

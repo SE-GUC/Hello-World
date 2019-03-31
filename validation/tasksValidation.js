@@ -19,7 +19,7 @@ module.exports = {
             skills: Joi.string().required()
         }
 
-        return Joi.validate(request, postSchema)
+        return Joi.validate(request, updateSchema)
     },
     respondValidation: request => {
         const respondSchema = {
@@ -30,10 +30,10 @@ module.exports = {
     },
     extraValidation: request => {
         const extraSchema = {
-            response: Joi.string().required(),
+            extra: Joi.string().required(),
         }
 
-        return Joi.validate(request, respondSchema)
+        return Joi.validate(request, extraSchema)
     },
 
 

@@ -10,7 +10,7 @@ const User = require('../../models/User');
 // To Be Used For Register & Login
 
 
-// Basic Implementation For Register & Login
+// Basic Implementation For Register For Testing Purposes
 router.post('/register',async (req,res)=>{
         const username = req.body.username;
         const password = req.body.password;

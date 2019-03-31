@@ -13,7 +13,8 @@ module.exports = {
             youtube: Joi.string().uri(),
             facebook: Joi.string().uri(),
             twitter: Joi.string().uri(),
-            linkedin: Joi.string().uri()
+            linkedin: Joi.string().uri(),
+            instagram: Joi.string().uri(),
         }
 
         return Joi.validate(request, createSchema)
@@ -28,7 +29,8 @@ module.exports = {
             youtube: Joi.string().uri(),
             facebook: Joi.string().uri(),
             twitter: Joi.string().uri(),
-            linkedin: Joi.string().uri()
+            linkedin: Joi.string().uri(),
+            instagram: Joi.string().uri(),
         }
 
         return Joi.validate(request, updateSchema)
@@ -48,10 +50,18 @@ module.exports = {
         const eventSchema ={
             title: Joi.string().required(),
             description: Joi.string().required(),
-            date: Joi.date().required(),
             location: Joi.string().required()
         }
         return Joi.validate(request,eventSchema)
+    },
+    certificateValidation: request => {
+        const certificateSchema = {
+            title: Joi.string().required(),
+            entity: Joi.string().required(),
+            description: Joi.string().required(),
+        }
+
+        return Joi.validate(request, certificateSchema)
     },
 
 };
