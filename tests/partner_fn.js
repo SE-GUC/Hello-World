@@ -1,12 +1,18 @@
 const fetch = require('node-fetch');
 const functions = {
-    createConsultant: async () => {
+    createPartner: async (fieldOfWork) => {
         try {
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/5c941d47c49fc207a0cd1e52',{
+            const data = {
+                fieldOfWork: fieldOfWork
+            }
+            const body = JSON.stringify(data);
+
+            const response = await fetch('http://localhost:5000/api/profiles/partner/5c941b337474cac0100bc3e9', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: body
             });
             const json = await response.json();
             return json;
@@ -15,9 +21,30 @@ const functions = {
             console.log(e)
         }
     },
-    getConsultant: async () => {
+    getPartner: async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/5c9f942bbc90b634340a58c0')
+            const response = await fetch('http://localhost:5000/api/profiles/partner/5c941bf296d97cdbb0ec50cd')
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
+    updatePartner: async (fieldOfWork) => {
+        try {
+            const data = {
+                fieldOfWork: fieldOfWork
+            }
+            const body = JSON.stringify(data);
+
+            const response = await fetch('http://localhost:5000/api/profiles/partner/5c941bf296d97cdbb0ec50cd', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: body
+            });
             const json = await response.json();
             return json;
         }
@@ -32,7 +59,7 @@ const functions = {
                 position : position
             }
             const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/board-members/5c9f93f2bc90b634340a58bf',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/board-members/5c965abc057f691975fbca1e',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -53,7 +80,7 @@ const functions = {
                 description: description
             }
             const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/board-members/5c9f93f2bc90b634340a58bf',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/events/5c965abc057f691975fbca1e',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -69,7 +96,7 @@ const functions = {
     },
     addPartner: async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/partners/5c9f93f2bc90b634340a58bf/5c941c4acb4bc3216896d13c',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/partners/5c965abc057f691975fbca1e/5c941bf296d97cdbb0ec50cd',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,18 +109,13 @@ const functions = {
             console.log(e)
         }
     },
-    addReport: async (report) => {
+    addProject: async () => {
         try {
-            const data = {
-                report: report
-            }
-            const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/reports/5c9f93f2bc90b634340a58bf',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/past-projects/5c95302e28ab73e2f4a0fb7f/5c962a4c0f3ef52e1974de42',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: body
+                }
             });
             const json = await response.json();
             return json;
@@ -109,7 +131,7 @@ const functions = {
                 position : position
             }
             const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/board-members/5c9f93f2bc90b634340a58bf',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/board-members/5c965abc057f691975fbca1e',{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -130,12 +152,42 @@ const functions = {
                 description: description
             }
             const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/events/5c9f93f2bc90b634340a58bf',{
+            const response = await fetch('http://localhost:5000/api/profiles/partner/events/5c965abc057f691975fbca1e',{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: body
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
+    deletePartner2: async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/profiles/partner/partners/5c965abc057f691975fbca1e/5c941bf296d97cdbb0ec50cd',{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const json = await response.json();
+            return json;
+        }
+        catch (e) {
+            console.log(e)
+        }
+    },
+    deleteProject: async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/profiles/partner/past-projects/5c95302e28ab73e2f4a0fb7f/5c962a4c0f3ef52e1974de42',{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
             const json = await response.json();
             return json;
@@ -146,7 +198,7 @@ const functions = {
     },
     deletePartner: async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/partners/5c9f93f2bc90b634340a58bf/5c941c4acb4bc3216896d13c',{
+            const response = await fetch('',{
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -159,42 +211,7 @@ const functions = {
             console.log(e)
         }
     },
-    deleteReport: async (report) => {
-        try {
-            const data = {
-                report: report
-            }
-            const body = JSON.stringify(data);
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/reports/5c9f93f2bc90b634340a58bf',{
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: body
-            });
-            const json = await response.json();
-            return json;
-        }
-        catch (e) {
-            console.log(e)
-        }
-    },
-    deleteConsultant: async () => {
-        try {
-            const response = await fetch('http://localhost:5000/api/profiles/consultant/5c9fc72c23b4b334e0f0b917',{
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            const json = await response.json();
-            return json;
-        }
-        catch (e) {
-            console.log(e)
-        }
-    },
-
 
 };
+
 module.exports = functions;
