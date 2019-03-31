@@ -25,10 +25,10 @@ router.post('/:id',async (req,res)=>{
         const fields = {};
         fields.organization = req.params.id;
         const newEducation = await Education.create(fields);
-        res.json({msg:'Education was created successfully', data: newEducation})
+        return res.json({msg:'Education was created successfully', data: newEducation})
     }
     catch(error) {
-        res.status(404).json({ educationnotfound: 'Education not found' });
+        return res.status(404).json({ educationnotfound: 'Education not found' });
     }
 });
 
@@ -151,6 +151,106 @@ router.post('/training-programs/:id',async(req,res)=>{
     }
 });
 
+// @route DELETE api/profiles/education/courses/:id
+// @decs Deletes A Course From Educational Organization's Profile
+// @access private
+router.delete('/courses/:id',async (req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.courseValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const course = {
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price
+        };
+        education.courses.splice( education.courses.indexOf(course), 1 );
+
+        education.save();
+
+        return res.json({msg:'deleted', data: education.courses});
+    }
+    catch(error) {
+        res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+        console.log(error)
+    }
+});
+
+// @route DELETE api/profiles/education/trainers/:id
+// @decs Deletes A Trainer From Educational Organization's Profile
+// @access private
+router.delete('/trainers/:id',async (req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.trainerValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const trainer = {
+            name: req.body.name,
+            bio: req.body.bio,
+        };
+        education.trainers.splice( education.trainers.indexOf(trainer), 1 );
+
+        education.save();
+
+        return res.json({msg:'deleted', data: education.trainers});
+    }
+    catch(error) {
+        return res.status(404).json({ trainernotfound: 'Trainer not found' });
+    }
+});
+
+
+// @route DELETE api/profiles/education/certificates/:id
+// @decs Delete Certificate From Educational Organization's Profile
+// @access private
+router.delete('/certificates/:id',async(req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.certificateValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const certificate = {
+            title: req.body.title,
+            description: req.body.description,
+        };
+        education.certificates.splice( education.certificates.indexOf(certificate), 1 );
+
+        education.save();
+
+        return res.json({msg:'deleted', data: education.certificates});
+    }
+    catch(error) {
+        return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+    }
+});
+
+
+// @route DELETE api/profiles/education/training-programs/:id
+// @decs Delete A Training Program To Educational Organization's Profile
+// @access private
+router.delete('/training-programs/:id',async(req,res)=>{
+    try {
+        const education = await Education.findById(req.params.id);
+        if (!education) return res.status(404).send({error: 'Educational Organization not found'});
+        const isValidated = validator.programValidation(req.body);
+        if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
+        const program = {
+            title: req.body.title,
+            description: req.body.description,
+            trainers: req.body.trainers.split(',')
+        };
+        education.trainingPrograms.splice( education.trainingPrograms.indexOf(program), 1 );
+
+        education.save();
+
+        return res.json({msg:'deleted', data: education.trainingPrograms});
+    }
+    catch(error) {
+        return res.status(404).json({ educationnotfound: 'Educational Organization not found' });
+    }
+});
 
 // @route   DELETE api/profiles/education/:id
 // @desc    Delete education's Profile
