@@ -117,9 +117,9 @@ router.post('/skills/:id',async(req,res)=>{
             return res.status(400).json({ profile: 'There is no Member profile for this user' })}
         const isValidated = validator.skillValidation(req.body);
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
-        member.skills.push(skill)
+        member.skills.unshift(skill)
         member.save()
-        return res.json({data: member.skills})}
+        return res.json({msg: 'Skill added successfully',data: member.skills})}
     catch(err){
         console.log(err)
     }
@@ -139,9 +139,9 @@ router.post('/Interests/:id',async (req,res)=>{
         const isValidated = validator.interestsValidation(req.body);
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
 
-        member.interests.push(interest);
+        member.interests.unshift(interest);
         member.save()
-        res.json({data:member})
+        return res.json({msg:'Interest added successfully',data:member.interests})
     }
     catch(err){
         console.log(err)
@@ -168,9 +168,9 @@ router.post('/past-events/:id',async (req,res)=>{
             description,
             location
         };
-        member1.pastEvents.push(pastEvent);
+        member1.pastEvents.unshift(pastEvent);
         member1.save()
-        res.json(member1.pastEvents);
+        return res.json({msg:'Event added successfully',data: member1.pastEvents});
     }
     catch(err){
         console.log(err)
@@ -207,7 +207,7 @@ router.post('/completed-tasks/:id/:taskID',async (req,res)=>{
         return res.json({msg:'Completed Task successfully added', data: member.tasksCompleted});
     }
     catch(error) {
-        res.status(404).json({ membernotfound: 'Member not found' });
+        return res.status(404).json({msg: 'Task added successfully' ,membernotfound: 'Member not found' });
         console.log(error)
     }
 });
@@ -231,7 +231,7 @@ router.post('/certificates/:id',async (req,res)=>{
         };
         member.certificates.push(certificate);
         member.save()
-        return res.json({data:member.certificates});
+        return res.json({msg:'Certificate added successfully',data:member.certificates});
     }
     catch(err){
         console.log(err)

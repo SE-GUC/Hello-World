@@ -6,11 +6,11 @@ const funcs = require('./consultant_fn');
 //     expect(response.msg).toBe('Consultant Successfully created');
 // });
 
-// test(`Consultant ID should be 1 '5c9f942bbc90b634340a58c0'`, async ()=>{
-//     expect.assertions(1);
-//     const response = await funcs.getConsultant();
-//     expect(response.data._id).toBe('5c9f942bbc90b634340a58c0');
-// });
+test(`Consultant ID should be 1 '5c9f942bbc90b634340a58c0'`, async ()=>{
+    expect.assertions(1);
+    const response = await funcs.getConsultant();
+    expect(response.data._id).toBe('5c9f942bbc90b634340a58c0');
+});
 
 // test(`Message Should be 'Board Member successfully added'`, async ()=>{
 //     expect.assertions(1);
