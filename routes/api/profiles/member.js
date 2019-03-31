@@ -119,11 +119,8 @@ router.post('/skills/:id',async(req,res)=>{
         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message });
         member.skills.unshift(skill)
         member.save()
-<<<<<<< HEAD
-        return res.json({data: member.skills})}
-=======
+
         return res.json({msg: 'Skill added successfully',data: member.skills})}
->>>>>>> task
     catch(err){
         console.log(err)
     }
@@ -211,11 +208,7 @@ router.post('/completed-tasks/:id/:taskID',async (req,res)=>{
         return res.json({msg:'Completed Task successfully added', data: member.tasksCompleted});
     }
     catch(error) {
-<<<<<<< HEAD
-        res.status(404).json({ membernotfound: 'Member not found' });
-=======
         return res.status(404).json({msg: 'Task added successfully' ,membernotfound: 'Member not found' });
->>>>>>> task
         console.log(error)
     }
 });
@@ -239,11 +232,7 @@ router.post('/certificates/:id',async (req,res)=>{
         };
         member.certificates.push(certificate);
         member.save()
-<<<<<<< HEAD
-        return res.json({data:member.certificates});
-=======
         return res.json({msg:'Certificate added successfully',data:member.certificates});
->>>>>>> task
     }
     catch(err){
         console.log(err)
@@ -403,15 +392,6 @@ router.delete('/completed-tasks/:id/:taskID',async (req,res)=>{
     }
 });
 
-// @route DELETE api/profiles/member/certificates/:id
-// @desc Delete Certificates To Member's Profile
-// @access private
-router.delete('/certificates/:id',async (req,res)=>{
-    try{const {title,entity,description} = req.body;
-        const id = req.params.id;
-        const member =await Member.findById(id)
-
-<<<<<<< HEAD
 // @route DELETE api/profiles/member/skills/:id
 // @desc Delete A Skill To Member's Profile
 // @access private
@@ -527,8 +507,6 @@ router.delete('/certificates/:id',async (req,res)=>{
         const id = req.params.id;
         const member =await Member.findById(id)
 
-=======
->>>>>>> task
         if(!member){
             return res.status(400).json({ profile: 'There is no Member profile for this user' })}
         const isValidated = validator.certificateValidation(req.body);
@@ -540,11 +518,7 @@ router.delete('/certificates/:id',async (req,res)=>{
         };
         member.certificates.splice( member.certificates.indexOf(certificate), 1 );
         member.save()
-<<<<<<< HEAD
-        return res.json({data:member.certificates});
-=======
         return res.json({msg:'deleted',data:member.certificates});
->>>>>>> task
     }
     catch(err){
         console.log(err)

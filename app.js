@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const users = require('./routes/api/users');
 const tasks = require('./routes/api/tasks');
 const member = require('./routes/api/profiles/member');
-const expert = require('./routes/api/profiles/expert');
 const organization = require('./routes/api/profiles/organization');
 const partner = require('./routes/api/profiles/partner');
 const consultant = require('./routes/api/profiles/consultant');
@@ -51,11 +50,6 @@ app.get('/about', (req, res) => {
 app.use('/api/users',users);
 app.use('/api/tasks',tasks);
 app.use('/api/profiles/member',member);
-<<<<<<< HEAD
-app.use('/api/profiles/expert',expert);
-
-=======
->>>>>>> task
 app.use('/api/profiles/organization',organization);
 app.use('/api/profiles/partner',partner);
 app.use('/api/profiles/consultant',consultant);

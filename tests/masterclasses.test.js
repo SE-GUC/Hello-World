@@ -1,19 +1,5 @@
 const funcs = require('./masterclasses_fn');
 
-<<<<<<< HEAD
-
-// test('view  all masterclasses ', async ()=>{
-//     //expect.assertions(1);
-//     const response = await funcs.getallmasterclasses();
-//     expect(response.msg).toBe(msg);
-// });
-
-// test(`Message Should be 'Your Request was submitted successfully'` ,async ()=>{
-//     const msg = 'Your Request was submitted successfully';
-//     expect.assertions(1);
-//     const response = await funcs.memberRequiresAssessment();
-//     expect(response.msg).toBe(msg);
-=======
 // test(`Message Should be 'Your Request was submitted successfully'` , async ()=>{
 //     expect.assertions(1);
 //     const response = await funcs.requireAssessment();
@@ -42,5 +28,4 @@ test(`Recommended Masterclasses Length should be 5` , async ()=>{
 //     expect.assertions(1);
 //     const response = await funcs.Assess();
 //     expect(response.msg).toBe('Assessment successfully sent');
->>>>>>> task
 // });

@@ -53,11 +53,7 @@ const functions = {
                 description: description
             }
             const body = JSON.stringify(data);
-<<<<<<< HEAD
-            const response = await fetch('',{
-=======
             const response = await fetch('http://localhost:5000/api/profiles/consultant/board-members/5c9f93f2bc90b634340a58bf',{
->>>>>>> task
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
