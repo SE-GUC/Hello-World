@@ -15,6 +15,7 @@ const validator = require('../../../validation/applicationsValidation');
 // @access  Private
 router.post('/create/:id', (req,res)=>{
     const id = req.params.id;
+    res.json({msg:"el3bylla"})
     const organization = organizations.find(element => {
         return element.id == id;
     });
@@ -179,3 +180,4 @@ router.delete('/delete/:id',async (req,res)=>{
 });
 
 module.exports = router;
+
