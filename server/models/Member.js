@@ -53,7 +53,7 @@ const memberSchema = new Schema({
     {
       task: {
         type: Schema.Types.ObjectId,
-        ref: "tasks"
+        ref: "task"
       },
       date: {
         type: Date,
@@ -101,7 +101,7 @@ const memberSchema = new Schema({
     {
       masterclass: {
         type: Schema.Types.ObjectId,
-        ref: "masterclasses"
+        ref: "masterclass"
       },
       date: {
         type: Date,
@@ -111,7 +111,7 @@ const memberSchema = new Schema({
   ],
   recommendedMasterclasses: {
     type: [Schema.Types.ObjectId],
-    ref: "masterclasses"
+    ref: "masterclass"
   },
   notifications: [
     {

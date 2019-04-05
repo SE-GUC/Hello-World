@@ -23,6 +23,7 @@ class Member extends Component {
         <div>
           <MemberHeader profile={profile} />
           <MemberAbout profile={profile} />
+          <MemberCred profile={profile} />
         </div>
       );
     }
@@ -31,7 +32,6 @@ class Member extends Component {
 }
 
 Member.propTypes = {
-  profile: PropTypes.object.isRequired,
   getMember: PropTypes.func.isRequired
 };
 

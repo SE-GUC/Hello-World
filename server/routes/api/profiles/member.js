@@ -15,11 +15,19 @@ const validator = require("../../../validation/memberValidation");
 // @access private
 router.get("/:id", async (req, res) => {
   try {
-    const member = await Member.findById(req.params.id);
+    const member = await Member.findById(req.params.id)
+      .populate("tasksCompleted.task", [
+        "date",
+        "experienceLevel",
+        "monetaryCompensation"
+      ])
+      .populate("masterclasses.masterclass", ["name", "description"])
+      .populate("partner", ["name"]);
     if (!member) return res.status(404).send({ error: "Member not found" });
     return res.json({ data: member });
   } catch (error) {
-    return res.status(404).json({ membernotfound: "Member not found" });
+    res.status(404).json({ membernotfound: "Member not found" });
+    console.log(error);
   }
 });
 

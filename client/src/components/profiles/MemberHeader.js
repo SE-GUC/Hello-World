@@ -16,8 +16,8 @@ class MemberHeader extends Component {
               <h1 className="display-4 text-center">{profile.name}</h1>
               <p className="lead text-center">{profile.email}</p>
               <p>
-                {profile.social === null ||
-                profile.social.twitter === null ? null : (
+                {profile.social == null ? null : profile.social.twitter ==
+                  null ? null : (
                   <a
                     className="text-white p-2"
                     href={profile.social.twitter}
@@ -25,9 +25,9 @@ class MemberHeader extends Component {
                   >
                     <i className="fab fa-twitter fa-2x" />
                   </a>
-                )}
-                {profile.social === null ||
-                profile.social.facebook === null ? null : (
+                )}{" "}
+                {profile.social == null ? null : profile.social.facebook ==
+                  null ? null : (
                   <a
                     className="text-white p-2"
                     href={profile.social.facebook}
@@ -35,9 +35,9 @@ class MemberHeader extends Component {
                   >
                     <i className="fab fa-facebook fa-2x" />
                   </a>
-                )}
-                {profile.social === null ||
-                profile.social.linkedin == null ? null : (
+                )}{" "}
+                {profile.social == null ? null : profile.social.linkedin ==
+                  null ? null : (
                   <a
                     className="text-white p-2"
                     href={profile.social.linkedin}
@@ -45,9 +45,9 @@ class MemberHeader extends Component {
                   >
                     <i className="fab fa-linkedin fa-2x" />
                   </a>
-                )}
-                {profile.social === null ||
-                profile.social.youtube == null ? null : (
+                )}{" "}
+                {profile.social == null ? null : profile.social.youtube ==
+                  null ? null : (
                   <a
                     className="text-white p-2"
                     href={profile.social.youtube}
@@ -55,9 +55,9 @@ class MemberHeader extends Component {
                   >
                     <i className="fab fa-youtube fa-2x" />
                   </a>
-                )}
-                {profile.social === null ||
-                profile.social.instagram == null ? null : (
+                )}{" "}
+                {profile.social == null ? null : profile.social.instagram ==
+                  null ? null : (
                   <a
                     className="text-white p-2"
                     href={profile.social.instagram}
