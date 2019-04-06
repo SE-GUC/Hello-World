@@ -1,8 +1,12 @@
-import react , {component} from react;
-import {getPartner} from "../../actions/partnerActions"
+import React , {Component} from "react";
+import { getPartner } from "../../actions/partnerActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-class Partner extends component(){
+import Spinner from "../common/Spinner";
+import PartnerHeader from "./MemberHeader";
+import PartnerCred from "./MemberCred";
+import PartnerAbout from "./MemberAbout";
+class Partner extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         this.props.getPartner(id);
@@ -15,9 +19,9 @@ class Partner extends component(){
     } else {
       profileContent = (
         <div>
-          <MemberHeader profile={profile} />
-          <MemberAbout profile={profile} />
-          <MemberCred profile={profile} />
+          <PartnerHeader profile={profile} />
+          <PartnerAbout profile={profile} />
+          <PartnerCred profile={profile} />
         </div>
       );
     }
@@ -25,15 +29,15 @@ class Partner extends component(){
   }
 }
 
-Member.propTypes = {
-  getMember: PropTypes.func.isRequired
+Partner.propTypes = {
+  getPartner: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.member.profile
+  profile: state.Partner.profile
 });
 
 export default connect(
   mapStateToProps,
-  { getMember }
-)(Member);
+  { getPartner }
+)(Partner);
