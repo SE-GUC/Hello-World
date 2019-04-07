@@ -52,7 +52,7 @@ export default class PartnerCred extends Component {
           {feedback.review === "" ? null : (
             <span>
               <strong>review: </strong>{" "}
-              {freedback.review}
+              {feedback.review}
             </span>
           )}
         </p>
@@ -78,19 +78,15 @@ export default class PartnerCred extends Component {
               <p className="text-center">No Tasks Listed</p>
             )}
           </div>
-        </div>
-        <hr />
-        <div className="row">
           <div className="col-md-6">
-            <h3 className="text-center text-info">Certificates</h3>
-            {certs.length > 0 ? (
+            <h3 className="text-center text-info">Feed-back</h3>
+            {tasks.length > 0 ? (
               <ul className="list-group">{feedbk}</ul>
             ) : (
-              <p className="text-center">No Certificates Listed</p>
+              <p className="text-center">No feed-backs Listed</p>
             )}
           </div>
         </div>
-        <hr />
       </React.Fragment>
     );
   }
