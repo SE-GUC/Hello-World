@@ -1,2 +1,2 @@
 export const GET_MEMBER = "GET_MEMBER";
-export const GET_PARTNER = "GET_PARTNER";
+export const GET_CONSULTANT = "GET_CONSULTANT";
