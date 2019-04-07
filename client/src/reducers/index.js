@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import memberReducer from "./memberReducer";
+AD;
 import applicationReducer from "./applicationReducer";
 import taskReducer from "./taskReducer";
 import partnerReducer from "./partnerReducer";
