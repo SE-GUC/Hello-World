@@ -1,4 +1,4 @@
-import { GET_PARTNER } from "../actions/types";
+import { GET_CONSULTANT } from "../actions/types";
 
 const initialState = {
   profile: null
@@ -6,7 +6,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_PARTNER:
+    case GET_CONSULTANT:
       return {
         ...state,
         profile: action.payload
