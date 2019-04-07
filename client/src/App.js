@@ -8,6 +8,7 @@ import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
 import Member from "./components/profiles/Member";
 import Partner from "./components/profiles/Partner";
+import Masterclass from "./components/profiles/Masterclass";
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
             <div className="container">
             <Route exact path="/api/profiles/partner/:id" component={Partner}/> 
               <Route exact path="/api/profiles/member/:id" component={Member} />
+              <Route exact path="/api/masterclasses/all/:id" component={Masterclass} />
             </div>
             <Footer />
           </div>
