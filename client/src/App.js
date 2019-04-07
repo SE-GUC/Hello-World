@@ -9,6 +9,7 @@ import Footer from "./components/layout/Footer";
 import Member from "./components/profiles/Member";
 import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
+import Partner from "./components/profiles/Partner";
 
 class App extends Component {
   render() {
@@ -19,6 +20,11 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
+              <Route
+                exact
+                path="/api/profiles/partner/:id"
+                component={Partner}
+              />
               <Route exact path="/api/profiles/member/:id" component={Member} />
               <Route
                 exact
