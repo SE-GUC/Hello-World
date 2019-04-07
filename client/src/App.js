@@ -7,6 +7,8 @@ import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
 import Member from "./components/profiles/Member";
+import Application from "./components/applications/Application";
+import Task from "./components/tasks/Task";
 
 class App extends Component {
   render() {
@@ -18,6 +20,16 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <div className="container">
               <Route exact path="/api/profiles/member/:id" component={Member} />
+              <Route
+                exact
+                path="/api/applications/admin/:id/:appID"
+                component={Application}
+              />
+              <Route
+                exact
+                path="/api/tasks/admin/:id/:taskID"
+                component={Task}
+              />
             </div>
             <Footer />
           </div>
