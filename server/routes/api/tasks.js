@@ -247,6 +247,27 @@ router.get("/admin/:id/:taskID", async (req, res) => {
   }
 });
 
+// @route   GET api/tasks/consultant/:id/:taskID
+// @desc    Member Gets Task
+// @access  Private
+router.get("/member/:id/:taskID", async (req, res) => {
+  try {
+    const member = await Member.findById(req.params.id);
+    if (!member) return res.status(404).send({ error: "Member not found" });
+
+    const task = await Task.findById(req.params.taskID).populate("application");
+    if (!task) return res.status(404).send({ error: "Task not found" });
+
+    if (!task.reviewed)
+      return res.status(404).send({ error: "Task not reviewed" });
+
+    return res.json({ data: task });
+  } catch (error) {
+    res.status(404).json({ membernotfound: "Member not found" });
+    console.log(error);
+  }
+});
+
 // @route   POST api/tasks/admin/review/:id/:taskID
 // @desc    Admin Reviews Task
 // @access  Private

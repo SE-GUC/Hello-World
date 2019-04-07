@@ -273,6 +273,31 @@ router.get("/all/:id", async (req, res) => {
   }
 });
 
+// @route   GET api/applications/consultant/:id/appID
+// @desc    Consultant gets Application
+// @access  Private
+router.get("/consultant/:id/:appID", async (req, res) => {
+  try {
+    const consultant = await Consultant.findById(req.params.id);
+    if (!consultant)
+      return res.status(404).send({ error: "Cosnultant not found" });
+
+    const application = await Application.findById(req.params.appID).populate({
+      path: "partner",
+      populate: { path: "organization" }
+    });
+    if (!application)
+      return res.status(404).send({ error: "Application not found" });
+    if (!application.reviewed)
+      return res.status(404).send({ error: "Application not Reviewed" });
+
+    return res.json({ data: application });
+  } catch (error) {
+    res.status(404).json({ consultantnotfound: "Consultant not found" });
+    console.log(error);
+  }
+});
+
 // @route   POST api/applications/apply/:id/:appID
 // @desc    Apply For an Application
 // @access  Private
