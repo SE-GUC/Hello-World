@@ -10,7 +10,8 @@ class Partner extends Component {
     componentDidMount() {
         const { id } = this.props.match.params;
         this.props.getPartner(id);
-}render() {
+}
+render() {
     const { profile } = this.props;
     let profileContent;
 
@@ -33,8 +34,8 @@ Partner.propTypes = {
   getPartner: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  profile: state.Partner.profile
+const mapStateToProps = (state) => ({
+  profile: state.partner.profile
 });
 
 export default connect(

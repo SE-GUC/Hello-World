@@ -18,8 +18,8 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
+            <Route exact path="/api/profiles/partner/:id" component={Partner}/> 
               <Route exact path="/api/profiles/member/:id" component={Member} />
-              <Route exact path="/api/profiles/partner/:id" component={Partner}/>
             </div>
             <Footer />
           </div>
