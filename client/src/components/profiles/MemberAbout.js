@@ -20,8 +20,11 @@ export default class MemberAbout extends Component {
           <div className="card card-body bg-light mb-3">
             <h3 className="text-center text-info">{name}'s Bio</h3>
             <p className="lead">
-              <span>age: {profile.age} - </span>
-              <span>phone: {profile.phone}</span>
+              <strong>age: </strong>
+              <span>{profile.age}</span>
+              <br />
+              <strong>phone: </strong>
+              <span>{profile.phone}</span>
             </p>
             <hr />
             <h3 className="text-center text-info">Skills</h3>

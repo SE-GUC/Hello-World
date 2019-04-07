@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 
-export default class PartnerAbout extends Component {
+export default class EOAbout extends Component {
   render() {
     const { profile } = this.props;
-    const name = profile.organization.name;
-    const feildOfWork = profile.feildOfWork;
-    const boardMembers = profile.boardMembers.map((boardMembers, index) => (
+    const name = profile.name;
+    const certificates = profile.certificates;
+    const trainers = profile.trainers.map((trainers, index) => (
       <div key={index} className="p-3">
-        <i className="fa fa-check" /> {boardMembers}
+        <i className="fa fa-check" /> {trainers}
       </div>
     ));
-    const pastProjects = profile.pastProjects.map((pastProjects, index) => (
+    const courses = profile.courses.map((courses, index) => (
       <div key={index} className="p-3">
-        <i className="fa fa-check" /> {pastProjects}
+        <i className="fa fa-check" /> {courses}
       </div>
     ));
     return (
@@ -20,23 +20,22 @@ export default class PartnerAbout extends Component {
         <div className="col-md-12">
           <div className="card card-body bg-light mb-3">
             <h3 className="text-center text-info">{name}'s Bio</h3>
-            <h3 className="text-center text-info">feild of work:{feildOfWork}</h3>
             <p className="lead">
-              <span>age: {profile.organization.age} - </span>
-              <span>phone: {profile.organization.phone}</span>
+              <span>price: {profile.price} - </span>
+              <span>description: {profile.description}</span>
             </p>
             <hr />
-            <h3 className="text-center text-info">boardMembers</h3>
+            <h3 className="text-center text-info">trainers</h3>
             <div className="row">
               <div className="d-flex flex-wrap justify-content-center align-items-center">
-                {boardMembers}
+                {name}
               </div>
             </div>
             <hr />
-            <h3 className="text-center text-info">pastProjects</h3>
+            <h3 className="text-center text-info">courses</h3>
             <div className="row">
               <div className="d-flex flex-wrap justify-content-center align-items-center">
-                {pastProjects}
+                {title}
               </div>
             </div>
           </div>

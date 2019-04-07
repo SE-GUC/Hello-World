@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-class MemberHeader extends Component {
+class EOHeader extends Component {
   render() {
     const { profile } = this.props;
     return (
@@ -75,4 +75,4 @@ class MemberHeader extends Component {
   }
 }
 
-export default MemberHeader;
+export default EOHeader;

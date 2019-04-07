@@ -45,6 +45,9 @@ app.get("/about", (req, res) => {
   res.json({ msg: "About Us" });
 });
 
+//to handle cors problem 
+
+
 // Use Routes
 app.use("/api/users", users);
 app.use("/api/tasks", tasks);

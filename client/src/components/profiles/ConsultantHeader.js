@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class partnerHeader extends Component {
+export default class consultantHeader extends Component {
   render() {
     const { organization } = this.props.profile;
     return (

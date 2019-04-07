@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { getPartner } from "../../actions/partnerActions";
+import { getConsultant } from "../../actions/consultantActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
-import PartnerHeader from "./PartnerHeader";
+import ConsultantHeader from "./ConsultantHeader";
 
-class Partner extends Component {
+class Consultant extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getPartner(id);
+    this.props.getConsultant(id);
   }
   render() {
     const { profile } = this.props;
@@ -18,8 +18,7 @@ class Partner extends Component {
       profileContent = <Spinner />;
     } else {
       const {
-        pastProjects,
-        fieldOfWork,
+        reports,
         organization,
         boardMembers,
         events
@@ -52,7 +51,7 @@ class Partner extends Component {
 
       profileContent = (
         <div>
-          <PartnerHeader profile={this.props.profile} />
+          <ConsultantHeader profile={this.props.profile} />
           <div className="row">
             <div className="col-md-12">
               <div className="card card-body bg-light mb-3">
@@ -65,9 +64,6 @@ class Partner extends Component {
                   <br />
                   <strong>phone: </strong>
                   <span>{profile.organization.phone}</span>
-                  <br />
-                  <strong>Field Of Work: </strong>
-                  <span>{fieldOfWork}</span>
                 </p>
               </div>
             </div>
@@ -97,15 +93,15 @@ class Partner extends Component {
   }
 }
 
-Partner.propTypes = {
-  getPartner: PropTypes.func.isRequired
+Consultant.propTypes = {
+  getConsultant: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.partner.profile
+  profile: state.consultant.profile
 });
 
 export default connect(
   mapStateToProps,
-  { getPartner }
-)(Partner);
+  { getConsultant }
+)(Consultant);
