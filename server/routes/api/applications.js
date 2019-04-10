@@ -338,7 +338,8 @@ router.post("/respond/:id/:id2/:appID", async (req, res) => {
     if (!admin) return res.status(404).send({ error: "Admin not found" });
 
     const consultant = await Consultant.findById(req.params.id2);
-    if (!admin) return res.status(404).send({ error: "Consultant not found" });
+    if (!consultant)
+      return res.status(404).send({ error: "Consultant not found" });
 
     const application = await Application.findById(req.params.appID);
     if (!application)

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
-import axios from 'axios' 
+import axios from "axios";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
@@ -15,15 +15,9 @@ import Consultant from "./components/profiles/Consultant";
 import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
 
-
 class App extends Component {
- componentDidMount(){
-  axios.get('http://localhost:5000/api/profiles/education/courses/5c9f6fc00e57b6046a44987f').then(res => console.log(res.data))
- }
-
   render() {
     return (
-
       <Provider store={store}>
         <Router>
           <div className="App">
@@ -68,7 +62,6 @@ class App extends Component {
           </div>
         </Router>
       </Provider>
-
     );
   }
 }
