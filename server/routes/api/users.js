@@ -28,10 +28,10 @@ router.post("/register", async (req, res) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     if (user) {
-      return res.status(400).json({ data: "Username not available" });
+      return res.status(400).json({ error: "Username not available" });
     }
     if (req.body.password !== req.body.password2) {
-      return res.status(400).json({ data: "Passwords do not match" });
+      return res.status(400).json({ error: "Passwords do not match" });
     }
     const newUser = new User({
       username: req.body.username,

@@ -7,7 +7,7 @@ import axios from "axios";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
-
+import Register from "./components/auth/Register";
 import Member from "./components/profiles/Member";
 import Partner from "./components/profiles/Partner";
 import Masterclass from "./components/profiles/Masterclass";
@@ -24,8 +24,13 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
+              <Route exact path="/register" component={Register} />
               <Route exact path="/api/profiles/member/:id" component={Member} />
-              <Route exact path="/api/masterclasses/all/:id" component={Masterclass} />
+              <Route
+                exact
+                path="/api/masterclasses/all/:id"
+                component={Masterclass}
+              />
 
               <Route
                 exact
