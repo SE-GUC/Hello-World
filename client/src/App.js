@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
@@ -14,6 +14,7 @@ import Masterclass from "./components/profiles/Masterclass";
 import Consultant from "./components/profiles/Consultant";
 import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
+import Members from "./components/members/Members";
 
 class App extends Component {
   render() {
@@ -26,6 +27,11 @@ class App extends Component {
             <div className="container">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
+              <Route
+                exact
+                path="/api/profiles/members/all"
+                component={Members}
+              />
               <Route exact path="/api/profiles/member/:id" component={Member} />
               <Route
                 exact

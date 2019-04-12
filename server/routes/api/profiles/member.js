@@ -28,27 +28,23 @@ router.get("/all", async (req, res) => {
 // @route GET api/profiles/member/:id
 // @desc Get Member's Profile by ID
 // @access private
-router.get(
-  "/:id",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const member = await Member.findById(req.params.id)
-        .populate("tasksCompleted.task", [
-          "date",
-          "experienceLevel",
-          "monetaryCompensation"
-        ])
-        .populate("masterclasses.masterclass", ["name", "description"])
-        .populate("partner", ["name"]);
-      if (!member) return res.status(404).send({ error: "Member not found" });
-      return res.json({ data: member });
-    } catch (error) {
-      res.status(404).json({ membernotfound: "Member not found" });
-      console.log(error);
-    }
+router.get("/:id", async (req, res) => {
+  try {
+    const member = await Member.findById(req.params.id)
+      .populate("tasksCompleted.task", [
+        "date",
+        "experienceLevel",
+        "monetaryCompensation"
+      ])
+      .populate("masterclasses.masterclass", ["name", "description"])
+      .populate("partner", ["name"]);
+    if (!member) return res.status(404).send({ error: "Member not found" });
+    return res.json({ data: member });
+  } catch (error) {
+    res.status(404).json({ membernotfound: "Member not found" });
+    console.log(error);
   }
-);
+});
 
 // @route post api/profiles/member
 // @desc Creates Member Profile
