@@ -68,15 +68,17 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res
       .status(404)
-      .json({ unregistered: "No user registered by this username" });
+      .json({ error: "No user registered by this username" });
   }
-  const isMatch = bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(400).json({ error: "Password Incorrect" });
-  }
-  const payload = { id: user.id, username: user.username };
-  jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
-    res.json({ success: true, token: "Bearer " + token });
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (!result) {
+      return res.status(400).json({ error: "Password Incorrect" });
+    } else {
+      const payload = { id: user.id, username: user.username };
+      jwt.sign(payload, keys.secretOrKey, { expiresIn: 3600 }, (err, token) => {
+        return res.json({ success: true, token: "Bearer " + token });
+      });
+    }
   });
 });
 
