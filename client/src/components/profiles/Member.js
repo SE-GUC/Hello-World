@@ -16,7 +16,7 @@ class Member extends Component {
     const { profile } = this.props;
     let profileContent;
 
-    if (profile === null) {
+    if (profile == null || Object.keys(profile) == 0) {
       profileContent = <Spinner />;
     } else {
       profileContent = (

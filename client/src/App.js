@@ -15,6 +15,9 @@ import Consultant from "./components/profiles/Consultant";
 import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
+import CreateMember from "./components/create-profile/CreateMember";
+import dashboard from "./components/dashboard/dashboard";
+import PrivateRoute from "./components/common/PrivateRoute";
 
 class App extends Component {
   render() {
@@ -33,6 +36,16 @@ class App extends Component {
                 component={Members}
               />
               <Route exact path="/api/profiles/member/:id" component={Member} />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-member"
+                  component={CreateMember}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/dashboard" component={dashboard} />
+              </Switch>
               <Route
                 exact
                 path="/api/masterclasses/all/:id"

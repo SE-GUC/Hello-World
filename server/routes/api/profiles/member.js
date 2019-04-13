@@ -46,6 +46,30 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// @route GET api/profiles/member
+// @desc Get Current Member's Profile
+// @access private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const member = await Member.findOne({ user: req.user.id })
+        .populate("tasksCompleted.task", [
+          "date",
+          "experienceLevel",
+          "monetaryCompensation"
+        ])
+        .populate("masterclasses.masterclass", ["name", "description"])
+        .populate("partner", ["name"]);
+      if (!member) return res.status(404).send({ error: "Member not found" });
+      return res.json({ data: member });
+    } catch (error) {
+      return res.status(404).json({ membernotfound: "Member not found" });
+    }
+  }
+);
+
 // @route post api/profiles/member
 // @desc Creates Member Profile
 // @access private
