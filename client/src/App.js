@@ -17,8 +17,10 @@ import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
 import EditMember from "./components/edit-profile/EditMember";
+import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
+
 
 class App extends Component {
   render() {
@@ -42,6 +44,13 @@ class App extends Component {
                   exact
                   path="/api/profiles/create-member"
                   component={CreateMember}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/addSkils"
+                  component={addSkiils}
                 />
               </Switch>
               <Switch>
@@ -100,3 +109,4 @@ class App extends Component {
 }
 
 export default App;
+
