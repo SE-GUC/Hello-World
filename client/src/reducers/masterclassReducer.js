@@ -1,21 +1,15 @@
-import { GET_MEMBER, GET_MEMBERS } from "../actions/types";
+import { GET_MASTERCLASS } from "../actions/types";
 
 const initialState = {
-  profile: null,
-  profiles: null
+  profile: null
 };
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_MEMBER:
+    case GET_MASTERCLASS:
       return {
         ...state,
         profile: action.payload
-      };
-    case GET_MEMBERS:
-      return {
-        ...state,
-        profiles: action.payload
       };
     default:
       return state;
