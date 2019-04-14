@@ -4,14 +4,15 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {createPartner } from "../../actions/partnerActions";
+import {postApplication}  from "../../actions/applicationActions";
 
-class CreatePartner extends Component {
+class parnterAppSubmit extends Component {
   constructor(props) {
     super(props);
     this.state = {
      
-      fieldOfWork:"",
+      description:"",
+      needConsultancy:false,
       errors: {}
     };
 
@@ -27,11 +28,12 @@ class CreatePartner extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const partnerData = {
-     fieldOfWork:this.state.fieldOfWork,
+    const ApplicationData = {
+     description:this.state.description,
+     needConsultancy:this.state.needConsultancy
     };
 
-    this.props.CreatePartner(partnerData, this.props.history);
+    this.props.postApplication(ApplicationData, this.props.history);
   }
 
   onChange(e) {
@@ -47,21 +49,21 @@ class CreatePartner extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your field</p>
+              <p className="lead text-center">Tell us more about your Application</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="*field-of-work"
-                  name="fieldOfWork"
-                  value={this.state.fieldOfWork}
+                  placeholder="*desc"
+                  name="description"
+                  value={this.state.description}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"fieldOfWork" is required'
+                    errors.error == '"description" is required'
                       ? errors.error
-                      : errors.error == '"fieldOfWork" is not allowed to be empty'
+                      : errors.error == '"description" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
-                        '"FieldOfWork" length must be at least 3 characters long'
+                        '"description" length must be at least 3 characters long'
                       ? errors.error
                       : null
                   }
@@ -80,7 +82,7 @@ class CreatePartner extends Component {
   }
 }
 
-createPartner.propTypes = {
+parnterAppSubmit.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -92,5 +94,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPartner }
-)(withRouter(CreatePartner));
+  { postApplication }
+)(withRouter(parnterAppSubmit));

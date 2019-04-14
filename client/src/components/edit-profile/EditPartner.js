@@ -4,23 +4,32 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {createPartner } from "../../actions/partnerActions";
+import { editPartner, getCurrentPartner } from "../../actions/partnerActions";
 
-class CreatePartner extends Component {
+class EditPartner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
-      fieldOfWork:"",
-      errors: {}
+      fieldOfWork:""
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentDidMount() {
+    this.props.getCurrentPartner();
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    if (nextProps.parnter) {
+      const profile = nextProps.parnter;
+        profile.fieldOfWork = profile.fieldOfWork !== null ? profile.fieldOfWork: "";
+      this.setState({
+       fieldOfWork: profile.fieldOfWork
+      });
     }
   }
 
@@ -28,10 +37,11 @@ class CreatePartner extends Component {
     e.preventDefault();
 
     const partnerData = {
-     fieldOfWork:this.state.fieldOfWork,
-    };
-
-    this.props.CreatePartner(partnerData, this.props.history);
+      fieldOfWork: this.state.fieldOfWork};
+    if (partnerData.name == "") {
+      delete partnerData.fieldOfWork;
+    }
+    this.props.editPartner(partnerData, this.props.history);
   }
 
   onChange(e) {
@@ -46,13 +56,13 @@ class CreatePartner extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your field</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Edit parnter Profile</h1>
+              <p className="lead text-center">
+              </p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="*field-of-work"
-                  name="fieldOfWork"
+                  placeholder="fieldOfWork"
+                  name="field of work"
                   value={this.state.fieldOfWork}
                   onChange={this.onChange}
                   error={
@@ -61,11 +71,12 @@ class CreatePartner extends Component {
                       : errors.error == '"fieldOfWork" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
-                        '"FieldOfWork" length must be at least 3 characters long'
+                        '"fieldOfWork" length must be at least 3 characters long'
                       ? errors.error
                       : null
                   }
                 />
+                
                 <input
                   type="submit"
                   value="Submit"
@@ -80,7 +91,9 @@ class CreatePartner extends Component {
   }
 }
 
-createPartner.propTypes = {
+EditPartner.propTypes = {
+  editPartner: PropTypes.func.isRequired,
+  getCurrentPartner: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -92,5 +105,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPartner }
-)(withRouter(CreatePartner));
+  { editPartner, getCurrentPartner }
+)(withRouter(EditPartner));

@@ -6,7 +6,7 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
 import { createOrganization } from "../../actions/OrganizationActions";
 
-class CreateMember extends Component {
+class CreateOrganization extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,7 +79,7 @@ class CreateMember extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Member Profile</h1>
+              <h1 className="display-4 text-center">Create Organization Profile</h1>
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -144,8 +144,7 @@ class CreateMember extends Component {
                       ? errors.error
                       : null
                   }
-                  info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP)"
+                  
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -238,7 +237,7 @@ class CreateMember extends Component {
   }
 }
 
-createOrganization.propTypes = {
+CreateOrganization.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -251,4 +250,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { createOrganization }
-)(withRouter(createOrganization));
+)(withRouter(CreateOrganization));
