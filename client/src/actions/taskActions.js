@@ -6,12 +6,7 @@ const fetch = require("node-fetch");
 // Get Task
 export const getTask = (id, taskID) => async dispatch => {
   const res = await fetch(
-    `http://localhost:5000/api/tasks/admin/${id}/${taskID}`,
-    {
-      headers: {
-        Authorization: localStorage.getItem("jwtToken")
-      }
-    }
+    `http://localhost:5000/api/tasks/admin/${id}/${taskID}`
   );
 
   const json = await res.json();
@@ -24,12 +19,7 @@ export const getTask = (id, taskID) => async dispatch => {
 // Get Reviewed Task
 export const getReviewedTask = (id, taskID) => async dispatch => {
   const res = await fetch(
-    `http://localhost:5000/api/tasks/member/${id}/${taskID}`,
-    {
-      headers: {
-        Authorization: localStorage.getItem("jwtToken")
-      }
-    }
+    `http://localhost:5000/api/tasks/member/${id}/${taskID}`
   );
 
   const json = await res.json();

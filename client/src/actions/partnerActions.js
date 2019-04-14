@@ -3,12 +3,7 @@ const fetch = require("node-fetch");
 
 // Get Partner
 export const getPartner = id => async dispatch => {
-  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
-    headers: {
-      Authorization: localStorage.getItem("jwtToken")
-    }
-  });
-
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`);
 
   const json = await res.json();
   dispatch({
