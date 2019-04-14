@@ -16,9 +16,19 @@ import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
+import EditMember from "./components/edit-profile/EditMember";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
+<<<<<<< HEAD
 import TaskForm from "./components/tasks/TaskForm";
+=======
+import { create } from "domain";
+import CreatePartner from "./components/create-profile/CreatePartner";
+import CreateOrganization from "./components/create-profile/CreateOrganization";
+import EditPartner from "./components/edit-profile/EditPartner";
+import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+
+>>>>>>> 0d07bcdbdef85a8f19a4c88df5b47e01fa9b2260
 
 class App extends Component {
   render() {
@@ -42,6 +52,43 @@ class App extends Component {
                   exact
                   path="/api/profiles/create-member"
                   component={CreateMember}
+                />
+              </Switch>
+              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-Partner"
+                  component={CreatePartner}
+                />
+              </Switch>
+              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-organization"
+                  component={CreateOrganization}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/Post-application"
+                  component={partnerAppSubmit}
+                />
+                </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/edit-member"
+                  component={EditMember}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/edit-Partner"
+                  component={EditPartner}
                 />
               </Switch>
               <Switch>

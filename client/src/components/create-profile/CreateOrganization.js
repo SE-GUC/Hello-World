@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createMember } from "../../actions/memberActions";
+import { createOrganization } from "../../actions/OrganizationActions";
 
-class CreateMember extends Component {
+class CreateOrganization extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,7 @@ class CreateMember extends Component {
       age: "",
       phone: "",
       email: "",
-      interests: "",
-      skills: "",
+      address:"",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -36,13 +35,12 @@ class CreateMember extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const memberData = {
+    const organizationData = {
       name: this.state.name,
       age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
-      skills: this.state.skills,
-      interests: this.state.interests,
+      address: this.state.address,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
@@ -50,23 +48,23 @@ class CreateMember extends Component {
       instagram: this.state.instagram
     };
 
-    if (memberData.twitter == "") {
-      delete memberData.twitter;
+    if (organizationData.twitter == "") {
+      delete organizationData.twitter;
     }
-    if (memberData.youtube == "") {
-      delete memberData.youtube;
+    if (organizationData.youtube == "") {
+      delete organizationData.youtube;
     }
-    if (memberData.facebook == "") {
-      delete memberData.facebook;
+    if (organizationData.facebook == "") {
+      delete organizationData.facebook;
     }
-    if (memberData.instagram == "") {
-      delete memberData.instagram;
+    if (organizationData.instagram == "") {
+      delete organizationData.instagram;
     }
-    if (memberData.linkedin == "") {
-      delete memberData.linkedin;
+    if (organizationData.linkedin == "") {
+      delete organizationData.linkedin;
     }
 
-    this.props.createMember(memberData, this.props.history);
+    this.props.createOrganization(organizationData, this.props.history);
   }
 
   onChange(e) {
@@ -81,7 +79,7 @@ class CreateMember extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Member Profile</h1>
+              <h1 className="display-4 text-center">Create Organization Profile</h1>
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -137,30 +135,16 @@ class CreateMember extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Skills"
-                  name="skills"
-                  value={this.state.skills}
+                  placeholder="*address"
+                  name="address"
+                  value={this.state.address}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"skills" is not allowed to be empty'
+                    errors.error == '"address" is not allowed to be empty'
                       ? errors.error
                       : null
                   }
-                  info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP)"
-                />
-                <TextFieldGroup
-                  placeholder="Interests"
-                  name="interests"
-                  value={this.state.interests}
-                  onChange={this.onChange}
-                  error={
-                    errors.error == '"interests" is not allowed to be empty'
-                      ? errors.error
-                      : null
-                  }
-                  info="Please use comma separated values (eg.
-                    Football,Reading,Cinema)"
+                  
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -253,17 +237,17 @@ class CreateMember extends Component {
   }
 }
 
-CreateMember.propTypes = {
+CreateOrganization.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.member,
+  profile: state.organization,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createMember }
-)(withRouter(CreateMember));
+  { createOrganization }
+)(withRouter(CreateOrganization));

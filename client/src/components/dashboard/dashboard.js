@@ -4,7 +4,7 @@ import { getCurrentMember } from "../../actions/memberActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import { getCurrentOrganization } from "../../actions/OrganizationActions";
 class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();
@@ -28,6 +28,12 @@ class dashboard extends Component {
                 {profile.name}
               </Link>
             </p>
+            <Link
+              to="/api/profiles/edit-member"
+              className="btn btn-lg btn-info"
+            >
+              Edit Profile
+            </Link>
           </div>
         );
       } else {
