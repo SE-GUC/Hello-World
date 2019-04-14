@@ -19,16 +19,14 @@ import CreateMember from "./components/create-profile/CreateMember";
 import EditMember from "./components/edit-profile/EditMember";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-<<<<<<< HEAD
+
 import TaskForm from "./components/tasks/TaskForm";
-=======
+
 import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-
->>>>>>> 0d07bcdbdef85a8f19a4c88df5b47e01fa9b2260
 
 class App extends Component {
   render() {
@@ -76,7 +74,7 @@ class App extends Component {
                   path="/api/profiles/Post-application"
                   component={partnerAppSubmit}
                 />
-                </Switch>
+              </Switch>
               <Switch>
                 <PrivateRoute
                   exact
@@ -94,19 +92,12 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
-
-              <Route
-                exact
-                path="/taskform"
-                component={TaskForm}
-              /> 
-
+              <Route exact path="/taskform" component={TaskForm} />
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
                 component={Masterclass}
               />
-
               <Route
                 exact
                 path="/api/profiles/partner/:id"
