@@ -1,5 +1,5 @@
 import { GET_APPLICATION } from "../actions/types";
-
+import {POST_APPLICATION} from "../aactions/types";
 import { GET_REVIEWED_APPLICATION } from "../actions/types";
 
 
@@ -19,6 +19,7 @@ export default function(state = initialState, action) {
         ...state,
         application: action.payload
       };
+
     default:
       return state;
   }
