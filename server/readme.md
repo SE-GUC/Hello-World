@@ -1,1 +1,1 @@
-https://hello10world10.herokuapp.com/
+https://thehelloworld.herokuapp.com/
