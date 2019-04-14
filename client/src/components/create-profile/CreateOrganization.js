@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createOrganization } from "../../actions/OrganizationActions";
+import { createOrganization } from "../../actions/organizationActions";
 
 class CreateOrganization extends Component {
   constructor(props) {

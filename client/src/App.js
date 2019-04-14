@@ -26,7 +26,6 @@ import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 
-
 class App extends Component {
   render() {
     return (
@@ -51,7 +50,6 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
-              />
               <Switch>
                 <PrivateRoute
                   exact
@@ -59,7 +57,6 @@ class App extends Component {
                   component={CreatePartner}
                 />
               </Switch>
-              />
               <Switch>
                 <PrivateRoute
                   exact
@@ -73,7 +70,7 @@ class App extends Component {
                   path="/api/profiles/Post-application"
                   component={partnerAppSubmit}
                 />
-                </Switch>
+              </Switch>
               <Switch>
                 <PrivateRoute
                   exact
@@ -96,7 +93,6 @@ class App extends Component {
                 path="/api/masterclasses/all/:id"
                 component={Masterclass}
               />
-
               <Route
                 exact
                 path="/api/profiles/partner/:id"
