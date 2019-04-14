@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createOrganization } from "../../actions/organizationActions";
+import { createOrganization } from "../../actions/OrganizationActions";
 
 class CreateOrganization extends Component {
   constructor(props) {
@@ -80,6 +80,7 @@ class CreateOrganization extends Component {
               <h1 className="display-4 text-center">
                 Create Organization Profile
               </h1>
+
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
