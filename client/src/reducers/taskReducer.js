@@ -1,12 +1,4 @@
-import { GET_TASK } from "../actions/types";
-import { GET_REVIEWED_TASK } from "../actions/types";
-import { PARTNER_RESPOND } from "../actions/types";
-import { POST_TASK } from "../actions/types";
 
-
-const initialState = {
-  task: null
-};
 
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -20,12 +12,17 @@ export default function(state = initialState, action) {
         ...state,
         task: action.payload
       };
-      case PARTNER_RESPOND:
+    case POST_TASK:
       return {
         ...state,
         task: action.payload
       };
-      case POST_TASK:
+      case CONSULTANT_RESPOND:
+      return {
+        ...state,
+        task: action.payload
+      };
+      case PARTNER_RESPOND:
       return {
         ...state,
         task: action.payload

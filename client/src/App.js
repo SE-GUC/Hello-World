@@ -20,6 +20,16 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
+<<<<<<< HEAD
+import TaskForm from "./components/tasks/TaskForm";
+=======
+import { create } from "domain";
+import CreatePartner from "./components/create-profile/CreatePartner";
+import CreateOrganization from "./components/create-profile/CreateOrganization";
+import EditPartner from "./components/edit-profile/EditPartner";
+import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+
+>>>>>>> 0d07bcdbdef85a8f19a4c88df5b47e01fa9b2260
 
 
 class App extends Component {
@@ -46,6 +56,29 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
+              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-Partner"
+                  component={CreatePartner}
+                />
+              </Switch>
+              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-organization"
+                  component={CreateOrganization}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/Post-application"
+                  component={partnerAppSubmit}
+                />
+                </Switch>
               <Switch>
                 <PrivateRoute
                   exact
@@ -61,8 +94,22 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/edit-Partner"
+                  component={EditPartner}
+                />
+              </Switch>
+              <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
+
+              <Route
+                exact
+                path="/taskform"
+                component={TaskForm}
+              /> 
+
               <Route
                 exact
                 path="/api/masterclasses/all/:id"

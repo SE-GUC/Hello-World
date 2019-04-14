@@ -27,7 +27,7 @@ router.post(
       if (isValidated.error)
         return res
           .status(400)
-          .send({ error: isValidated.error.details[0].message });
+          .send({ error: isValidated.error.details[0].message});
 
       const fields = {};
       fields.partner = req.params.id;
