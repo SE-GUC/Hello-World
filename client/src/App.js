@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
-import axios from "axios";
+
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
-
+import Login from "./components/auth/Login";
 import Member from "./components/profiles/Member";
 import Partner from "./components/profiles/Partner";
 import Consultant from "./components/profiles/Consultant";
@@ -23,6 +23,7 @@ class App extends Component {
             <Navbar />
             <Route exact path="/" component={Landing} />
             <div className="container">
+            <Route exact path="/login" component={Login} />
               <Route exact path="/api/profiles/member/:id" component={Member} />
               <Route
                 exact
