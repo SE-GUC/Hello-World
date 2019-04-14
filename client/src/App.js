@@ -14,15 +14,9 @@ import Consultant from "./components/profiles/Consultant";
 import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
 
-
 class App extends Component {
- componentDidMount(){
-  axios.get('http://localhost:5000/api/profiles/education/courses/5c9f6fc00e57b6046a44987f').then(res => console.log(res.data))
- }
-
   render() {
     return (
-
       <Provider store={store}>
         <Router>
           <div className="App">
@@ -66,7 +60,6 @@ class App extends Component {
           </div>
         </Router>
       </Provider>
-
     );
   }
 }
