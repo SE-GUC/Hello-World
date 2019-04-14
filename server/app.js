@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const passport = require("passport");
 
 const users = require("./routes/api/users");
 const tasks = require("./routes/api/tasks");
@@ -30,6 +31,12 @@ mongoose
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+require("./config/passport")(passport);
+
 // @route   GET /home
 // @desc    Home Page
 // @access  public
@@ -45,8 +52,7 @@ app.get("/about", (req, res) => {
   res.json({ msg: "About Us" });
 });
 
-//to handle cors problem 
-
+//to handle cors problem
 
 // Use Routes
 app.use("/api/users", users);

@@ -1,29 +1,28 @@
 import React, { Component } from "react";
+import { getMASTERCLASS } from "../../actions/masterclasesAction";
 import { getMember } from "../../actions/memberActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import MemberHeader from "./MemberHeader";
 import Spinner from "../common/Spinner";
-import MemberCred from "./MemberCred";
-import MemberAbout from "./MemberAbout";
+import MasterclassAbout from "./MasterclassAbout";
 
-class Member extends Component {
+class Masterclass extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getMember(id);
+    this.props.getMASTERCLASS(id);
   }
   render() {
     const { profile } = this.props;
     let profileContent;
 
-    if (profile == null || Object.keys(profile) == 0) {
-      profileContent = <Spinner />;
+    if (profile === null) {
+        profileContent = <Spinner />;
     } else {
-      profileContent = (
+        profileContent = (
         <div>
-          <MemberHeader profile={profile} />
-          <MemberAbout profile={profile} />
-          <MemberCred profile={profile} />
+         <MasterclassAbout profile={profile} />
+
         </div>
       );
     }
@@ -31,15 +30,15 @@ class Member extends Component {
   }
 }
 
-Member.propTypes = {
-  getMember: PropTypes.func.isRequired
+Masterclass.propTypes = {
+    getMASTERCLASS: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.member.profile
+    profile: state.master.profile
 });
 
 export default connect(
   mapStateToProps,
-  { getMember }
-)(Member);
+  { getMASTERCLASS }
+)(Masterclass);
