@@ -9,4 +9,7 @@ export const GET_CONSULTANT = "GET_CONSULTANT";
 export const GET_ERRORS = "GET_ERRORS";
 export const GET_MEMBERS = "GET_MEMBERS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+
+export const POST_TASK = "POST_TASK";
+
 export const GET_ORGANIZATION = "GET_ORGANIZATION";
