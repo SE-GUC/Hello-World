@@ -16,6 +16,7 @@ import Application from "./components/applications/Application";
 import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
+import EditMember from "./components/edit-profile/EditMember";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
 
@@ -41,6 +42,13 @@ class App extends Component {
                   exact
                   path="/api/profiles/create-member"
                   component={CreateMember}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/edit-member"
+                  component={EditMember}
                 />
               </Switch>
               <Switch>

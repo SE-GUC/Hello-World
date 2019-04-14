@@ -28,6 +28,12 @@ class dashboard extends Component {
                 {profile.name}
               </Link>
             </p>
+            <Link
+              to="/api/profiles/edit-member"
+              className="btn btn-lg btn-info"
+            >
+              Edit Profile
+            </Link>
           </div>
         );
       } else {

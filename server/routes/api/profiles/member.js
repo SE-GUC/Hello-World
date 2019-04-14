@@ -127,11 +127,11 @@ router.post(
 // @desc Edit Member's Profile
 // @access private
 router.put(
-  "/:id",
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const member = await Member.findById(req.params.id);
+      const member = await Member.findOne({ user: req.user.id });
       if (!member)
         return res.status(404).send({ error: "Member does not exist" });
       const isValidated = validator.updateValidation(req.body);
@@ -145,7 +145,13 @@ router.put(
       if (req.body.phone) memberFields.phone = req.body.phone;
       if (req.body.email) memberFields.email = req.body.email;
       if (req.body.age) memberFields.age = req.body.age;
-      memberFields.user = req.params.id;
+      if (req.body.skills) member.skills.unshift(req.body.skills.split(","));
+      if (req.body.interests)
+        member.interests.unshift(req.body.interests.split(","));
+
+      member.save();
+
+      memberFields.user = req.user.id;
 
       memberFields.social = {};
       if (req.body.youtube) memberFields.social.youtube = req.body.youtube;
@@ -157,9 +163,12 @@ router.put(
 
       if (req.body.avatar) memberFields.avatar = req.body.avatar;
 
-      const updatedMember = await Member.findByIdAndUpdate(req.params.id, {
-        $set: memberFields
-      });
+      const updatedMember = await Member.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $set: memberFields
+        }
+      );
       return res.json({ msg: "Member updated successfully" });
     } catch (err) {
       return res.status(404).json({ usernotfound: "User not found" });

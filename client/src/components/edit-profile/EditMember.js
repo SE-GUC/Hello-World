@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createMember } from "../../actions/memberActions";
+import { editMember, getCurrentMember } from "../../actions/memberActions";
 
-class CreateMember extends Component {
+class EditMember extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,9 +27,49 @@ class CreateMember extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentDidMount() {
+    this.props.getCurrentMember();
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    if (nextProps.member) {
+      const profile = nextProps.member;
+
+      const skillsCSV = profile.skills.join(",");
+      const interestsCSV = profile.interests.join(",");
+
+      profile.name = profile.name !== null ? profile.name : "";
+      profile.age = profile.age !== null ? profile.age : "";
+      profile.email = profile.email !== null ? profile.email : "";
+      profile.phone = profile.phone !== null ? profile.phone : "";
+      profile.social = Object.keys(profile.social) !== 0 ? profile.social : {};
+      profile.twitter =
+        profile.social.twitter !== null ? profile.social.twitter : "";
+      profile.facebook =
+        profile.social.facebook !== null ? profile.social.facebook : "";
+      profile.linkedin =
+        profile.social.linkedin !== null ? profile.social.linkedin : "";
+      profile.youtube =
+        profile.social.youtube !== null ? profile.social.youtube : "";
+      profile.instagram =
+        profile.social.instagram !== null ? profile.social.instagram : "";
+
+      this.setState({
+        name: profile.name,
+        age: profile.age,
+        phone: profile.phone,
+        email: profile.email,
+        skills: skillsCSV,
+        interests: interestsCSV,
+        twitter: profile.twitter,
+        facebook: profile.facebook,
+        linkedin: profile.linkedin,
+        youtube: profile.youtube,
+        instagram: profile.instagram
+      });
     }
   }
 
@@ -49,7 +89,24 @@ class CreateMember extends Component {
       youtube: this.state.youtube,
       instagram: this.state.instagram
     };
-
+    if (memberData.name == "") {
+      delete memberData.name;
+    }
+    if (memberData.age == "") {
+      delete memberData.age;
+    }
+    if (memberData.email == "") {
+      delete memberData.email;
+    }
+    if (memberData.phone == "") {
+      delete memberData.phone;
+    }
+    if (memberData.skills == "") {
+      delete memberData.skills;
+    }
+    if (memberData.interests == "") {
+      delete memberData.interests;
+    }
     if (memberData.twitter == "") {
       delete memberData.twitter;
     }
@@ -66,7 +123,7 @@ class CreateMember extends Component {
       delete memberData.linkedin;
     }
 
-    this.props.createMember(memberData, this.props.history);
+    this.props.editMember(memberData, this.props.history);
   }
 
   onChange(e) {
@@ -81,12 +138,13 @@ class CreateMember extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Member Profile</h1>
-              <p className="lead text-center">Tell us more about you</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Edit Member Profile</h1>
+              <p className="lead text-center">
+                Only fill fields you wish to update
+              </p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="* Name"
+                  placeholder="Name"
                   name="name"
                   value={this.state.name}
                   onChange={this.onChange}
@@ -102,7 +160,7 @@ class CreateMember extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Age"
+                  placeholder="Age"
                   name="age"
                   value={this.state.age}
                   onChange={this.onChange}
@@ -113,7 +171,7 @@ class CreateMember extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Phone"
+                  placeholder="Phone"
                   name="phone"
                   value={this.state.phone}
                   onChange={this.onChange}
@@ -124,7 +182,7 @@ class CreateMember extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Email"
+                  placeholder="Email"
                   name="email"
                   value={this.state.email}
                   onChange={this.onChange}
@@ -137,7 +195,7 @@ class CreateMember extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Skills"
+                  placeholder="Skills"
                   name="skills"
                   value={this.state.skills}
                   onChange={this.onChange}
@@ -146,7 +204,7 @@ class CreateMember extends Component {
                       ? errors.error
                       : null
                   }
-                  info="Please use comma separated values (eg.
+                  info="Please use comma separated values to add more skills to your profile (eg.
                     HTML,CSS,JavaScript,PHP)"
                 />
                 <TextFieldGroup
@@ -159,7 +217,7 @@ class CreateMember extends Component {
                       ? errors.error
                       : null
                   }
-                  info="Please use comma separated values (eg.
+                  info="Please use comma separated values to add more interests to your profile(eg.
                     Football,Reading,Cinema)"
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
@@ -253,7 +311,9 @@ class CreateMember extends Component {
   }
 }
 
-CreateMember.propTypes = {
+EditMember.propTypes = {
+  editMember: PropTypes.func.isRequired,
+  getCurrentMember: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -265,5 +325,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createMember }
-)(withRouter(CreateMember));
+  { editMember, getCurrentMember }
+)(withRouter(EditMember));
