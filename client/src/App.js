@@ -18,6 +18,7 @@ import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
+import TaskForm from "./components/tasks/TaskForm";
 
 class App extends Component {
   render() {
@@ -46,6 +47,13 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
+
+              <Route
+                exact
+                path="/taskform"
+                component={TaskForm}
+              /> 
+
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
