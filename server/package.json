@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node app.js",
     "server": "nodemon app.js",
-    "test": "jest"
+    "test": "jest",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix ../client && npm run build --prefix ../client"
   },
   "dependencies": {
     "@types/express": "^4.16.1",

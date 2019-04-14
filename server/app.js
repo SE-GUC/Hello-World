@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
-
+const path = require("path");
 const users = require("./routes/api/users");
 const tasks = require("./routes/api/tasks");
 const member = require("./routes/api/profiles/member");
@@ -64,6 +64,14 @@ app.use("/api/profiles/consultant", consultant);
 app.use("/api/profiles/education", education);
 app.use("/api/masterclasses", masterclasses);
 app.use("/api/applications", applications);
+
+// Server static assets if in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("../client/build"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 5000;
 
