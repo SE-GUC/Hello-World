@@ -4,16 +4,18 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createOrganization } from "../../actions/organizationActions";
+import { createConsultant } from "../../actions/consultantActions";
 
-class CreateOrganization extends Component {
+class CreateConsultant extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      address: "",
+      age: "",
       phone: "",
       email: "",
+      interests: "",
+      skills: "",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -34,11 +36,13 @@ class CreateOrganization extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const orgData = {
+    const memberData = {
       name: this.state.name,
-      address: this.state.address,
+      age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
+      skills: this.state.skills,
+      interests: this.state.interests,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
@@ -46,23 +50,23 @@ class CreateOrganization extends Component {
       instagram: this.state.instagram
     };
 
-    if (orgData.twitter == "") {
-      delete orgData.twitter;
+    if (memberData.twitter == "") {
+      delete memberData.twitter;
     }
-    if (orgData.youtube == "") {
-      delete orgData.youtube;
+    if (memberData.youtube == "") {
+      delete memberData.youtube;
     }
-    if (orgData.facebook == "") {
-      delete orgData.facebook;
+    if (memberData.facebook == "") {
+      delete memberData.facebook;
     }
-    if (orgData.instagram == "") {
-      delete orgData.instagram;
+    if (memberData.instagram == "") {
+      delete memberData.instagram;
     }
-    if (orgData.linkedin == "") {
-      delete orgData.linkedin;
+    if (memberData.linkedin == "") {
+      delete memberData.linkedin;
     }
 
-    this.props.createOrganization(orgData, this.props.history);
+    this.props.createConsultant(consultantData, this.props.history);
   }
 
   onChange(e) {
@@ -77,10 +81,7 @@ class CreateOrganization extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">
-                Create Organization Profile
-              </h1>
-
+              <h1 className="display-4 text-center">Create Consultant Profile</h1>
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -101,14 +102,12 @@ class CreateOrganization extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Address"
-                  name="address"
-                  value={this.state.address}
+                  placeholder="* Age"
+                  name="age"
+                  value={this.state.age}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"address" is required'
-                      ? errors.error
-                      : errors.error == '"address" is not allowed to be empty'
+                    errors.error == '"age" must be a number'
                       ? errors.error
                       : null
                   }
@@ -136,6 +135,32 @@ class CreateOrganization extends Component {
                       ? errors.error
                       : null
                   }
+                />
+                <TextFieldGroup
+                  placeholder="* Skills"
+                  name="skills"
+                  value={this.state.skills}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"skills" is not allowed to be empty'
+                      ? errors.error
+                      : null
+                  }
+                  info="Please use comma separated values (eg.
+                    HTML,CSS,JavaScript,PHP)"
+                />
+                <TextFieldGroup
+                  placeholder="Interests"
+                  name="interests"
+                  value={this.state.interests}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"interests" is not allowed to be empty'
+                      ? errors.error
+                      : null
+                  }
+                  info="Please use comma separated values (eg.
+                    Football,Reading,Cinema)"
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -228,17 +253,17 @@ class CreateOrganization extends Component {
   }
 }
 
-CreateOrganization.propTypes = {
+CreateConsultant.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.organization,
+  profile: state.consultant,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createOrganization }
-)(withRouter(CreateOrganization));
+  { createConsultant }
+)(withRouter(CreateConsultant));

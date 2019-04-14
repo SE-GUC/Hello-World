@@ -21,6 +21,14 @@ import EditMember from "./components/edit-profile/EditMember";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
 
+import TaskForm from "./components/tasks/TaskForm";
+
+import { create } from "domain";
+import CreatePartner from "./components/create-profile/CreatePartner";
+import CreateOrganization from "./components/create-profile/CreateOrganization";
+import EditPartner from "./components/edit-profile/EditPartner";
+import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+
 class App extends Component {
   render() {
     return (
@@ -48,19 +56,47 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/profiles/create-Partner"
+                  component={CreatePartner}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/create-organization"
+                  component={CreateOrganization}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/Post-application"
+                  component={partnerAppSubmit}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/profiles/edit-member"
                   component={EditMember}
                 />
               </Switch>
               <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/edit-Partner"
+                  component={EditPartner}
+                />
+              </Switch>
+              <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
+              <Route exact path="/taskform" component={TaskForm} />
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
                 component={Masterclass}
               />
-
               <Route
                 exact
                 path="/api/profiles/partner/:id"

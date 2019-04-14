@@ -4,7 +4,7 @@ import { getCurrentMember } from "../../actions/memberActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-
+import { getCurrentOrganization } from "../../actions/organizationActions";
 class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();

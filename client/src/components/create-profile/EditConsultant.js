@@ -4,16 +4,18 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createOrganization } from "../../actions/organizationActions";
+import { editConsultant, getCurrentConsultant } from "../../actions/consultantActions";
 
-class CreateOrganization extends Component {
+class EditConsultant extends Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "",
-      address: "",
+      age: "",
       phone: "",
       email: "",
+      interests: "",
+      skills: "",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -25,44 +27,103 @@ class CreateOrganization extends Component {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentDidMount() {
+    this.props.getCurrentConsultant();
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    if (nextProps.consultant) {
+      const profile = nextProps.consultant;
+
+      const skillsCSV = profile.skills.join(",");
+      const interestsCSV = profile.interests.join(",");
+
+      profile.name = profile.name !== null ? profile.name : "";
+      profile.age = profile.age !== null ? profile.age : "";
+      profile.email = profile.email !== null ? profile.email : "";
+      profile.phone = profile.phone !== null ? profile.phone : "";
+      profile.social = Object.keys(profile.social) !== 0 ? profile.social : {};
+      profile.twitter =
+        profile.social.twitter !== null ? profile.social.twitter : "";
+      profile.facebook =
+        profile.social.facebook !== null ? profile.social.facebook : "";
+      profile.linkedin =
+        profile.social.linkedin !== null ? profile.social.linkedin : "";
+      profile.youtube =
+        profile.social.youtube !== null ? profile.social.youtube : "";
+      profile.instagram =
+        profile.social.instagram !== null ? profile.social.instagram : "";
+
+      this.setState({
+        name: profile.name,
+        age: profile.age,
+        phone: profile.phone,
+        email: profile.email,
+        skills: skillsCSV,
+        interests: interestsCSV,
+        twitter: profile.twitter,
+        facebook: profile.facebook,
+        linkedin: profile.linkedin,
+        youtube: profile.youtube,
+        instagram: profile.instagram
+      });
     }
   }
 
   onSubmit(e) {
     e.preventDefault();
 
-    const orgData = {
+    const memberData = {
       name: this.state.name,
-      address: this.state.address,
+      age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
+      skills: this.state.skills,
+      interests: this.state.interests,
       twitter: this.state.twitter,
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
       youtube: this.state.youtube,
       instagram: this.state.instagram
     };
+    if (memberData.name == "") {
+      delete memberData.name;
+    }
+    if (memberData.age == "") {
+      delete memberData.age;
+    }
+    if (memberData.email == "") {
+      delete memberData.email;
+    }
+    if (memberData.phone == "") {
+      delete memberData.phone;
+    }
+    if (memberData.skills == "") {
+      delete memberData.skills;
+    }
+    if (memberData.interests == "") {
+      delete memberData.interests;
+    }
+    if (memberData.twitter == "") {
+      delete memberData.twitter;
+    }
+    if (memberData.youtube == "") {
+      delete memberData.youtube;
+    }
+    if (memberData.facebook == "") {
+      delete memberData.facebook;
+    }
+    if (memberData.instagram == "") {
+      delete memberData.instagram;
+    }
+    if (memberData.linkedin == "") {
+      delete memberData.linkedin;
+    }
 
-    if (orgData.twitter == "") {
-      delete orgData.twitter;
-    }
-    if (orgData.youtube == "") {
-      delete orgData.youtube;
-    }
-    if (orgData.facebook == "") {
-      delete orgData.facebook;
-    }
-    if (orgData.instagram == "") {
-      delete orgData.instagram;
-    }
-    if (orgData.linkedin == "") {
-      delete orgData.linkedin;
-    }
-
-    this.props.createOrganization(orgData, this.props.history);
+    this.props.editConsultant(consultantData, this.props.history);
   }
 
   onChange(e) {
@@ -77,15 +138,13 @@ class CreateOrganization extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">
-                Create Organization Profile
-              </h1>
-
-              <p className="lead text-center">Tell us more about you</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Edit Consultant Profile</h1>
+              <p className="lead text-center">
+                Only fill fields you wish to update
+              </p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="* Name"
+                  placeholder="Name"
                   name="name"
                   value={this.state.name}
                   onChange={this.onChange}
@@ -101,20 +160,18 @@ class CreateOrganization extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Address"
-                  name="address"
-                  value={this.state.address}
+                  placeholder="Age"
+                  name="age"
+                  value={this.state.age}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"address" is required'
-                      ? errors.error
-                      : errors.error == '"address" is not allowed to be empty'
+                    errors.error == '"age" must be a number'
                       ? errors.error
                       : null
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Phone"
+                  placeholder="Phone"
                   name="phone"
                   value={this.state.phone}
                   onChange={this.onChange}
@@ -125,7 +182,7 @@ class CreateOrganization extends Component {
                   }
                 />
                 <TextFieldGroup
-                  placeholder="* Email"
+                  placeholder="Email"
                   name="email"
                   value={this.state.email}
                   onChange={this.onChange}
@@ -136,6 +193,32 @@ class CreateOrganization extends Component {
                       ? errors.error
                       : null
                   }
+                />
+                <TextFieldGroup
+                  placeholder="Skills"
+                  name="skills"
+                  value={this.state.skills}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"skills" is not allowed to be empty'
+                      ? errors.error
+                      : null
+                  }
+                  info="Please use comma separated values to add more skills to your profile (eg.
+                    HTML,CSS,JavaScript,PHP)"
+                />
+                <TextFieldGroup
+                  placeholder="Interests"
+                  name="interests"
+                  value={this.state.interests}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"interests" is not allowed to be empty'
+                      ? errors.error
+                      : null
+                  }
+                  info="Please use comma separated values to add more interests to your profile(eg.
+                    Football,Reading,Cinema)"
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -228,17 +311,19 @@ class CreateOrganization extends Component {
   }
 }
 
-CreateOrganization.propTypes = {
+EditConsultant.propTypes = {
+  editConsultant: PropTypes.func.isRequired,
+  getCurrentConsultant: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.organization,
+  profile: state.consultant,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createOrganization }
-)(withRouter(CreateOrganization));
+  { editConsultant, getCurrentConsultant }
+)(withRouter(EditConsultant));
