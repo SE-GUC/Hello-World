@@ -9,4 +9,14 @@ export const GET_CONSULTANT = "GET_CONSULTANT";
 export const GET_ERRORS = "GET_ERRORS";
 export const GET_MEMBERS = "GET_MEMBERS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
+<<<<<<< HEAD
+export const PARTNER_RESPOND = "PARTNER_RESPOND";
+export const CONSULTANT_RESPOND = "CONSULTANT_RESPOND";
+export const POST_TASK = "POST_TASK";
+=======
+<<<<<<< HEAD
+export const POST_TASK = "POST_TASK";
+=======
 export const GET_ORGANIZATION = "GET_ORGANIZATION";
+>>>>>>> 0d07bcdbdef85a8f19a4c88df5b47e01fa9b2260
+>>>>>>> 1425ed792867441ad3a75d09b940c9da5416e4e4
