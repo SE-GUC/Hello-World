@@ -24,7 +24,7 @@ export const createOrganization = (organizationData, history) => async dispatch 
     });
     const json = await res.json();
     if (json.data) {
-      history.push("/dashboard");
+      history.push("/dashboardforORG");
     } else {
       dispatch({
         type: GET_ERRORS,

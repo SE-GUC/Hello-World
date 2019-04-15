@@ -80,7 +80,7 @@ class CreatePartner extends Component {
   }
 }
 
-createPartner.propTypes = {
+CreatePartner.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
