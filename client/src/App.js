@@ -17,16 +17,16 @@ import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
 import EditMember from "./components/edit-profile/EditMember";
+import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-
 import TaskForm from "./components/tasks/TaskForm";
 
-import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+import dashboardforPartner from "./components/dashboard/dashboardforPartner";
 
 class App extends Component {
   render() {
@@ -78,6 +78,13 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/profiles/addSkils"
+                  component={addSkiils}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/profiles/edit-member"
                   component={EditMember}
                 />
@@ -91,6 +98,14 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
+              </Switch>
+              <Route exact path="/taskform" component={TaskForm} />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/dashboardforPartner"
+                  component={dashboardforPartner}
+                />
               </Switch>
               <Route exact path="/taskform" component={TaskForm} />
               <Route

@@ -4,34 +4,55 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {createPartner } from "../../actions/partnerActions";
+import { addSkillMember, getCurrentMember } from "../../actions/memberActions";
 
-class CreatePartner extends Component {
+class addSkiils extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
-      fieldOfWork:"",
+      skills: "",
       errors: {}
     };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
+  componentDidMount() {
+    this.props.getCurrentMember();
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    if (nextProps.member) {
+      const profile = nextProps.member;
+
+      const skillsCSV = profile.skills.join(",");
+
+      this.setState({
+      
+        skills: skillsCSV,
+        
+      });
     }
   }
 
   onSubmit(e) {
     e.preventDefault();
 
-    const partnerData = {
-     fieldOfWork:this.state.fieldOfWork,
+    const memberData = {
+      
+      skills: this.state.skills,
+      
     };
+    
+    if (memberData.skills == "") {
+      delete memberData.skills;
+    }
+    
 
-    this.props.CreatePartner(partnerData, this.props.history);
+    this.props.addSkillMember(memberData, this.props.history);
   }
 
   onChange(e) {
@@ -46,26 +67,37 @@ class CreatePartner extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your field</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">add skill</h1>
+              <p className="lead text-center">
+               
+              </p>
               <form onSubmit={this.onSubmit}>
+               
+                
+                
                 <TextFieldGroup
-                  placeholder="*field-of-work"
-                  name="fieldOfWork"
-                  value={this.state.fieldOfWork}
+                  placeholder="Skills"
+                  name="skills"
+                  value={this.state.skills}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"fieldOfWork" is required'
-                      ? errors.error
-                      : errors.error == '"fieldOfWork" is not allowed to be empty'
-                      ? errors.error
-                      : errors.error ==
-                        '"FieldOfWork" length must be at least 3 characters long'
+                    errors.error == '"skills" is not allowed to be empty'
                       ? errors.error
                       : null
                   }
+                  info="Please use comma separated values to add more skills to your profile (eg.
+                    HTML,CSS,JavaScript,PHP)"
                 />
+                
+                
+                <div>
+                  
+                  
+                  
+
+                  
+                  
+                </div>
                 <input
                   type="submit"
                   value="Submit"
@@ -80,17 +112,19 @@ class CreatePartner extends Component {
   }
 }
 
-CreatePartner.propTypes = {
+addSkiils.propTypes = {
+ addSkillMember: PropTypes.func.isRequired,
+  getCurrentMember: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.parnter,
+  profile: state.member,
   errors: state.errors
 });
 
 export default connect(
   mapStateToProps,
-  { createPartner }
-)(withRouter(CreatePartner));
+  { addSkillMember, getCurrentMember }
+)(withRouter(addSkiils));

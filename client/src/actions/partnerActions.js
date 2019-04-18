@@ -29,7 +29,7 @@ export const createPartner = (partnerData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboard");
+    history.push("/dashboardforPartner");
   } else {
     dispatch({
       type: GET_ERRORS,
