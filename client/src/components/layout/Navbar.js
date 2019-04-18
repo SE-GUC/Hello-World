@@ -31,7 +31,7 @@ class Navbar extends Component {
     const loggedInLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <Link className="nav-link" to="/tasks">
+          <Link className="nav-link" to="/api/tasks">
             Tasks
           </Link>
         </li>

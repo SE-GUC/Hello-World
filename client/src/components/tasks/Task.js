@@ -8,12 +8,11 @@ class Task extends Component {
   componentDidMount() {
     const { id, taskID } = this.props.match.params;
     this.props.getTask(id, taskID);
-    console.log(this.props.task);
   }
   render() {
     let taskContent;
 
-    if (this.props.task == null) {
+    if (this.props.task === null) {
       taskContent = <Spinner />;
     } else {
       const {
@@ -88,7 +87,7 @@ Task.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  task: state.task.task
+  task: state.task.profile
 });
 
 export default connect(

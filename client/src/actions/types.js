@@ -10,7 +10,7 @@ export const GET_ERRORS = "GET_ERRORS";
 export const GET_MEMBERS = "GET_MEMBERS";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const GET_ORGANIZATION = "GET_ORGANIZATION";
-
+export const GET_TASKS = "GET_TASKS";
 export const PARTNER_RESPOND = "PARTNER_RESPOND";
 export const CONSULTANT_RESPOND = "CONSULTANT_RESPOND";
 export const POST_TASK = "POST_TASK";

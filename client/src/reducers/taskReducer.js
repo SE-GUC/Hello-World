@@ -1,7 +1,15 @@
-import {GET_TASK,GET_REVIEWED_TASK,POST_TASK,CONSULTANT_RESPOND,PARTNER_RESPOND} from "../actions/types"
+import {
+  GET_TASK,
+  GET_TASKS,
+  GET_REVIEWED_TASK,
+  POST_TASK,
+  CONSULTANT_RESPOND,
+  PARTNER_RESPOND
+} from "../actions/types";
 
 const initialState = {
-  profile: null
+  profile: null,
+  tasks: null
 };
 
 export default function(state = initialState, action) {
@@ -10,6 +18,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         task: action.payload
+      };
+    case GET_TASKS:
+      return {
+        ...state,
+        tasks: action.payload
       };
     case GET_REVIEWED_TASK:
       return {
@@ -21,12 +34,12 @@ export default function(state = initialState, action) {
         ...state,
         task: action.payload
       };
-      case CONSULTANT_RESPOND:
+    case CONSULTANT_RESPOND:
       return {
         ...state,
         task: action.payload
       };
-      case PARTNER_RESPOND:
+    case PARTNER_RESPOND:
       return {
         ...state,
         task: action.payload

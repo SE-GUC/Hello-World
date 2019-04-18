@@ -19,7 +19,15 @@ const validator = require("../../validation/tasksValidation");
 // @access  public
 router.get("/all", async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({}).populate({
+      path: "application",
+      populate: {
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      }
+    });
     return res.json({ data: tasks });
   } catch (error) {
     return res.status(404).json({ tasknotfound: "No Tasks found" });
@@ -277,16 +285,13 @@ router.get(
 // @desc    Member Gets Task
 // @access  Private
 router.get(
-  "/member/:id/:taskID",
+  "/member/:taskID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const member = await Member.findById(req.params.id);
-      if (!member) return res.status(404).send({ error: "Member not found" });
-
-      const task = await Task.findById(req.params.taskID).populate(
-        "application"
-      );
+      const task = await Task.findById(req.params.taskID)
+        .populate("application")
+        .populate("partner");
       if (!task) return res.status(404).send({ error: "Task not found" });
 
       if (!task.reviewed)

@@ -4,15 +4,14 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {postApplication}  from "../../actions/applicationActions";
+import { postApplication } from "../../actions/applicationActions";
 
 class parnterAppSubmit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
-      description:"",
-      needConsultancy:false,
+      description: "",
+      needConsultancy: false,
       errors: {}
     };
 
@@ -29,8 +28,8 @@ class parnterAppSubmit extends Component {
     e.preventDefault();
 
     const ApplicationData = {
-     description:this.state.description,
-     needConsultancy:this.state.needConsultancy
+      description: this.state.description,
+      needConsultancy: this.state.needConsultancy
     };
 
     this.props.postApplication(ApplicationData, this.props.history);
@@ -49,7 +48,9 @@ class parnterAppSubmit extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your Application</p>
+              <p className="lead text-center">
+                Tell us more about your Application
+              </p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
@@ -60,7 +61,8 @@ class parnterAppSubmit extends Component {
                   error={
                     errors.error == '"description" is required'
                       ? errors.error
-                      : errors.error == '"description" is not allowed to be empty'
+                      : errors.error ==
+                        '"description" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
                         '"description" length must be at least 3 characters long'
