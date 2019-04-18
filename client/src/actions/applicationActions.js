@@ -40,7 +40,27 @@ export const postApplication = (ApplicationData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboard");
+    history.push("/dashboardforPartner");
+  } else {
+    dispatch({
+      type: GET_ERRORS,
+      payload: json
+    });
+  }
+};
+export const editApp = (appData, history,appID) => async dispatch => {
+  const body = JSON.stringify(appData);
+  const res = await fetch(`http://localhost:5000/api/applications/${appID}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("jwtToken")
+    },
+    body: body
+  });
+  const json = await res.json();
+  if (json.msg) {
+    history.push("/dashboardforPartner");
   } else {
     dispatch({
       type: GET_ERRORS,

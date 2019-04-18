@@ -1,7 +1,8 @@
 import {GET_ERRORS} from "./types"
-export const createOrganization = (organizationData, history) => async dispatch => {
+const fetch = require("node-fetch");
+export const createOrganization = (organizationData,history,value) => async dispatch => {
     const body = JSON.stringify(organizationData);
-    const res = await fetch("http://localhost:5000/api/profiles/organization", {
+    const res = await fetch("http://localhost:5000/api/profiles/organization/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -10,12 +11,17 @@ export const createOrganization = (organizationData, history) => async dispatch 
       body: body
     });
     const json = await res.json();
-    if (json.data) {
-      history.push("/CreatePartner");
-    } else {
+    const part = "Partner";
+    switch (value) {
+      case part:
+          history.push("/CreatePartner");
+          break;
+      default:
       dispatch({
         type: GET_ERRORS,
         payload: json
       });
-  }};
+      break;
+    }
+  }
  

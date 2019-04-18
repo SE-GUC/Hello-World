@@ -26,22 +26,8 @@ class CreateOrganization extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    var sel = document.getElementById('select');
-
-function getSelectedOption(sel) {
-  var opt;
-  for ( var i = 0, len = sel.options.length; i < len; i++ ) {
-      opt = sel.options[i];
-      if ( opt.selected === true ) {
-          break;
-      }
-      if(opt.value == "Partner"){
-        this.props.history.push("/CreatePartner")
-      }
-  };
+ 
 }
-
-  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -79,8 +65,20 @@ function getSelectedOption(sel) {
     if (organizationData.linkedin == "") {
       delete organizationData.linkedin;
     }
+    var sel = document.getElementById('select');
+    let opt;
+function getSelectedOption(sel,opt) {
+  for ( var i = 0, len = sel.options.length; i < len; i++ ) {
+      opt = sel.options[i];
+      if ( opt.selected === true ) {
+          break;
+      }
+   
+  };
+}
+getSelectedOption(sel,opt)
 
-    this.props.createOrganization(organizationData, this.props.history);
+    this.props.createOrganization(organizationData, this.props.history,opt);
   }
 
   onChange(e) {
@@ -246,7 +244,6 @@ function getSelectedOption(sel) {
                   type="submit"
                   value="Submit"
                   className="btn btn-info btn-block mt-4"
-                  onClick="getSelectedOption()"
                 />
               </form>
             </div>
