@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
 import { createOrganization } from "../../actions/OrganizationActions";
+import Partner from "../profiles/Partner";
 
 class CreateOrganization extends Component {
   constructor(props) {
@@ -25,6 +26,21 @@ class CreateOrganization extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    var sel = document.getElementById('select');
+
+function getSelectedOption(sel) {
+  var opt;
+  for ( var i = 0, len = sel.options.length; i < len; i++ ) {
+      opt = sel.options[i];
+      if ( opt.selected === true ) {
+          break;
+      }
+      if(opt.value == "Partner"){
+        this.props.history.push("/CreatePartner")
+      }
+  };
+}
+
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -222,11 +238,15 @@ class CreateOrganization extends Component {
                         : null
                     }
                   />
+                  <select id="select" name="Select profile type">
+                   <option value="Partner">Partner</option>
+                    </select>
                 </div>
                 <input
                   type="submit"
                   value="Submit"
                   className="btn btn-info btn-block mt-4"
+                  onClick="getSelectedOption()"
                 />
               </form>
             </div>
@@ -235,7 +255,8 @@ class CreateOrganization extends Component {
       </div>
     );
   }
-}
+};
+
 
 CreateOrganization.propTypes = {
   profile: PropTypes.object.isRequired,
@@ -251,3 +272,5 @@ export default connect(
   mapStateToProps,
   { createOrganization }
 )(withRouter(CreateOrganization));
+
+

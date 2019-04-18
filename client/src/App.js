@@ -26,7 +26,7 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-import dashboardforORG from "./components/dashboard/dashboardforORG";
+import dashboardforPartner from "./components/dashboard/dashboardforPartner";
 
 
 
@@ -102,7 +102,7 @@ class App extends Component {
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
               <Switch>
-                <PrivateRoute exact path="/dashboardforORG" component={dashboardforORG} />
+                <PrivateRoute exact path="/dashboardforPartner" component={dashboardforPartner} />
               </Switch>
 
               <Route

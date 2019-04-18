@@ -1,4 +1,8 @@
+import {GET_TASK,GET_REVIEWED_TASK,POST_TASK,CONSULTANT_RESPOND,PARTNER_RESPOND} from "../actions/types"
 
+const initialState = {
+  profile: null
+};
 
 export default function(state = initialState, action) {
   switch (action.type) {

@@ -1,4 +1,4 @@
-import { getCurrentPartner } from "../../actions/PartnerActions";
+import { getCurrentPartner } from "../../actions/partnerActions";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
