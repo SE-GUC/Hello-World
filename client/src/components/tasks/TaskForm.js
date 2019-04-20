@@ -10,9 +10,7 @@ import { postTask } from "../../actions/taskActions"
     constructor(props) {
         super(props);
         this.state = {
-
-        application: "",
-        levelOfCommitment:"",
+        levelOfCommitment: "",
         monetaryCompensation:"",
         experienceLevel:"",
         skills:""
@@ -32,18 +30,17 @@ import { postTask } from "../../actions/taskActions"
         e.preventDefault();
     
         const taskData = {
-
-         application: this.state.application,
-         levelOfCommitment : this.state.levelOfCommitment,
+          levelOfCommitment : this.state.levelOfCommitment,
          monetaryCompensation : this.state.monetaryCompensation,
          experienceLevel : this.state.experienceLevel,
          skills: this.state.skills
-        
+         
         };
+        console.log("sha3'ala");
         this.props.postTask(taskData, this.props.history);
     }
-        onChange(e) {
-            this.setState({ [e.target.name]: e.target.value });
+    onChange(e) {
+         this.setState({ [e.target.name]: e.target.value });
           }
     
 
@@ -58,6 +55,20 @@ import { postTask } from "../../actions/taskActions"
               <p className="lead text-center">tell us about the task</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
+
+              <TextFieldGroup
+                  placeholder="*  ID"
+                  name="ID"
+                  value={this.state.ID}
+                  onChange={this.onChange}
+                //   error={
+                //     errors.error == '"application" is required'
+                //       ? errors.error
+                //       : errors.error == '"application" is not allowed to be empty'
+                //       ? errors.error
+                //       : null
+                //   }
+                />
                 <TextFieldGroup
                   placeholder="* application ID"
                   name="application"
@@ -133,13 +144,11 @@ import { postTask } from "../../actions/taskActions"
   }
 }
 TaskForm.propTypes = {
-    task: PropTypes.object.isRequired,
-    errors: PropTypes.object.isRequired
-  };
+    task: PropTypes.object.isRequired
+    };
   
   const mapStateToProps = state => ({
-    task: state.task,
-    errors: state.errors
+    task: state.task
   });
   
   export default connect(
