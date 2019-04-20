@@ -6,15 +6,14 @@ import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
 import {createPartner } from "../../actions/partnerActions";
 
-class CreatePartner extends Component {
+class CreatePartner extends Component {  
   constructor(props) {
     super(props);
     this.state = {
-     
+      id:this.props.match.params,
       fieldOfWork:"",
       errors: {}
     };
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -23,15 +22,15 @@ class CreatePartner extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
-
+  
   onSubmit(e) {
     e.preventDefault();
 
     const partnerData = {
      fieldOfWork:this.state.fieldOfWork,
     };
-
-    this.props.CreatePartner(partnerData, this.props.history);
+    
+    this.props.createPartner(partnerData, this.props.history,this.state.id);
   }
 
   onChange(e) {
