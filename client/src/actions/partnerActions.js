@@ -25,7 +25,7 @@ export const createPartner = (partnerData,history,id) => async dispatch => {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("jwtToken")
     },
-    body: body
+    body:body
   });
   const json = await res.json();
   if (json.data) {

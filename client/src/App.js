@@ -26,7 +26,6 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-import dashboardforPartner from "./components/dashboard/dashboardforPartner";
 
 
 
@@ -116,7 +115,7 @@ class App extends Component {
 
               <Route
                 exact
-                path="/api/profiles/partner/:id"
+                path="/api/profiles/partner/:id"  
                 component={Partner}
               />
               <Route

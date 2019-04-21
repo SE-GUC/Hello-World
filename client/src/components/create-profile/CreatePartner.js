@@ -7,10 +7,10 @@ import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
 import {createPartner } from "../../actions/partnerActions";
 
 class CreatePartner extends Component {  
+  
   constructor(props) {
     super(props);
     this.state = {
-      id:this.props.match.params,
       fieldOfWork:"",
       errors: {}
     };
@@ -30,7 +30,7 @@ class CreatePartner extends Component {
      fieldOfWork:this.state.fieldOfWork,
     };
     
-    this.props.createPartner(partnerData, this.props.history,this.state.id);
+    this.props.createPartner(partnerData, this.props.history,this.props.match.params.id);
   }
 
   onChange(e) {

@@ -14,7 +14,7 @@ export const createOrganization = (organizationData,history,value) => async disp
     const part = "Partner";
     switch (value) {
       case part:
-          history.push(`/cp/${json.data._id}`);
+          history.push("/cp/" + json.data._id);
           break;
       default:
       dispatch({

@@ -30,9 +30,9 @@ class parnterAppSubmit extends Component {
 
     const ApplicationData = {
      description:this.state.description,
-     needConsultancy:this.state.needConsultancy
+     needConsultancy:false
     };
-
+    
     this.props.postApplication(ApplicationData, this.props.history);
   }
 
@@ -48,9 +48,8 @@ class parnterAppSubmit extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your Application</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Create Application</h1>
+              <p className="lead text-center">please fill all</p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="*desc"
@@ -68,6 +67,13 @@ class parnterAppSubmit extends Component {
                       : null
                   }
                 />
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="1" value={this.state.needConsultancy}
+                  onChange={this.onChange}
+                  >
+                  <label class="custom-control-label" for="defaultUnchecked">Need needConsultancy?:</label>
+                  </input>
+                </div>
                 <input
                   type="submit"
                   value="Submit"
