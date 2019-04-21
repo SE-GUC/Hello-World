@@ -1,26 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentMember } from "../../actions/memberActions";
-import { getCurrentPartner } from "../../actions/partnerActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 class dashboard extends Component {
   componentDidMount() {
-    this.props.getCurrentPartner();
     this.props.getCurrentMember();
   }
 
   render() {
     const { user } = this.props.auth;
     const { profile } = this.props.profile;
-    const profile2 = this.props.profile2.profile;
+
     let dashboardContent;
 
-    if (profile === null && profile2 === null) {
+    if (profile == null) {
       dashboardContent = <Spinner />;
     } else {
-      if (profile !== null && !Object.keys(profile)>0) {
+      if (profile.name) {
         dashboardContent = (
           <div>
             <p className="lead text-muted">
@@ -41,35 +39,16 @@ class dashboard extends Component {
             >
               add skill
             </Link>
+            <Link
+              to="/taskform"
+              className="btn btn-lg btn-info"
+            >
+              add skill
+            </Link>
           </div>
           
-        );}
-        else
-        if(profile2 !== null && !Object.keys(profile2)>0){
-          dashboardContent = (
-            <div>
-              <p className="lead text-muted">
-                Welcome{" "}
-                <Link
-                className="btn btn-lg btn-info"
-                to={`/api/profiles/partner/${profile2._id}`}>
-                  Show Profile:{profile2.name}
-                </Link>
-              </p>
-              <Link
-                to="/api/profiles/Edit-Partner"
-                className="btn btn-lg btn-info"
-              >
-                Edit Partner's profile
-              </Link>{" "}
-              <Link
-              to="api/profiles/application/:id"
-              className="btn btn-lg btn=info">
-              Post Application
-              </Link>
-            </div>
-          );}
-       else {
+        );
+      } else {
         dashboardContent = (
           <div>
             <p className="lead text-muted">Welcome {user.name}</p>
@@ -116,11 +95,10 @@ dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   profile: state.member,
-  auth: state.auth,
-  profile2: state.partner
+  auth: state.auth
 });
 
 export default connect(
   mapStateToProps,
-  { getCurrentMember,getCurrentPartner }
+  { getCurrentMember }
 )(dashboard);

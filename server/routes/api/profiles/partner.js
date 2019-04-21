@@ -64,11 +64,11 @@ router.get(
   }
 );
 
-// @route   PUT api/profiles/partner
+// @route   PUT api/profiles/partner/:id
 // @desc    Edit Partner's Profile
 // @access  Private
 router.put(
-  "/",
+  "/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {

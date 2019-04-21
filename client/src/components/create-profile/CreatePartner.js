@@ -14,6 +14,7 @@ class CreatePartner extends Component {
       fieldOfWork:"",
       errors: {}
     };
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -22,7 +23,7 @@ class CreatePartner extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
-  
+
   onSubmit(e) {
     e.preventDefault();
 

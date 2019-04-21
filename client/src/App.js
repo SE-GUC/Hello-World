@@ -20,7 +20,7 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-//import TaskForm from "./components/tasks/TaskForm";
+import TaskForm from "./components/tasks/TaskForm";
 import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
@@ -53,15 +53,15 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
-              
+              />
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/cp/:id"
+                  path="/api/profiles/create-Partner"
                   component={CreatePartner}
                 />
               </Switch>
-              
+              />
               <Switch>
                 <PrivateRoute
                   exact
@@ -100,12 +100,15 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
+              <Switch>
+                <PrivateRoute exact path="/dashboardforPartner" component={dashboardforPartner} />
+              </Switch>
 
-              {/* <Route
+              <Route
                 exact
                 path="/taskform"
                 component={TaskForm}
-              />  */}
+              /> 
 
               <Route
                 exact

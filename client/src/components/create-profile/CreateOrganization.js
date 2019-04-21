@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
 import { createOrganization } from "../../actions/OrganizationActions";
+import Partner from "../profiles/Partner";
 
 class CreateOrganization extends Component {
   constructor(props) {
@@ -25,7 +26,8 @@ class CreateOrganization extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  }
+ 
+}
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -37,6 +39,7 @@ class CreateOrganization extends Component {
 
     const organizationData = {
       name: this.state.name,
+      age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
       address: this.state.address,
@@ -44,7 +47,7 @@ class CreateOrganization extends Component {
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
       youtube: this.state.youtube,
-      instagram: this.state.instagram,
+      instagram: this.state.instagram
     };
 
     if (organizationData.twitter == "") {
@@ -62,17 +65,24 @@ class CreateOrganization extends Component {
     if (organizationData.linkedin == "") {
       delete organizationData.linkedin;
     }
-    var e = document.getElementById("select");
-    var opt = e.options[e.selectedIndex].value;
-console.log(opt)
+    var sel = document.getElementById('select');
+    let opt;
+function getSelectedOption(sel,opt) {
+  for ( var i = 0, len = sel.options.length; i < len; i++ ) {
+      opt = sel.options[i];
+      if ( opt.selected === true ) {
+          break;
+      }
+   
+  };
+}
+getSelectedOption(sel,opt)
+
     this.props.createOrganization(organizationData, this.props.history,opt);
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  }
-  handleClick() {
-    this.props.history = this.props.history.push("/")
   }
 
   render() {
@@ -99,6 +109,17 @@ console.log(opt)
                       ? errors.error
                       : errors.error ==
                         '"name" length must be at least 3 characters long'
+                      ? errors.error
+                      : null
+                  }
+                />
+                <TextFieldGroup
+                  placeholder="* Age"
+                  name="age"
+                  value={this.state.age}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"age" must be a number'
                       ? errors.error
                       : null
                   }
@@ -215,18 +236,9 @@ console.log(opt)
                         : null
                     }
                   />
-                </div>
-                <div>
-                
-              <p className="lead text-muted">
-                Welcome{" "}
-              </p>
-              <div> <select className="selectpicker" id="select">
+                  <select id="select" name="Select profile type">
                    <option value="Partner">Partner</option>
-                   <option value="Consultant">Consultant</option>
-                   <option value="EducationalOrganization">EducationalOrganization</option>
                     </select>
-                    </div>
                 </div>
                 <input
                   type="submit"
@@ -240,7 +252,8 @@ console.log(opt)
       </div>
     );
   }
-}
+};
+
 
 CreateOrganization.propTypes = {
   profile: PropTypes.object.isRequired,
@@ -256,3 +269,5 @@ export default connect(
   mapStateToProps,
   { createOrganization }
 )(withRouter(CreateOrganization));
+
+
