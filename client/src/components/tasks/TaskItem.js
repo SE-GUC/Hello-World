@@ -17,7 +17,7 @@ class TaskItem extends Component {
             <p>
               <span>{task.application.partner.organization.phone}</span>
             </p>
-            <Link to={`#`} className="btn btn-info">
+            <Link to={`/api/tasks/${task._id}`} className="btn btn-info">
               View Task
             </Link>
           </div>

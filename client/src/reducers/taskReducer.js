@@ -8,7 +8,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  profile: null,
+  task: null,
   tasks: null
 };
 

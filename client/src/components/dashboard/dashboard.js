@@ -33,14 +33,10 @@ class dashboard extends Component {
             >
               Edit Profile
             </Link>
-            <Link
-              to="/api/profiles/addSkils"
-              className="btn btn-lg btn-info"
-            >
+            <Link to="/api/profiles/addSkils" className="btn btn-lg btn-info">
               add skill
             </Link>
           </div>
-          
         );
       } else {
         dashboardContent = (

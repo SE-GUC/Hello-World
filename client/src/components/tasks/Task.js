@@ -25,7 +25,7 @@ class Task extends Component {
         applicants,
         extra
       } = this.props.task;
-
+      console.log(this.props.task);
       const theSkills = skills.map((skill, index) => (
         <div key={index} className="p-3">
           <i className="fa fa-check" /> {skill}
@@ -87,7 +87,7 @@ Task.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  task: state.task.profile
+  task: state.task
 });
 
 export default connect(
