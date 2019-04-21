@@ -25,15 +25,12 @@ export const postTask = (id, appID) => async dispatch => {
 };
 
 // Get Task
-export const getTask = (id, taskID) => async dispatch => {
-  const res = await fetch(
-    `http://localhost:5000/api/tasks/admin/${id}/${taskID}`,
-    {
-      headers: {
-        Authorization: localStorage.getItem("jwtToken")
-      }
+export const getTask = taskID => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/tasks/member/${taskID}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
     }
-  );
+  });
 
   const json = await res.json();
   dispatch({
@@ -63,6 +60,24 @@ export const getReviewedTask = (id, taskID) => async dispatch => {
 // Get all Tasks
 export const getTasks = () => async dispatch => {
   const res = await fetch("http://localhost:5000/api/tasks/all");
+
+  const json = await res.json();
+  if (json.data) {
+    dispatch({
+      type: GET_TASKS,
+      payload: json.data
+    });
+  } else {
+    dispatch({
+      type: GET_TASKS,
+      payload: null
+    });
+  }
+};
+
+// Get My Tasks
+export const getMyTasks = id => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/tasks/me/${id}`);
 
   const json = await res.json();
   if (json.data) {

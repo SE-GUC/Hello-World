@@ -34,6 +34,29 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// @route   GET api/tasks/me/:id
+// @desc    Gets my tasks
+// @access  public
+router.get("/me/:id", async (req, res) => {
+  try {
+    const tasks = await Task.find({
+      applicants: { $elemMatch: { member: req.params.id, status: "accepted" } }
+    }).populate({
+      path: "application",
+      populate: {
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      }
+    });
+    return res.json({ data: tasks });
+  } catch (error) {
+    res.status(404).json({ tasknotfound: "No Tasks found" });
+    console.log(error);
+  }
+});
+
 // @route   POST api/tasks/apply/:id/:taskID
 // @desc    Eligible Member Apply For a Task
 // @access  private

@@ -32,9 +32,15 @@ class dashboard extends Component {
               className="btn btn-lg btn-info"
             >
               Edit Profile
-            </Link>
+            </Link>{" "}
             <Link to="/api/profiles/addSkils" className="btn btn-lg btn-info">
               add skill
+            </Link>{" "}
+            <Link
+              to={`/api/tasks/member/mytasks/${profile._id}`}
+              className="btn btn-lg btn-info"
+            >
+              My Tasks
             </Link>
           </div>
         );

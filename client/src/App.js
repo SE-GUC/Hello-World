@@ -26,6 +26,9 @@ import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 import Tasks from "./components/tasks/Tasks";
+import MemberNegotiate from "./components/negotiation/MemberNegotiate";
+import MyTasks from "./components/tasks/MyTasks";
+import ApplyTask from "./components/tasks/ApplyTask";
 
 class App extends Component {
   render() {
@@ -128,9 +131,36 @@ class App extends Component {
                 path="/api/tasks/admin/:id/:taskID"
                 component={Task}
               />
-              <Route exact path="/api/tasks/:taskID" component={Task} />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/:taskID"
+                  component={Task}
+                />
+              </Switch>
               <Switch>
                 <PrivateRoute exact path="/api/tasks" component={Tasks} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/mytasks/:id"
+                  component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/apply/:id/:taskID"
+                  component={ApplyTask}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/negotiate/:id/:id2"
+                  component={MemberNegotiate}
+                />
               </Switch>
             </div>
             <Footer />
