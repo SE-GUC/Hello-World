@@ -34,6 +34,7 @@ import AdminApplication from "./components/applications/AdminApplication";
 import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+import AdminNegotiation from "./components/applications/AdminNegotiation";
 
 class App extends Component {
   render() {
@@ -185,6 +186,13 @@ class App extends Component {
                   exact
                   path="/api/applications/partner/negotiate/:id"
                   component={PartnerNegotiation}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/negotiate/:id"
+                  component={AdminNegotiation}
                 />
               </Switch>
             </div>

@@ -301,11 +301,11 @@ router.get(
 // @desc    Admin Negotiates Over An Application
 // @access  Private
 router.post(
-  "/admin/negotiate/:id/:appID",
+  "/admin/negotiate/:appID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const admin = await Admin.findById(req.params.id);
+      const admin = await Admin.findOne({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
 
       const application = await Application.findById(req.params.appID);
@@ -332,7 +332,8 @@ router.post(
         data: application.messages
       });
     } catch (error) {
-      return res.status(404).json({ partnernotfound: "Admin not found" });
+      res.status(404).json({ adminnotfound: "Admin not found" });
+      console.log(error);
     }
   }
 );

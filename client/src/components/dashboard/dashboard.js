@@ -95,17 +95,22 @@ class dashboard extends Component {
                 <p className="lead">You are Logged in as an admin</p>
                 <Link
                   className="btn btn-lg btn-info"
-                  to={`/api/profiles/getAllApp/`}
+                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
                 >
-                  view all not-reviewed Apps to=
-                  {`/api/tasks/admin/mytasks/${adminProfile._id}`}
-                  className="btn btn-lg btn-info" > Unreviewed Tasks
+                  {" "}
+                  Unreviewed Tasks
                 </Link>{" "}
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
                   className="btn btn-lg btn-info"
                 >
                   Applications
+                </Link>{" "}
+                <Link
+                  className="btn btn-lg btn-info"
+                  to={`/api/profiles/getAllApp/`}
+                >
+                  view all not-reviewed Apps to=
                 </Link>
               </div>
             );
