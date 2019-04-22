@@ -56,11 +56,7 @@ class App extends Component {
               </Switch>
 
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/create-Partner"
-                  component={CreatePartner}
-                />
+                <PrivateRoute exact path="/cp/:id" component={CreatePartner} />
               </Switch>
 
               <Switch>

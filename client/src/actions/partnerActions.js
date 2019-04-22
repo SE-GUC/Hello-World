@@ -1,5 +1,5 @@
 import { GET_PARTNER } from "./types";
-import {GET_ERRORS} from "./types";
+import { GET_ERRORS } from "./types";
 const fetch = require("node-fetch");
 
 // Get Partner
@@ -19,7 +19,7 @@ export const getPartner = id => async dispatch => {
 // create partner
 export const createPartner = (partnerData, history) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch("http://localhost:5000/api/profiles/partner/" , {
+  const res = await fetch("http://localhost:5000/api/profiles/partner/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +56,8 @@ export const editPartner = (partnerData, history) => async dispatch => {
       payload: json
     });
   }
-}; export const getCurrentPartner = id => async dispatch => {
+};
+export const getCurrentPartner = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/partner`, {
     headers: {
       "Content-Type": "application/json",

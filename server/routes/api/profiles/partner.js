@@ -63,6 +63,26 @@ router.get(
   }
 );
 
+// @route GET api/profiles/partner
+// @desc Get Current Partner's Profile
+// @access private
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const organization = await Organization.findOne({ user: req.user.id });
+      if (!Organization)
+        return res.status(404).send({ error: "Organization not found" });
+      const partner = await Partner.findOne({ organization: organization._id });
+      if (!partner) return res.status(404).send({ error: "Partner not found" });
+      return res.json({ data: partner });
+    } catch (error) {
+      return res.status(404).json({ partnernotfound: "Partner not found" });
+    }
+  }
+);
+
 // @route   PUT api/profiles/partner/:id
 // @desc    Edit Partner's Profile
 // @access  Private

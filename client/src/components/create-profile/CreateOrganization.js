@@ -12,7 +12,6 @@ class CreateOrganization extends Component {
     super(props);
     this.state = {
       name: "",
-      age: "",
       phone: "",
       email: "",
       address: "",
@@ -38,7 +37,6 @@ class CreateOrganization extends Component {
 
     const organizationData = {
       name: this.state.name,
-      age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
       address: this.state.address,
@@ -109,17 +107,6 @@ class CreateOrganization extends Component {
                       ? errors.error
                       : errors.error ==
                         '"name" length must be at least 3 characters long'
-                      ? errors.error
-                      : null
-                  }
-                />
-                <TextFieldGroup
-                  placeholder="* Age"
-                  name="age"
-                  value={this.state.age}
-                  onChange={this.onChange}
-                  error={
-                    errors.error == '"age" must be a number'
                       ? errors.error
                       : null
                   }
