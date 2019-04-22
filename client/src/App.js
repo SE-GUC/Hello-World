@@ -20,7 +20,7 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-import TaskForm from "./components/tasks/TaskForm";
+import PartnerTaskForm from "./components/tasks/Partner'sTaskForm";
 import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
@@ -107,8 +107,8 @@ class App extends Component {
 
               <Route
                 exact
-                path="/taskform"
-                component={TaskForm}
+                path="/partner-taskform"
+                component={PartnerTaskForm}
               /> 
 
               <Route
@@ -147,6 +147,7 @@ class App extends Component {
                 path="/api/tasks/member/:id/:taskID"
                 component={Task}
               />
+              
             </div>
             <Footer />
           </div>

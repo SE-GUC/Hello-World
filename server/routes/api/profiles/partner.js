@@ -63,15 +63,15 @@ router.get(
   }
 );
 
-// @route   PUT api/profiles/partner/:id
+// @route   PUT api/profiles/partner
 // @desc    Edit Partner's Profile
 // @access  Private
 router.put(
-  "/:id",
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const partner = await Partner.findById(req.params.id);
+      const partner = await Partner.findOne({ user: req.user.id });
       if (!partner)
         return res.status(404).send({ error: "Partner does not exist" });
       const isValidated = validator.updateValidation(req.body);

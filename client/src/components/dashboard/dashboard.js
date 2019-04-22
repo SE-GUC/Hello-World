@@ -40,10 +40,16 @@ class dashboard extends Component {
               add skill
             </Link>
             <Link
-              to="/taskform"
+              to="/Partner-TaskForm"
               className="btn btn-lg btn-info"
             >
-              add skill
+               Partner create task
+            </Link>
+            <Link
+              to="/Consultant-TaskForm"
+              className="btn btn-lg btn-info"
+            >
+            consultant create task
             </Link>
           </div>
           

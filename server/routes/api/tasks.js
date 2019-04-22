@@ -131,6 +131,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      console.log(req.params.id);
       const partner = await Partner.findById(req.params.id);
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 

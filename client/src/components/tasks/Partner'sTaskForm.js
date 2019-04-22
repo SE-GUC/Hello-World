@@ -4,23 +4,26 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon"; 
-import { postTask } from "../../actions/taskActions"
+import { PartnerPostTask } from "../../actions/taskActions"
+import { getCurrentMember } from "../../actions/memberActions";
+import store from '../../store';
 
- class TaskForm extends Component {
+ class PartnerTaskForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+        appid:"",
         levelOfCommitment: "",
         monetaryCompensation:"",
         experienceLevel:"",
-        skills:""
-
+        skills:"",
+        errors: {}
         };
     
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
       }
-      componentWillReceiveProps(nextProps) {
+     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
           this.setState({ errors: nextProps.errors });
         }
@@ -28,16 +31,15 @@ import { postTask } from "../../actions/taskActions"
     
     onSubmit(e) {
         e.preventDefault();
-    
+     
         const taskData = {
-          levelOfCommitment : this.state.levelOfCommitment,
+         levelOfCommitment : this.state.levelOfCommitment,
          monetaryCompensation : this.state.monetaryCompensation,
          experienceLevel : this.state.experienceLevel,
          skills: this.state.skills
-         
-        };
-        console.log("sha3'ala");
-        this.props.postTask(taskData, this.props.history);
+         };
+         console.log(this.state.appid)
+        this.props.PartnerPostTask(taskData,this.state.appid,this.props.history);
     }
     onChange(e) {
          this.setState({ [e.target.name]: e.target.value });
@@ -45,8 +47,9 @@ import { postTask } from "../../actions/taskActions"
     
 
   render() {
+    const { errors } = this.state;
     return (
-     
+       
         <div className="create-task">
         <div className="container">
           <div className="row">
@@ -57,76 +60,62 @@ import { postTask } from "../../actions/taskActions"
               <form onSubmit={this.onSubmit}>
 
               <TextFieldGroup
-                  placeholder="*  ID"
-                  name="ID"
-                  value={this.state.ID}
+                  placeholder="* appid"
+                  name="appid"
+                  value={this.state.appid}
                   onChange={this.onChange}
-                //   error={
-                //     errors.error == '"application" is required'
-                //       ? errors.error
-                //       : errors.error == '"application" is not allowed to be empty'
-                //       ? errors.error
-                //       : null
-                //   }
+                  // error={
+                  //   errors.error == '"age" must be a number'
+                  //     ? errors.error
+                  //     : null
+                  // }
                 />
-                <TextFieldGroup
-                  placeholder="* application ID"
-                  name="application"
-                  value={this.state.application}
-                  onChange={this.onChange}
-                //   error={
-                //     errors.error == '"application" is required'
-                //       ? errors.error
-                //       : errors.error == '"application" is not allowed to be empty'
-                //       ? errors.error
-                //       : null
-                //   }
-                />
+
                 <TextFieldGroup
                   placeholder="* levelOfCommitment"
                   name="levelOfCommitment"
                   value={this.state.levelOfCommitment}
                   onChange={this.onChange}
-                //   error={
-                //     errors.error == '"age" must be a number'
-                //       ? errors.error
-                //       : null
-                //   }
+                  // error={
+                  //   errors.error == '"age" must be a number'
+                  //     ? errors.error
+                  //     : null
+                  // }
                 />
                 <TextFieldGroup
                   placeholder="* monetaryCompensation"
                   name="monetaryCompensation"
                   value={this.state.monetaryCompensation}
                   onChange={this.onChange}
-                //   error={
-                //     errors.error == '"phone" must be a number'
-                //       ? errors.error
-                //       : null
-                //   }
+                  // error={
+                  //   errors.error == '"phone" must be a number'
+                  //     ? errors.error
+                  //     : null
+                  // }
                 />
                 <TextFieldGroup
                   placeholder="* experienceLevel"
                   name="experienceLevel"
                   value={this.state.experienceLevel}
                   onChange={this.onChange}
-                //   error={
-                //     errors.error == '"email" is not allowed to be empty'
-                //       ? errors.error
-                //       : errors.error == '"email" must be a valid email'
-                //       ? errors.error
-                //       : null
-                //   }
+                  // error={
+                  //   errors.error == '"email" is not allowed to be empty'
+                  //     ? errors.error
+                  //     : errors.error == '"email" must be a valid email'
+                  //     ? errors.error
+                  //     : null
+                  // }
                 />
                 <TextFieldGroup
                   placeholder="* Skills"
                   name="skills"
                   value={this.state.skills}
                   onChange={this.onChange}
-                //   error={
-                //     errors.error == '"skills" is not allowed to be empty'
-                //       ? errors.error
-                //       : null
-                //   }
+                  // error={
+                  //   errors.error == '"skills" is not allowed to be empty'
+                  //     ? errors.error
+                  //     : null
+                  // }
                   info="Please use comma separated values (eg.
                     HTML,CSS,JavaScript,PHP)"
                 />
@@ -143,7 +132,7 @@ import { postTask } from "../../actions/taskActions"
     )
   }
 }
-TaskForm.propTypes = {
+PartnerTaskForm.propTypes = {
     task: PropTypes.object.isRequired
     };
   
@@ -153,5 +142,5 @@ TaskForm.propTypes = {
   
   export default connect(
     mapStateToProps,
-    { postTask }
-  )(withRouter(TaskForm));
+    { PartnerPostTask , getCurrentMember }
+  )(withRouter(PartnerTaskForm));
