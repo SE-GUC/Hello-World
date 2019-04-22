@@ -29,6 +29,10 @@ import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 import Tasks from "./components/tasks/Tasks";
 import MemberNegotiate from "./components/negotiation/MemberNegotiate";
 import MyTasks from "./components/tasks/MyTasks";
+import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
+import UnreviewedTask from "./components/tasks/UnreviewedTask";
+import AdminApplications from "./components/applications/AdminApplications";
+import AdminApplication from "./components/applications/AdminApplication";
 
 class App extends Component {
   render() {
@@ -114,24 +118,21 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/api/applications/admin/:id/:appID"
-                component={Application}
-              />
-              <Route
-                exact
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
-              />
-              <Route
-                exact
-                path="/api/tasks/admin/:id/:taskID"
-                component={Task}
               />
               <Switch>
                 <PrivateRoute
                   exact
                   path="/api/tasks/member/:taskID"
                   component={Task}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/admin/:taskID"
+                  component={UnreviewedTask}
                 />
               </Switch>
               <Switch>
@@ -142,6 +143,27 @@ class App extends Component {
                   exact
                   path="/api/tasks/member/mytasks/:id"
                   component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/admin/mytasks/:id"
+                  component={UnreviewedTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/all/:id"
+                  component={AdminApplications}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/:id"
+                  component={AdminApplication}
                 />
               </Switch>
               <Switch>

@@ -19,8 +19,6 @@ class dashboard extends Component {
     const profile2 = this.props.profile2.profile;
     const adminProfile = this.props.adminProfile.profile;
 
-    console.log(this.props);
-
     let dashboardContent;
 
     if (profile == null && profile2 == null && adminProfile == null) {
@@ -85,6 +83,18 @@ class dashboard extends Component {
               <div>
                 <p className="lead text-muted">Welcome {adminProfile.name}</p>
                 <p className="lead">You are Logged in as an admin</p>
+                <Link
+                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                  className="btn btn-lg btn-info"
+                >
+                  Unreviewed Tasks
+                </Link>{" "}
+                <Link
+                  to={`/api/applications/admin/all/${adminProfile._id}`}
+                  className="btn btn-lg btn-info"
+                >
+                  Applications
+                </Link>
               </div>
             );
           } else {

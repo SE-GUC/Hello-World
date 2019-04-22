@@ -43,6 +43,24 @@ export const getTask = taskID => async dispatch => {
   });
 };
 
+// Get Admin Task
+export const getAdminTask = taskID => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/tasks/admin/task/${taskID}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
+
+  const json = await res.json();
+  dispatch({
+    type: GET_TASK,
+    payload: json.data
+  });
+};
+
 // Get Reviewed Task
 export const getReviewedTask = (id, taskID) => async dispatch => {
   const res = await fetch(
@@ -82,6 +100,28 @@ export const getTasks = () => async dispatch => {
 // Get My Tasks
 export const getMyTasks = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/tasks/me/${id}`);
+
+  const json = await res.json();
+  if (json.data) {
+    dispatch({
+      type: GET_TASKS,
+      payload: json.data
+    });
+  } else {
+    dispatch({
+      type: GET_TASKS,
+      payload: null
+    });
+  }
+};
+
+// Get Unreviewed Tasks
+export const getUnreviewedTasks = id => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/tasks/admin/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    }
+  });
 
   const json = await res.json();
   if (json.data) {

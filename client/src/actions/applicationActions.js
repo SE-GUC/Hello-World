@@ -1,6 +1,9 @@
-import { GET_APPLICATION } from "./types";
-import { GET_REVIEWED_APPLICATION } from "./types";
-import {GET_ERRORS} from "./types";
+import {
+  GET_APPLICATION,
+  GET_REVIEWED_APPLICATION,
+  GET_APPLICATIONS
+} from "./types";
+import { GET_ERRORS } from "./types";
 const fetch = require("node-fetch");
 
 // Get Application
@@ -48,7 +51,7 @@ export const postApplication = (ApplicationData, history) => async dispatch => {
     });
   }
 };
-export const editApp = (appData, history,appID) => async dispatch => {
+export const editApp = (appData, history, appID) => async dispatch => {
   const body = JSON.stringify(appData);
   const res = await fetch(`http://localhost:5000/api/applications/${appID}`, {
     method: "PUT",
@@ -67,4 +70,37 @@ export const editApp = (appData, history,appID) => async dispatch => {
       payload: json
     });
   }
+};
+
+// Get Admin Application
+export const getAdminApplication = id => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/applications/admin/${id}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATION,
+    payload: json.data
+  });
+};
+
+// Get Admin Applications
+export const getAdminApplications = () => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/applications/admin`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    }
+  });
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATIONS,
+    payload: json.data
+  });
 };

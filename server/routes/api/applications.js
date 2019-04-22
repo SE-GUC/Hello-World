@@ -27,7 +27,7 @@ router.post(
       if (isValidated.error)
         return res
           .status(400)
-          .send({ error: isValidated.error.details[0].message});
+          .send({ error: isValidated.error.details[0].message });
 
       const fields = {};
       fields.partner = req.params.id;
@@ -161,14 +161,19 @@ router.get(
 // @desc    Gets All Applications
 // @access  Private
 router.get(
-  "/admin/:id",
+  "/admin",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const admin = await Admin.findById(req.params.id);
+      const admin = await Admin.findOne({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
 
-      const applications = await Application.find({});
+      const applications = await Application.find({}).populate({
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      });
       return res.json({ data: applications });
     } catch (error) {
       return res.status(404).json({ adminnotfound: "Admin not found" });
@@ -205,15 +210,15 @@ router.post(
   }
 );
 
-// @route   GET api/applications/admin/:id/appID
+// @route   GET api/applications/admin/appID
 // @desc    Admin gets Application
 // @access  Private
 router.get(
-  "/admin/:id/:appID",
+  "/admin/:appID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const admin = await Admin.findById(req.params.id);
+      const admin = await Admin.findOne({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
 
       const application = await Application.findById(req.params.appID).populate(
@@ -227,7 +232,8 @@ router.get(
 
       return res.json({ data: application });
     } catch (error) {
-      return res.status(404).json({ adminnotfound: "Admin not found" });
+      res.status(404).json({ adminnotfound: "Admin not found" });
+      console.log(error);
     }
   }
 );
