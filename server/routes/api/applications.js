@@ -181,6 +181,33 @@ router.get(
   }
 );
 
+// @route   GET api/applications/partner/:id
+// @desc    Gets Partner's Applications
+// @access  Private
+router.get(
+  "/partner",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const organization = await Organization.findOne({ user: req.user.id });
+      const partner = await Partner.findOne({ organization: organization._id });
+      if (!partner) return res.status(404).send({ error: "Partner not found" });
+
+      const applications = await Application.find({
+        partner: partner._id
+      }).populate({
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      });
+      return res.json({ data: applications });
+    } catch (error) {
+      return res.status(404).json({ adminnotfound: "Admin not found" });
+    }
+  }
+);
+
 // @route   POST api/applications/admin/:id/appID
 // @desc    Admin Reviews Application
 // @access  Private
@@ -220,6 +247,35 @@ router.get(
     try {
       const admin = await Admin.findOne({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
+
+      const application = await Application.findById(req.params.appID).populate(
+        {
+          path: "partner",
+          populate: { path: "organization" }
+        }
+      );
+      if (!application)
+        return res.status(404).send({ error: "Application not found" });
+
+      return res.json({ data: application });
+    } catch (error) {
+      res.status(404).json({ adminnotfound: "Admin not found" });
+      console.log(error);
+    }
+  }
+);
+
+// @route   GET api/applications/partner/appID
+// @desc    Partner gets Application
+// @access  Private
+router.get(
+  "/partner/:appID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const organization = await Organization.findOne({ user: req.user.id });
+      const partner = await Partner.findOne({ organization: organization._id });
+      if (!partner) return res.status(404).send({ error: "Partner not found" });
 
       const application = await Application.findById(req.params.appID).populate(
         {

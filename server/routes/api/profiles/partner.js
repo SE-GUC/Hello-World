@@ -63,24 +63,6 @@ router.get(
     }
   }
 );
-// @route GET api/profiles/partner
-// @desc Get Current partner's Profile
-// @access private
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const partner = await Partner.findOne({ user: req.user.id })
-        .populate("fieldOfWork", ["fieldOfWork"])
-        .populate("partner", ["name"]);
-      if (!partner) return res.status(404).send({ error: "Partner not found" });
-      return res.json({ data: partner });
-    } catch (error) {
-      return res.status(404).json({ membernotfound: "partner not found" });
-    }
-  }
-);
 
 // @route GET api/profiles/partner
 // @desc Get Current Partner's Profile

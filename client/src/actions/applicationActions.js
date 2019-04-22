@@ -104,3 +104,36 @@ export const getAdminApplications = () => async dispatch => {
     payload: json.data
   });
 };
+
+// Get Partner Applications
+export const getPartnerApplications = () => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/applications/partner`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    }
+  });
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATIONS,
+    payload: json.data
+  });
+};
+
+// Get Partner Application
+export const getPartnerApplication = id => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/applications/partner/${id}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATION,
+    payload: json.data
+  });
+};

@@ -54,20 +54,24 @@ class dashboard extends Component {
         if (profile2 !== null && profile2.fieldOfWork) {
           dashboardContent = (
             <div>
-              <p className="lead text-muted">
-                Welcome{" "}
-                <Link
-                  className="btn btn-lg btn-info"
-                  to={`/api/profiles/partner/${profile2._id}`}
-                >
-                  Show Profile:{profile2.name}
-                </Link>
-              </p>
+              <p className="lead text-muted">Welcome </p>
+              <Link
+                className="btn btn-lg btn-info"
+                to={`/api/profiles/partner/${profile2._id}`}
+              >
+                Show Profile:{profile2.name}
+              </Link>
               <Link
                 to="/api/profiles/Edit-Partner"
                 className="btn btn-lg btn-info"
               >
                 Edit Partner's profile
+              </Link>{" "}
+              <Link
+                to={`/api/profiles/partner/applications/${profile2._id}`}
+                className="btn btn-lg btn-info"
+              >
+                My Applications
               </Link>{" "}
               <Link
                 to="api/profiles/application/:id"

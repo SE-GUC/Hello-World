@@ -32,6 +32,8 @@ import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
 import UnreviewedTask from "./components/tasks/UnreviewedTask";
 import AdminApplications from "./components/applications/AdminApplications";
 import AdminApplication from "./components/applications/AdminApplication";
+import PartnerApplications from "./components/applications/PartnerApplications";
+import PartnerApplication from "./components/applications/PartnerApplication";
 
 class App extends Component {
   render() {
@@ -121,10 +123,18 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/profiles/partner/applications/:id"
+                  component={PartnerApplications}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/tasks/member/:taskID"
                   component={Task}
                 />
               </Switch>
+
               <Switch>
                 <PrivateRoute
                   exact
@@ -154,6 +164,13 @@ class App extends Component {
                   exact
                   path="/api/applications/admin/:id"
                   component={AdminApplication}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/partner/:id"
+                  component={PartnerApplication}
                 />
               </Switch>
               <Switch>
