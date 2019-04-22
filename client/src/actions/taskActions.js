@@ -1,4 +1,10 @@
-import { GET_TASK, GET_REVIEWED_TASK, POST_TASK, GET_TASKS } from "./types";
+import {
+  GET_TASK,
+  GET_REVIEWED_TASK,
+  POST_TASK,
+  GET_TASKS,
+  GET_ERRORS
+} from "./types";
 
 const fetch = require("node-fetch");
 
@@ -87,6 +93,30 @@ export const getMyTasks = id => async dispatch => {
     dispatch({
       type: GET_TASKS,
       payload: null
+    });
+  }
+};
+
+// Apply For Task
+export const applyTask = (history, id, taskID) => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/tasks/apply/${id}/${taskID}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
+
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  } else {
+    dispatch({
+      type: GET_ERRORS,
+      payload: json
     });
   }
 };
