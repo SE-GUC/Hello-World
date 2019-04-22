@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getPartnerApplication } from "../../actions/applicationActions";
 import Spinner from "../common/Spinner";
@@ -11,8 +12,9 @@ class PartnerApplication extends Component {
   }
   render() {
     let applicationContent;
+    const { application } = this.props;
 
-    if (this.props.application == null) {
+    if (application == null) {
       applicationContent = <Spinner />;
     } else {
       const {
@@ -21,7 +23,7 @@ class PartnerApplication extends Component {
         messages,
         needConsultancy,
         reviewed
-      } = this.props.application;
+      } = application;
 
       const msgs = messages.map((msg, index) => (
         <div key={index}>
@@ -69,6 +71,13 @@ class PartnerApplication extends Component {
               <div>
                 <div>{msgs}</div>
               </div>
+              <hr />
+              <Link
+                to={`/api/applications/partner/negotiate/${application._id}`}
+                className="btn btn-lg btn-info"
+              >
+                Negotiate
+              </Link>
             </div>
           </div>
         </div>

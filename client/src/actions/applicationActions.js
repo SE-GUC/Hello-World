@@ -8,9 +8,7 @@ const fetch = require("node-fetch");
 
 // Get Application
 export const getApplication = id => async dispatch => {
-  const res = await fetch(
-    `http://localhost:5000/api/applications/admin/${id}`
-  );
+  const res = await fetch(`http://localhost:5000/api/applications/admin/${id}`);
 
   const json = await res.json();
   dispatch({
@@ -136,4 +134,25 @@ export const getPartnerApplication = id => async dispatch => {
     type: GET_APPLICATION,
     payload: json.data
   });
+};
+
+// Partner Negotiate
+export const partnerNegotiate = (msgData, id, history) => async dispatch => {
+  const body = JSON.stringify(msgData);
+  const res = await fetch(
+    `http://localhost:5000/api/applications/partner/negotiate/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
 };

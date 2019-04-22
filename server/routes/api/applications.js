@@ -99,13 +99,14 @@ router.put(
 // @desc    Partner Negotiates Over An Application
 // @access  Private
 router.post(
-  "/partner/negotiate/:id/:appID",
+  "/partner/negotiate/:appID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const partner = await Partner.findById(req.params.id).populate(
-        "organization"
-      );
+      const organization = await Organization.findOne({ user: req.user.id });
+      const partner = await Partner.findOne({
+        organization: organization._id
+      }).populate("organization");
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 
       const application = await Application.findById(req.params.appID);

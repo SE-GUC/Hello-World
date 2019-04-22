@@ -19,30 +19,8 @@ export const getMember = id => async dispatch => {
   }
 };
 
-  // // add Pastevents member
-  // export const addpastevents = (memberData,id,history) => async dispatch => {
-  //   const body = JSON.stringify(memberData);
-  //   const res = await fetch(`http://localhost:5000/api/profiles/member/past-events/${id}`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: localStorage.getItem("jwtToken")
-  //     },
-  //     body: body
-  //   });
-  //   const json = await res.json();
-  //   if (json.msg) {
-  //     history.push("/dashboard");
-  //   } else {
-  //     dispatch({
-  //       type: GET_ERRORS,
-  //       payload: json
-  //     });
-  //   }
-  // };
-
 // Get Current Member
-export const getCurrentMember =id =>  async dispatch => {
+export const getCurrentMember = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/member`, {
     headers: {
       "Content-Type": "application/json",
@@ -125,8 +103,8 @@ export const editMember = (memberData, history) => async dispatch => {
     });
   }
 };
-  // add skilsMember
-export const addSkillMember = (memberData,history) => async dispatch => {
+// add skilsMember
+export const addSkillMember = (memberData, history) => async dispatch => {
   const body = JSON.stringify(memberData);
   const res = await fetch("http://localhost:5000/api/profiles/member/skills", {
     method: "POST",
@@ -146,4 +124,3 @@ export const addSkillMember = (memberData,history) => async dispatch => {
     });
   }
 };
-
