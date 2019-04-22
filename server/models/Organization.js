@@ -1,51 +1,54 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const organizationSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref:'users'
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "users"
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  phone: {
+    type: Number,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  address: {
+    type: String,
+    require: true
+  },
+  social: {
+    youtube: {
+      type: String
     },
-    name: {
-        type: String,
-        required: true
+    twitter: {
+      type: String
     },
-   phone: {
-        type: Number,
-        required: true
+    facebook: {
+      type: String
     },
-    email: {
-        type: String,
-        required: true
+    linkedin: {
+      type: String
     },
-    address: {
-        type: String,
-        require: true
-    },
-    social: {
-        youtube: {
-            type: String
-        },
-        twitter: {
-            type: String
-        },
-        facebook: {
-            type: String
-        },
-        linkedin: {
-            type: String
-        },
-        instagram: {
-            type: String
-        },
-    },
-    avatar: {
-        type: String
-    },
-    date: {
-        type: Date,
-        default: Date.now()
+    instagram: {
+      type: String
     }
+  },
+  avatar: {
+    type: String
+  },
+  date: {
+    type: Date,
+    default: Date.now()
+  }
 });
 
-module.exports = Organization = mongoose.model('organization', organizationSchema);
+module.exports = Organization = mongoose.model(
+  "organization",
+  organizationSchema
+);

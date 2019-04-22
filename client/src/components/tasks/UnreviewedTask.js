@@ -2,18 +2,15 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import { getTask, applyTask } from "../../actions/taskActions";
+import { getAdminTask } from "../../actions/taskActions";
 import Spinner from "../common/Spinner";
 
-class Task extends Component {
+class UnreviewedTask extends Component {
   componentDidMount() {
     const { taskID } = this.props.match.params;
-    this.props.getTask(taskID);
+    this.props.getAdminTask(taskID);
   }
 
-  applyForTask(id, taskID) {
-    this.props.applyTask(id, taskID);
-  }
   render() {
     const { task, profile } = this.props;
     let taskContent;
@@ -79,12 +76,6 @@ class Task extends Component {
                 </div>
               </div>
               <hr />
-              <button
-                onClick={applyTask(this.props.history, profile._id, task._id)}
-                className="btn btn-lg btn-info"
-              >
-                APPLY
-              </button>
             </div>
           </div>
         </div>
@@ -94,9 +85,8 @@ class Task extends Component {
   }
 }
 
-Task.propTypes = {
-  getTask: PropTypes.func.isRequired,
-  applyTask: PropTypes.func.isRequired
+UnreviewedTask.propTypes = {
+  getAdminTask: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -106,5 +96,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getTask, applyTask }
-)(Task);
+  { getAdminTask }
+)(UnreviewedTask);

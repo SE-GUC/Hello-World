@@ -96,4 +96,19 @@ router.post("/admin/:id", async (req, res) => {
   }
 });
 
+router.get(
+  "/admin",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const admin = await Admin.findOne({ user: req.user.id });
+      if (!admin)
+        return res.status(404).json({ adminnotfound: "Admin Not Found" });
+      return res.json({ data: admin });
+    } catch (error) {
+      return res.status(400).json(error);
+    }
+  }
+);
+
 module.exports = router;

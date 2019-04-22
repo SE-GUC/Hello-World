@@ -3,18 +3,16 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
-import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {createPartner } from "../../actions/partnerActions";
+//import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
+import { createPartner } from "../../actions/partnerActions";
 
 class CreatePartner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
-      fieldOfWork:"",
+      fieldOfWork: "",
       errors: {}
     };
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -28,10 +26,14 @@ class CreatePartner extends Component {
     e.preventDefault();
 
     const partnerData = {
-     fieldOfWork:this.state.fieldOfWork,
+      fieldOfWork: this.state.fieldOfWork
     };
 
-    this.props.CreatePartner(partnerData, this.props.history);
+    this.props.createPartner(
+      partnerData,
+      this.props.history,
+      this.props.match.params.id
+    );
   }
 
   onChange(e) {
@@ -47,7 +49,7 @@ class CreatePartner extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your field</p>
+              <p className="lead text-center">Tell us more about what you do</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
@@ -58,7 +60,8 @@ class CreatePartner extends Component {
                   error={
                     errors.error == '"fieldOfWork" is required'
                       ? errors.error
-                      : errors.error == '"fieldOfWork" is not allowed to be empty'
+                      : errors.error ==
+                        '"fieldOfWork" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
                         '"FieldOfWork" length must be at least 3 characters long'
@@ -80,7 +83,7 @@ class CreatePartner extends Component {
   }
 }
 
-createPartner.propTypes = {
+CreatePartner.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
