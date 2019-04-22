@@ -111,10 +111,9 @@ router.put(
   async (req, res) => {
     try {
       const partner = await Partner.findOne({ user: req.user.id });
-<<<<<<< HEAD
-=======
+
       const organization = await Organization.findOne(partner.organization);
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
+
       if (!partner)
         return res.status(404).send({ error: "Partner does not exist" });
       const isValidated = validator.updateValidation(req.body);
@@ -122,52 +121,51 @@ router.put(
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message });
-          const isValidated2 = validator2.createValidation(req.body);
+      const isValidated2 = validator2.createValidation(req.body);
       if (isValidated2.error)
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message });
 
-          const orgFields = {};
-          if (req.body.name) orgFields.name = req.body.name;
-          if (req.body.phone) orgFields.phone = req.body.phone;
-          if (req.body.email) orgFields.email = req.body.email;
-          if (req.body.address) orgFields.address = req.body.address;
-          const fields = {};
-          if (req.body.fieldOfWork) fields.fieldOfWork = req.body.fieldOfWork;
+      const orgFields = {};
+      if (req.body.name) orgFields.name = req.body.name;
+      if (req.body.phone) orgFields.phone = req.body.phone;
+      if (req.body.email) orgFields.email = req.body.email;
+      if (req.body.address) orgFields.address = req.body.address;
+      const fields = {};
+      if (req.body.fieldOfWork) fields.fieldOfWork = req.body.fieldOfWork;
 
-          partner.save();
-          organization.save();
-          fields.user = req.user.id;
-    
-          orgFields.social = {};
-          if (req.body.youtube) orgFields.social.youtube = req.body.youtube;
-          if (req.body.facebook) orgFields.social.facebook = req.body.facebook;
-          if (req.body.twitter) orgFields.social.twitter = req.body.twitter;
-          if (req.body.linkedin) orgFields.social.linkedin = req.body.linkedin;
-          if (req.body.instagram)
-            orgFields.social.instagram = req.body.instagram;
-    
-          if (req.body.avatar) orgFields.avatar = req.body.avatar;
-    
-          const updatedpartner = await Partner.findOneAndUpdate(
-            { user: req.user.id },
-            {
-              $set: Fields
-            }
-          );
-          const updatedorganization = await Organization.findOneAndUpdate(
-            { user: req.user.id },
-            {
-              $set: orgFields
-            }
-          );
-          return res.json({ msg: "partner updated successfully" });
-        } catch (err) {
-          return res.status(404).json({ usernotfound: "User not found" });
+      partner.save();
+      organization.save();
+      fields.user = req.user.id;
+
+      orgFields.social = {};
+      if (req.body.youtube) orgFields.social.youtube = req.body.youtube;
+      if (req.body.facebook) orgFields.social.facebook = req.body.facebook;
+      if (req.body.twitter) orgFields.social.twitter = req.body.twitter;
+      if (req.body.linkedin) orgFields.social.linkedin = req.body.linkedin;
+      if (req.body.instagram) orgFields.social.instagram = req.body.instagram;
+
+      if (req.body.avatar) orgFields.avatar = req.body.avatar;
+
+      const updatedpartner = await Partner.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $set: Fields
         }
-      }
-    );
+      );
+      const updatedorganization = await Organization.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $set: orgFields
+        }
+      );
+      return res.json({ msg: "partner updated successfully" });
+    } catch (err) {
+      return res.status(404).json({ usernotfound: "User not found" });
+    }
+  }
+);
 
 // @route POST api/profiles/partner/board-members/add/:id
 // @decs Adds Board Member To Partner's Profile

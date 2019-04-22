@@ -17,21 +17,16 @@ export const getPartner = id => async dispatch => {
   });
 };
 // create partner
-<<<<<<< HEAD
-export const createPartner = (partnerData,history,id) => async dispatch => {
-  const body = JSON.stringify(partnerData);
-  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}` , {
-=======
-export const createPartner = (partnerData, history,id) => async dispatch => {
+
+export const createPartner = (partnerData, history, id) => async dispatch => {
   const body = JSON.stringify(partnerData);
   const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("jwtToken")
     },
-    body:body
+    body: body
   });
   const json = await res.json();
   if (json.data) {
@@ -43,7 +38,7 @@ export const createPartner = (partnerData, history,id) => async dispatch => {
     });
   }
 };
-export const editPartner = (partnerData, history,id) => async dispatch => {
+export const editPartner = (partnerData, history, id) => async dispatch => {
   const body = JSON.stringify(partnerData);
   const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
     method: "PUT",
@@ -62,16 +57,10 @@ export const editPartner = (partnerData, history,id) => async dispatch => {
       payload: json
     });
   }
-<<<<<<< HEAD
-}; export const getCurrentPartner = id => async dispatch => {
-  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {  
-  headers: {
-=======
 };
 export const getCurrentPartner = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/partner`, {
     headers: {
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("jwtToken")
     }

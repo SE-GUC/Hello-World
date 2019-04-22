@@ -4,21 +4,13 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 //import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {createPartner } from "../../actions/partnerActions";
+import { createPartner } from "../../actions/partnerActions";
 
-class CreatePartner extends Component {  
-<<<<<<< HEAD
+class CreatePartner extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id:this.props.match.params,
-=======
-  
-  constructor(props) {
-    super(props);
-    this.state = {
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
-      fieldOfWork:"",
+      fieldOfWork: "",
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -29,19 +21,19 @@ class CreatePartner extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
-  
+
   onSubmit(e) {
     e.preventDefault();
 
     const partnerData = {
-     fieldOfWork:this.state.fieldOfWork,
+      fieldOfWork: this.state.fieldOfWork
     };
-    
-<<<<<<< HEAD
-    this.props.createPartner(partnerData, this.props.history,this.state.id);
-=======
-    this.props.createPartner(partnerData, this.props.history,this.props.match.params.id);
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
+
+    this.props.createPartner(
+      partnerData,
+      this.props.history,
+      this.props.match.params.id
+    );
   }
 
   onChange(e) {
@@ -68,7 +60,8 @@ class CreatePartner extends Component {
                   error={
                     errors.error == '"fieldOfWork" is required'
                       ? errors.error
-                      : errors.error == '"fieldOfWork" is not allowed to be empty'
+                      : errors.error ==
+                        '"fieldOfWork" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
                         '"FieldOfWork" length must be at least 3 characters long'

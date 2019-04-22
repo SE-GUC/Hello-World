@@ -118,17 +118,6 @@ class App extends Component {
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
               />
-              <Route
-                exact
-                path="/api/tasks/admin/:id/:taskID"
-                component={Task}
-              />
-              <Route
-                exact
-                path="/api/tasks/member/:id/:taskID"
-                component={Task}
-              />
-
               <Switch>
                 <PrivateRoute
                   exact
@@ -145,13 +134,6 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/api/tasks" component={Tasks} />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/tasks/member/mytasks/:id"
-                  component={MyTasks}
-                />
               </Switch>
               <Switch>
                 <PrivateRoute

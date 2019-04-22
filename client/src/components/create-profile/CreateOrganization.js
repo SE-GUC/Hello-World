@@ -43,7 +43,7 @@ class CreateOrganization extends Component {
       facebook: this.state.facebook,
       linkedin: this.state.linkedin,
       youtube: this.state.youtube,
-      instagram: this.state.instagram,
+      instagram: this.state.instagram
     };
 
     if (organizationData.twitter == "") {
@@ -63,20 +63,16 @@ class CreateOrganization extends Component {
     }
     var e = document.getElementById("select");
     var opt = e.options[e.selectedIndex].value;
-console.log(opt)
-<<<<<<< HEAD
-    this.props.createOrganization(organizationData, this.props.history,opt);
-=======
+    console.log(opt);
 
     this.props.createOrganization(organizationData, this.props.history, opt);
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
   handleClick() {
-    this.props.history = this.props.history.push("/")
+    this.props.history = this.props.history.push("/");
   }
 
   render() {
@@ -220,24 +216,10 @@ console.log(opt)
                         : null
                     }
                   />
-<<<<<<< HEAD
-                </div>
-                <div>
-                
-              <p className="lead text-muted">
-                Welcome{" "}
-              </p>
-              <div> <select className="selectpicker" id="select">
-                   <option value="Partner">Partner</option>
-                   <option value="Consultant">Consultant</option>
-                   <option value="EducationalOrganization">EducationalOrganization</option>
-                    </select>
-                    </div>
-=======
+
                   <select id="select" name="Select profile type">
                     <option value="Partner">Partner</option>
                   </select>
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
                 </div>
                 <input
                   type="submit"
