@@ -9,6 +9,7 @@ const User = require("../../../models/User");
 const Task = require("../../../models/Task");
 
 // Load Validation
+const validator2 = require("../../../validation/organizationValidation");
 const validator = require("../../../validation/partnerValidation");
 
 // @route   POST api/profiles/partner/:id
@@ -63,15 +64,40 @@ router.get(
   }
 );
 
-// @route   PUT api/profiles/partner/:id
-// @desc    Edit Partner's Profile
-// @access  Private
-router.put(
-  "/:id",
+// @route GET api/profiles/partner
+// @desc Get Current Partner's Profile
+// @access private
+router.get(
+  "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const partner = await Partner.findById(req.params.id);
+      const organization = await Organization.findOne({ user: req.user.id });
+      if (!Organization)
+        return res.status(404).send({ error: "Organization not found" });
+      const partner = await Partner.findOne({ organization: organization._id });
+      if (!partner) return res.status(404).send({ error: "Partner not found" });
+      return res.json({ data: partner });
+    } catch (error) {
+      return res.status(404).json({ partnernotfound: "Partner not found" });
+    }
+  }
+);
+
+// @route   PUT api/profiles/partner
+// @desc    Edit Partner's Profile
+// @access  Private
+router.put(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const organization = await Partner.findOne({ user: req.user.id });
+      if (!organization)
+        return res.status(404).send({ error: "organization does not exist" });
+      const partner = await Organization.findOne({
+        organization: organization._id
+      });
       if (!partner)
         return res.status(404).send({ error: "Partner does not exist" });
       const isValidated = validator.updateValidation(req.body);
@@ -79,14 +105,36 @@ router.put(
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message });
+      const orgFields = {};
+      if (req.body.name) orgFields.name = req.body.name;
+      if (req.body.phone) orgFields.phone = req.body.phone;
+      if (req.body.email) orgFields.email = req.body.email;
+      if (req.body.address) orgFields.address = req.body.address;
       const fields = {};
-      fields.fieldOfWork = req.body.fieldOfWork;
-      const updatedPartner = await Partner.findByIdAndUpdate(req.params.id, {
-        $set: fields
-      });
-      return res.json({ msg: "Partner updated successfully" });
-    } catch (error) {
-      return res.status(404).json({ partnernotfound: "Partner not found" });
+      if (req.body.fieldOfWork) fields.fieldOfWork = req.body.fieldOfWork;
+
+      partner.save();
+      organization.save();
+      fields.user = req.user.id;
+
+      orgFields.social = {};
+      if (req.body.youtube) orgFields.social.youtube = req.body.youtube;
+      if (req.body.facebook) orgFields.social.facebook = req.body.facebook;
+      if (req.body.twitter) orgFields.social.twitter = req.body.twitter;
+      if (req.body.linkedin) orgFields.social.linkedin = req.body.linkedin;
+      if (req.body.instagram) orgFields.social.instagram = req.body.instagram;
+
+      if (req.body.avatar) orgFields.avatar = req.body.avatar;
+
+      const updatedpartner = await Partner.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $set: Fields
+        }
+      );
+      return res.json({ msg: "partner updated successfully" });
+    } catch (err) {
+      return res.status(404).json({ usernotfound: "User not found" });
     }
   }
 );

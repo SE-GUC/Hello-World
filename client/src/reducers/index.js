@@ -7,7 +7,9 @@ import partnerReducer from "./partnerReducer";
 import consultantReducer from "./consultantReducer";
 import authReducer from "./authReducer";
 import errorReducer from "./errorReducer";
-import organizationReducer from "./organizationReducer.js"
+import organizationReducer from "./organizationReducer.js";
+import adminReducer from "./adminReducer";
+
 export default combineReducers({
   member: memberReducer,
   master: masterReducer,
@@ -17,5 +19,6 @@ export default combineReducers({
   consultant: consultantReducer,
   auth: authReducer,
   errors: errorReducer,
-  organization: organizationReducer
+  organization: organizationReducer,
+  admin: adminReducer
 });

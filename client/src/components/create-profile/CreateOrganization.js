@@ -11,9 +11,10 @@ class CreateOrganization extends Component {
     super(props);
     this.state = {
       name: "",
-      address: "",
+
       phone: "",
       email: "",
+      address: "",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -61,12 +62,18 @@ class CreateOrganization extends Component {
     if (orgData.linkedin == "") {
       delete orgData.linkedin;
     }
+    var e = document.getElementById("select");
+    var opt = e.options[e.selectedIndex].value;
+    console.log(opt);
 
-    this.props.createOrganization(orgData, this.props.history);
+    this.props.createOrganization(organizationData, this.props.history, opt);
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+  handleClick() {
+    this.props.history = this.props.history.push("/");
   }
 
   render() {
@@ -80,7 +87,6 @@ class CreateOrganization extends Component {
               <h1 className="display-4 text-center">
                 Create Organization Profile
               </h1>
-
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -96,19 +102,6 @@ class CreateOrganization extends Component {
                       ? errors.error
                       : errors.error ==
                         '"name" length must be at least 3 characters long'
-                      ? errors.error
-                      : null
-                  }
-                />
-                <TextFieldGroup
-                  placeholder="* Address"
-                  name="address"
-                  value={this.state.address}
-                  onChange={this.onChange}
-                  error={
-                    errors.error == '"address" is required'
-                      ? errors.error
-                      : errors.error == '"address" is not allowed to be empty'
                       ? errors.error
                       : null
                   }
@@ -133,6 +126,18 @@ class CreateOrganization extends Component {
                     errors.error == '"email" is not allowed to be empty'
                       ? errors.error
                       : errors.error == '"email" must be a valid email'
+                      ? errors.error
+                      : null
+                  }
+                />
+
+                <TextFieldGroup
+                  placeholder="*address"
+                  name="address"
+                  value={this.state.address}
+                  onChange={this.onChange}
+                  error={
+                    errors.error == '"address" is not allowed to be empty'
                       ? errors.error
                       : null
                   }
@@ -213,6 +218,10 @@ class CreateOrganization extends Component {
                         : null
                     }
                   />
+
+                  <select id="select" name="Select profile type">
+                    <option value="Partner">Partner</option>
+                  </select>
                 </div>
                 <input
                   type="submit"

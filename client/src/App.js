@@ -18,16 +18,24 @@ import Task from "./components/tasks/Task";
 import Members from "./components/members/Members";
 import CreateMember from "./components/create-profile/CreateMember";
 import EditMember from "./components/edit-profile/EditMember";
+import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-
-import TaskForm from "./components/tasks/TaskForm";
-
-import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+import getAllApp from "./components/applications/getAllApp";
+import Tasks from "./components/tasks/Tasks";
+import MyTasks from "./components/tasks/MyTasks";
+import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
+import UnreviewedTask from "./components/tasks/UnreviewedTask";
+import AdminApplications from "./components/applications/AdminApplications";
+import AdminApplication from "./components/applications/AdminApplication";
+import PartnerApplications from "./components/applications/PartnerApplications";
+import PartnerApplication from "./components/applications/PartnerApplication";
+import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+import AdminNegotiation from "./components/applications/AdminNegotiation";
 
 class App extends Component {
   render() {
@@ -54,11 +62,7 @@ class App extends Component {
                 />
               </Switch>
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/create-Partner"
-                  component={CreatePartner}
-                />
+                <PrivateRoute exact path="/cp/:id" component={CreatePartner} />
               </Switch>
               <Switch>
                 <PrivateRoute
@@ -70,8 +74,22 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/api/profiles/Post-application"
+                  path="/api/profiles/partnerAppSubmit"
                   component={partnerAppSubmit}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/getAllApp"
+                  component={getAllApp}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/addSkils"
+                  component={addSkiils}
                 />
               </Switch>
               <Switch>
@@ -91,7 +109,6 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
-              <Route exact path="/taskform" component={TaskForm} />
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
@@ -109,24 +126,76 @@ class App extends Component {
               />
               <Route
                 exact
-                path="/api/applications/admin/:id/:appID"
-                component={Application}
-              />
-              <Route
-                exact
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
               />
-              <Route
-                exact
-                path="/api/tasks/admin/:id/:taskID"
-                component={Task}
-              />
-              <Route
-                exact
-                path="/api/tasks/member/:id/:taskID"
-                component={Task}
-              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/partner/applications/:id"
+                  component={PartnerApplications}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/:taskID"
+                  component={Task}
+                />
+              </Switch>
+
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/admin/:taskID"
+                  component={UnreviewedTask}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/api/tasks" component={Tasks} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/admin/mytasks/:id"
+                  component={UnreviewedTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/all/:id"
+                  component={AdminApplications}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/:id"
+                  component={AdminApplication}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/partner/:id"
+                  component={PartnerApplication}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/partner/negotiate/:id"
+                  component={PartnerNegotiation}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/negotiate/:id"
+                  component={AdminNegotiation}
+                />
+              </Switch>
             </div>
             <Footer />
           </div>

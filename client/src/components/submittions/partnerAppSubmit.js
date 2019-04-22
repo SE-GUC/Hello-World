@@ -4,15 +4,14 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import {postApplication}  from "../../actions/applicationActions";
+import { postApplication } from "../../actions/applicationActions";
 
 class parnterAppSubmit extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     
-      description:"",
-      needConsultancy:false,
+      description: "",
+      needConsultancy: false,
       errors: {}
     };
 
@@ -29,8 +28,8 @@ class parnterAppSubmit extends Component {
     e.preventDefault();
 
     const ApplicationData = {
-     description:this.state.description,
-     needConsultancy:this.state.needConsultancy
+      description: this.state.description,
+      needConsultancy: this.state.needConsultancy
     };
 
     this.props.postApplication(ApplicationData, this.props.history);
@@ -48,9 +47,8 @@ class parnterAppSubmit extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your Application</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Create Application</h1>
+              <p className="lead text-center">please fill all</p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
                   placeholder="*desc"
@@ -60,14 +58,37 @@ class parnterAppSubmit extends Component {
                   error={
                     errors.error == '"description" is required'
                       ? errors.error
-                      : errors.error == '"description" is not allowed to be empty'
+                      : errors.error ==
+                        '"description" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
                         '"description" length must be at least 3 characters long'
                       ? errors.error
                       : null
                   }
-                />
+                /> <TextFieldGroup
+                placeholder="*consultancy"
+                name="needConsultancy?"
+                value={this.state.needConsultancy}
+                onChange={this.onChange}
+                error={
+                  errors.error == '"needConsultancy" is required'
+                    ? errors.error
+                    : errors.error ==
+                      '"description" is not allowed to be empty'
+                    ? errors.error
+                    : errors.error ==
+                      '"description" length must be at least 3 characters long'
+                    ? errors.error
+                    : null
+                }
+              />
+                {/* <div>
+      <Checkbox 
+      id="CB"
+      onChange={this.onChange}
+      style={{ marginLeft: '15px' }} >need Consultancy</Checkbox>
+    </div> */}
                 <input
                   type="submit"
                   value="Submit"
@@ -88,7 +109,7 @@ parnterAppSubmit.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  profile: state.parnter,
+  profile: state.application,
   errors: state.errors
 });
 

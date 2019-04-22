@@ -1,10 +1,10 @@
-import { GET_APPLICATION } from "../actions/types";
+import { GET_APPLICATION, GET_APPLICATIONS } from "../actions/types";
 import { POST_APPLICATION } from "../actions/types";
 import { GET_REVIEWED_APPLICATION } from "../actions/types";
 
-
 const initialState = {
-  application: null
+  application: null,
+  applications: null
 };
 
 export default function(state = initialState, action) {
@@ -19,7 +19,11 @@ export default function(state = initialState, action) {
         ...state,
         application: action.payload
       };
-
+    case GET_APPLICATIONS:
+      return {
+        ...state,
+        applications: action.payload
+      };
     default:
       return state;
   }

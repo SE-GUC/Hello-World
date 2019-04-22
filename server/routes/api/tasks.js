@@ -19,10 +19,41 @@ const validator = require("../../validation/tasksValidation");
 // @access  public
 router.get("/all", async (req, res) => {
   try {
-    const tasks = await Task.find({});
+    const tasks = await Task.find({}).populate({
+      path: "application",
+      populate: {
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      }
+    });
     return res.json({ data: tasks });
   } catch (error) {
     return res.status(404).json({ tasknotfound: "No Tasks found" });
+  }
+});
+
+// @route   GET api/tasks/me/:id
+// @desc    Gets my tasks
+// @access  public
+router.get("/me/:id", async (req, res) => {
+  try {
+    const tasks = await Task.find({
+      applicants: { $elemMatch: { member: req.params.id, status: "accepted" } }
+    }).populate({
+      path: "application",
+      populate: {
+        path: "partner",
+        populate: {
+          path: "organization"
+        }
+      }
+    });
+    return res.json({ data: tasks });
+  } catch (error) {
+    res.status(404).json({ tasknotfound: "No Tasks found" });
+    console.log(error);
   }
 });
 
@@ -131,6 +162,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      console.log(req.params.id);
       const partner = await Partner.findById(req.params.id);
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 
@@ -250,15 +282,44 @@ router.post(
   }
 );
 
-// @route   GET api/tasks/admin/:id/:taskID
-// @desc    Admin Gets Task
+// @route   GET api/tasks/admin/:id
+// @desc    Admin Gets Unreviewed Tasks
 // @access  Private
 router.get(
-  "/admin/:id/:taskID",
+  "/admin/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const admin = await Admin.findById(req.params.id);
+      if (!admin) return res.status(404).send({ error: "Admin not found" });
+
+      const task = await Task.find({ reviewed: false }).populate({
+        path: "application",
+        populate: {
+          path: "partner",
+          populate: {
+            path: "organization"
+          }
+        }
+      });
+      if (!task) return res.status(404).send({ error: "Task not found" });
+
+      return res.json({ data: task });
+    } catch (error) {
+      return res.status(404).json({ adminnotfound: "Admin not found" });
+    }
+  }
+);
+
+// @route   GET api/tasks/admin/:id/:taskID
+// @desc    Admin Gets Task
+// @access  Private
+router.get(
+  "/admin/task/:taskID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const admin = await Admin.find({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
 
       const task = await Task.findById(req.params.taskID).populate(
@@ -277,16 +338,13 @@ router.get(
 // @desc    Member Gets Task
 // @access  Private
 router.get(
-  "/member/:id/:taskID",
+  "/member/:taskID",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const member = await Member.findById(req.params.id);
-      if (!member) return res.status(404).send({ error: "Member not found" });
-
-      const task = await Task.findById(req.params.taskID).populate(
-        "application"
-      );
+      const task = await Task.findById(req.params.taskID)
+        .populate("application")
+        .populate("partner");
       if (!task) return res.status(404).send({ error: "Task not found" });
 
       if (!task.reviewed)
