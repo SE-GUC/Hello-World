@@ -11,10 +11,9 @@ class CreateOrganization extends Component {
     super(props);
     this.state = {
       name: "",
-      age: "",
       phone: "",
       email: "",
-      address:"",
+      address: "",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -65,7 +64,12 @@ class CreateOrganization extends Component {
     var e = document.getElementById("select");
     var opt = e.options[e.selectedIndex].value;
 console.log(opt)
+<<<<<<< HEAD
     this.props.createOrganization(organizationData, this.props.history,opt);
+=======
+
+    this.props.createOrganization(organizationData, this.props.history, opt);
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
   }
 
   onChange(e) {
@@ -83,7 +87,9 @@ console.log(opt)
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Organization Profile</h1>
+              <h1 className="display-4 text-center">
+                Create Organization Profile
+              </h1>
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -137,7 +143,6 @@ console.log(opt)
                       ? errors.error
                       : null
                   }
-                  
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -215,6 +220,7 @@ console.log(opt)
                         : null
                     }
                   />
+<<<<<<< HEAD
                 </div>
                 <div>
                 
@@ -227,6 +233,11 @@ console.log(opt)
                    <option value="EducationalOrganization">EducationalOrganization</option>
                     </select>
                     </div>
+=======
+                  <select id="select" name="Select profile type">
+                    <option value="Partner">Partner</option>
+                  </select>
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
                 </div>
                 <input
                   type="submit"

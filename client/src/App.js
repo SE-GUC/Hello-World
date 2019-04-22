@@ -20,15 +20,19 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
+<<<<<<< HEAD
 import PartnerTaskForm from "./components/tasks/Partner'sTaskForm";
 import { create } from "domain";
+=======
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-import dashboardforPartner from "./components/dashboard/dashboardforPartner";
 
-
+import Tasks from "./components/tasks/Tasks";
+import MemberNegotiate from "./components/negotiation/MemberNegotiate";
+import MyTasks from "./components/tasks/MyTasks";
 
 class App extends Component {
   render() {
@@ -54,15 +58,9 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
-              />
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/create-Partner"
-                  component={CreatePartner}
-                />
+                <PrivateRoute exact path="/cp/:id" component={CreatePartner} />
               </Switch>
-              />
               <Switch>
                 <PrivateRoute
                   exact
@@ -76,7 +74,7 @@ class App extends Component {
                   path="/api/profiles/Post-application"
                   component={partnerAppSubmit}
                 />
-                </Switch>
+              </Switch>
               <Switch>
                 <PrivateRoute
                   exact
@@ -101,6 +99,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
+<<<<<<< HEAD
               <Switch>
                 <PrivateRoute exact path="/dashboardforPartner" component={dashboardforPartner} />
               </Switch>
@@ -111,12 +110,13 @@ class App extends Component {
                 component={PartnerTaskForm}
               /> 
 
+=======
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
                 component={Masterclass}
               />
-
               <Route
                 exact
                 path="/api/profiles/partner/:id"
@@ -142,12 +142,39 @@ class App extends Component {
                 path="/api/tasks/admin/:id/:taskID"
                 component={Task}
               />
+<<<<<<< HEAD
               <Route
                 exact
                 path="/api/tasks/member/:id/:taskID"
                 component={Task}
               />
               
+=======
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/:taskID"
+                  component={Task}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/api/tasks" component={Tasks} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/mytasks/:id"
+                  component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/negotiate/:id/:id2"
+                  component={MemberNegotiate}
+                />
+              </Switch>
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
             </div>
             <Footer />
           </div>
@@ -158,4 +185,3 @@ class App extends Component {
 }
 
 export default App;
-
