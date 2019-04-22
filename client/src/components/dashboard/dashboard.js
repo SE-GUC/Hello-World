@@ -19,8 +19,6 @@ class dashboard extends Component {
     const profile2 = this.props.profile2.profile;
     const adminProfile = this.props.adminProfile.profile;
 
-    console.log(this.props);
-
     let dashboardContent;
 
     if (profile == null && profile2 == null && adminProfile == null) {
@@ -77,6 +75,12 @@ class dashboard extends Component {
               >
                 Post Application
               </Link>{" "}
+              <Link to="/Partner-TaskForm" className="btn btn-lg btn-info">
+                Partner create task
+              </Link>{" "}
+              <Link to="/Consultant-TaskForm" className="btn btn-lg btn-info">
+                consultant create task
+              </Link>
             </div>
           );
         } else {
@@ -90,6 +94,16 @@ class dashboard extends Component {
                   to={`/api/profiles/getAllApp/`}
                 >
                 view all not-reviewed Apps
+                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                  className="btn btn-lg btn-info"
+                >
+                  Unreviewed Tasks
+                </Link>{" "}
+                <Link
+                  to={`/api/applications/admin/all/${adminProfile._id}`}
+                  className="btn btn-lg btn-info"
+                >
+                  Applications
                 </Link>
               </div>
             );

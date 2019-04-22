@@ -28,6 +28,31 @@ export const postTask = (taskData, history) => async dispatch => {
   }
 };
 
+// consultant creates task
+export const ConsultantPostTask = (
+  taskData,
+  id,
+  appid,
+  history
+) => async dispatch => {
+  const body = JSON.stringify(taskData);
+  const res = await fetch(
+    `http://localhost:5000/api/tasks/consultant/${id}/${appid}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
+};
+
 // Get Task
 export const getTask = taskID => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/tasks/member/${taskID}`, {
@@ -35,6 +60,24 @@ export const getTask = taskID => async dispatch => {
       Authorization: localStorage.getItem("jwtToken")
     }
   });
+
+  const json = await res.json();
+  dispatch({
+    type: GET_TASK,
+    payload: json.data
+  });
+};
+
+// Get Admin Task
+export const getAdminTask = taskID => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/tasks/admin/task/${taskID}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
 
   const json = await res.json();
   dispatch({
@@ -82,6 +125,28 @@ export const getTasks = () => async dispatch => {
 // Get My Tasks
 export const getMyTasks = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/tasks/me/${id}`);
+
+  const json = await res.json();
+  if (json.data) {
+    dispatch({
+      type: GET_TASKS,
+      payload: json.data
+    });
+  } else {
+    dispatch({
+      type: GET_TASKS,
+      payload: null
+    });
+  }
+};
+
+// Get Unreviewed Tasks
+export const getUnreviewedTasks = id => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/tasks/admin/${id}`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    }
+  });
 
   const json = await res.json();
   if (json.data) {

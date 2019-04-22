@@ -84,7 +84,7 @@ router.get(
   }
 );
 
-// @route   PUT api/profiles/partner/
+// @route   PUT api/profiles/partner
 // @desc    Edit Partner's Profile
 // @access  Private
 router.put(
@@ -138,11 +138,20 @@ router.put(
             }
           );
           return res.json({ msg: "partner updated successfully" });
-        } catch (err) {
-          return res.status(404).json({ usernotfound: "User not found" });
+       
+      
+      const updatedorganization = await Organization.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $set: orgFields
         }
-      }
-    );
+      );
+      return res.json({ msg: "partner updated successfully" });
+    } catch (err) {
+      return res.status(404).json({ usernotfound: "User not found" });
+    }
+  }
+);
 
 // @route POST api/profiles/partner/board-members/add/:id
 // @decs Adds Board Member To Partner's Profile

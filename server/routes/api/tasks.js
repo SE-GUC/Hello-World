@@ -162,6 +162,7 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      console.log(req.params.id);
       const partner = await Partner.findById(req.params.id);
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 
@@ -281,15 +282,44 @@ router.post(
   }
 );
 
-// @route   GET api/tasks/admin/:id/:taskID
-// @desc    Admin Gets Task
+// @route   GET api/tasks/admin/:id
+// @desc    Admin Gets Unreviewed Tasks
 // @access  Private
 router.get(
-  "/admin/:id/:taskID",
+  "/admin/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const admin = await Admin.findById(req.params.id);
+      if (!admin) return res.status(404).send({ error: "Admin not found" });
+
+      const task = await Task.find({ reviewed: false }).populate({
+        path: "application",
+        populate: {
+          path: "partner",
+          populate: {
+            path: "organization"
+          }
+        }
+      });
+      if (!task) return res.status(404).send({ error: "Task not found" });
+
+      return res.json({ data: task });
+    } catch (error) {
+      return res.status(404).json({ adminnotfound: "Admin not found" });
+    }
+  }
+);
+
+// @route   GET api/tasks/admin/:id/:taskID
+// @desc    Admin Gets Task
+// @access  Private
+router.get(
+  "/admin/task/:taskID",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const admin = await Admin.find({ user: req.user.id });
       if (!admin) return res.status(404).send({ error: "Admin not found" });
 
       const task = await Task.findById(req.params.taskID).populate(
