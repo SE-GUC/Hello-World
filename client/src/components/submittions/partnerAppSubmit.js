@@ -29,7 +29,7 @@ class parnterAppSubmit extends Component {
 
     const ApplicationData = {
       description: this.state.description,
-      needConsultancy: false
+      needConsultancy: this.state.needConsultancy
     };
 
     this.props.postApplication(ApplicationData, this.props.history);
@@ -66,20 +66,29 @@ class parnterAppSubmit extends Component {
                       ? errors.error
                       : null
                   }
-                />
-                <div class="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="1"
-                    value={this.state.needConsultancy}
-                    onChange={this.onChange}
-                  >
-                    <label class="custom-control-label" for="defaultUnchecked">
-                      Need needConsultancy?:
-                    </label>
-                  </input>
-                </div>
+                /> <TextFieldGroup
+                placeholder="*consultancy"
+                name="needConsultancy?"
+                value={this.state.needConsultancy}
+                onChange={this.onChange}
+                error={
+                  errors.error == '"needConsultancy" is required'
+                    ? errors.error
+                    : errors.error ==
+                      '"description" is not allowed to be empty'
+                    ? errors.error
+                    : errors.error ==
+                      '"description" length must be at least 3 characters long'
+                    ? errors.error
+                    : null
+                }
+              />
+                {/* <div>
+      <Checkbox 
+      id="CB"
+      onChange={this.onChange}
+      style={{ marginLeft: '15px' }} >need Consultancy</Checkbox>
+    </div> */}
                 <input
                   type="submit"
                   value="Submit"
@@ -100,7 +109,7 @@ parnterAppSubmit.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  profile: state.parnter,
+  profile: state.application,
   errors: state.errors
 });
 

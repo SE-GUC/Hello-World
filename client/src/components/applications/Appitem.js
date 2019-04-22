@@ -15,7 +15,7 @@ class AppItem extends Component {
               <span>{profile.needConsultancy}</span>
             </p>
             <Link
-              to={`/api/applications/admin/${profile._id}/:appID`}
+              to={`/api/applications/admin/${profile._id}`}
               className="btn btn-info"
             >
               View Application

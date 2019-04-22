@@ -24,10 +24,11 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-
+import getAllApp from "./components/applications/getAllApp"
 import Tasks from "./components/tasks/Tasks";
 import MemberNegotiate from "./components/negotiation/MemberNegotiate";
 import MyTasks from "./components/tasks/MyTasks";
+
 
 class App extends Component {
   render() {
@@ -66,8 +67,15 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/api/profiles/Post-application"
+                  path="/api/profiles/partnerAppSubmit"
                   component={partnerAppSubmit}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/getAllApp"
+                  component={getAllApp}
                 />
               </Switch>
               <Switch>

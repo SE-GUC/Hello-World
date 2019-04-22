@@ -4,9 +4,9 @@ import {GET_ERRORS} from "./types";
 const fetch = require("node-fetch");
 
 // Get Application
-export const getApplication = (id, appID) => async dispatch => {
+export const getApplication = id => async dispatch => {
   const res = await fetch(
-    `http://localhost:5000/api/applications/admin/${id}/${appID}`
+    `http://localhost:5000/api/applications/admin/${id}`
   );
 
   const json = await res.json();
@@ -30,7 +30,7 @@ export const getReviewedApplication = (id, appID) => async dispatch => {
 };
 export const postApplication = (ApplicationData, history) => async dispatch => {
   const body = JSON.stringify(ApplicationData);
-  const res = await fetch("http://localhost:5000/api/applications/:id", {
+  const res = await fetch("http://localhost:5000/api/applications", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +40,7 @@ export const postApplication = (ApplicationData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -60,7 +60,7 @@ export const editApp = (appData, history,appID) => async dispatch => {
   });
   const json = await res.json();
   if (json.msg) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,

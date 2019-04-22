@@ -6,8 +6,11 @@ import Spinner from "../common/Spinner";
 
 class Application extends Component {
   componentDidMount() {
-    const { id, appID } = this.props.match.params;
-    this.props.getApplication(id, appID);
+    const { id }= this.props.match.params;
+    this.props.getApplication(id);
+  }
+  onChange(e) {
+    this.props.application.needConsultancy = !this.props.application.needConsultancy
   }
   render() {
     let applicationContent;
@@ -60,6 +63,20 @@ class Application extends Component {
                 <div className="d-flex flex-wrap justify-content-center align-items-center">
                   {apps}
                 </div>
+                
+                <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="1"
+                    value={this.state.needConsultancy}
+                    onChange={this.onChange}
+                  >
+                    <label class="custom-control-label" for="defaultUnchecked">
+                      Need needConsultancy?:
+                    </label>
+                  </input>
+                 
+              
               </div>
             </div>
           </div>
