@@ -12,10 +12,9 @@ class CreateOrganization extends Component {
     super(props);
     this.state = {
       name: "",
-      age: "",
       phone: "",
       email: "",
-      address:"",
+      address: "",
       twitter: "",
       facebook: "",
       linkedin: "",
@@ -26,8 +25,7 @@ class CreateOrganization extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
- 
-}
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -39,7 +37,6 @@ class CreateOrganization extends Component {
 
     const organizationData = {
       name: this.state.name,
-      age: this.state.age,
       email: this.state.email,
       phone: this.state.phone,
       address: this.state.address,
@@ -65,20 +62,19 @@ class CreateOrganization extends Component {
     if (organizationData.linkedin == "") {
       delete organizationData.linkedin;
     }
-    var sel = document.getElementById('select');
+    var sel = document.getElementById("select");
     let opt;
-function getSelectedOption(sel,opt) {
-  for ( var i = 0, len = sel.options.length; i < len; i++ ) {
-      opt = sel.options[i];
-      if ( opt.selected === true ) {
+    function getSelectedOption(sel, opt) {
+      for (var i = 0, len = sel.options.length; i < len; i++) {
+        opt = sel.options[i];
+        if (opt.selected === true) {
           break;
+        }
       }
-   
-  };
-}
-getSelectedOption(sel,opt)
+    }
+    getSelectedOption(sel, opt);
 
-    this.props.createOrganization(organizationData, this.props.history,opt);
+    this.props.createOrganization(organizationData, this.props.history, opt);
   }
 
   onChange(e) {
@@ -93,7 +89,9 @@ getSelectedOption(sel,opt)
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Create Organization Profile</h1>
+              <h1 className="display-4 text-center">
+                Create Organization Profile
+              </h1>
               <p className="lead text-center">Tell us more about you</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
@@ -109,17 +107,6 @@ getSelectedOption(sel,opt)
                       ? errors.error
                       : errors.error ==
                         '"name" length must be at least 3 characters long'
-                      ? errors.error
-                      : null
-                  }
-                />
-                <TextFieldGroup
-                  placeholder="* Age"
-                  name="age"
-                  value={this.state.age}
-                  onChange={this.onChange}
-                  error={
-                    errors.error == '"age" must be a number'
                       ? errors.error
                       : null
                   }
@@ -158,7 +145,6 @@ getSelectedOption(sel,opt)
                       ? errors.error
                       : null
                   }
-                  
                 />
                 <div className="mb-3">Add Social Media Links (Optional)</div>
                 <div>
@@ -237,8 +223,8 @@ getSelectedOption(sel,opt)
                     }
                   />
                   <select id="select" name="Select profile type">
-                   <option value="Partner">Partner</option>
-                    </select>
+                    <option value="Partner">Partner</option>
+                  </select>
                 </div>
                 <input
                   type="submit"
@@ -252,8 +238,7 @@ getSelectedOption(sel,opt)
       </div>
     );
   }
-};
-
+}
 
 CreateOrganization.propTypes = {
   profile: PropTypes.object.isRequired,
@@ -269,5 +254,3 @@ export default connect(
   mapStateToProps,
   { createOrganization }
 )(withRouter(CreateOrganization));
-
-

@@ -20,14 +20,15 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-//import TaskForm from "./components/tasks/TaskForm";
-import { create } from "domain";
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 
-
+import Tasks from "./components/tasks/Tasks";
+import MemberNegotiate from "./components/negotiation/MemberNegotiate";
+import MyTasks from "./components/tasks/MyTasks";
+import ApplyTask from "./components/tasks/ApplyTask";
 
 class App extends Component {
   render() {
@@ -53,15 +54,9 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
-              
               <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/create-Partner"
-                  component={CreatePartner}
-                />
+                <PrivateRoute exact path="/cp/:id" component={CreatePartner} />
               </Switch>
-              
               <Switch>
                 <PrivateRoute
                   exact
@@ -75,7 +70,7 @@ class App extends Component {
                   path="/api/profiles/Post-application"
                   component={partnerAppSubmit}
                 />
-                </Switch>
+              </Switch>
               <Switch>
                 <PrivateRoute
                   exact
@@ -100,22 +95,14 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
-
-              {/* <Route
-                exact
-                path="/taskform"
-                component={TaskForm}
-              />  */}
-
               <Route
                 exact
                 path="/api/masterclasses/all/:id"
                 component={Masterclass}
               />
-
               <Route
                 exact
-                path="/api/profiles/partner/:id"  
+                path="/api/profiles/partner/:id"
                 component={Partner}
               />
               <Route
@@ -138,11 +125,37 @@ class App extends Component {
                 path="/api/tasks/admin/:id/:taskID"
                 component={Task}
               />
-              <Route
-                exact
-                path="/api/tasks/member/:id/:taskID"
-                component={Task}
-              />
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/:taskID"
+                  component={Task}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/api/tasks" component={Tasks} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/mytasks/:id"
+                  component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/apply/:id/:taskID"
+                  component={ApplyTask}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/negotiate/:id/:id2"
+                  component={MemberNegotiate}
+                />
+              </Switch>
             </div>
             <Footer />
           </div>
@@ -153,4 +166,3 @@ class App extends Component {
 }
 
 export default App;
-

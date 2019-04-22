@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentMember } from "../../actions/memberActions";
+import { getCurrentPartner } from "../../actions/partnerActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -14,13 +15,14 @@ class dashboard extends Component {
   render() {
     const { user } = this.props.auth;
     const { profile } = this.props.profile;
-    const  profile2  = this.props.profile2.profile;
+    const profile2 = this.props.profile2.profile;
+
     let dashboardContent;
 
-    if (profile === null && profile2 === null) {
+    if (profile == null && profile2 == null) {
       dashboardContent = <Spinner />;
     } else {
-      if (profile.name) {
+      if (profile !== null && profile.name) {
         dashboardContent = (
           <div>
             <p className="lead text-muted">
@@ -34,31 +36,28 @@ class dashboard extends Component {
               className="btn btn-lg btn-info"
             >
               Edit Profile
-            </Link>
+            </Link>{" "}
+            <Link to="/api/profiles/addSkils" className="btn btn-lg btn-info">
+              add skill
+            </Link>{" "}
             <Link
-              to="/api/profiles/addSkils"
+              to={`/api/tasks/member/mytasks/${profile._id}`}
               className="btn btn-lg btn-info"
             >
-              add skill
-            </Link>
-            <Link
-              to="/taskform"
-              className="btn btn-lg btn-info"
-            >
-              add skill
+              My Tasks
             </Link>
           </div>
-          
         );
-      }
-        else if(profile2.fieldOfWork){
+      } else {
+        if (profile2 !== null && profile2.name) {
           dashboardContent = (
             <div>
               <p className="lead text-muted">
                 Welcome{" "}
                 <Link
-                className="btn btn-lg btn-info"
-                to={`/api/profiles/partner/${profile2._id}`}>
+                  className="btn btn-lg btn-info"
+                  to={`/api/profiles/partner/${profile2._id}`}
+                >
                   Show Profile:{profile2.name}
                 </Link>
               </p>
@@ -69,34 +68,36 @@ class dashboard extends Component {
                 Edit Partner's profile
               </Link>{" "}
               <Link
-              to="api/profiles/application/:id"
-              className="btn btn-lg btn=info">
-              Post Application
+                to="api/profiles/application/:id"
+                className="btn btn-lg btn=info"
+              >
+                Post Application
               </Link>
             </div>
-          );}
-          else{
-        dashboardContent = (
-          <div>
-            <p className="lead text-muted">Welcome {user.name}</p>
-            <p>
-              You have not created a profile yet, Create a profile as a Member
-              or an Organization
-            </p>
-            <Link
-              to="/api/profiles/create-member"
-              className="btn btn-lg btn-info"
-            >
-              Create Member
-            </Link>{" "}
-            <Link
-              to="/api/profiles/create-organization"
-              className="btn btn-lg btn-info"
-            >
-              Create Organization
-            </Link>
-          </div>
-        );
+          );
+        } else {
+          dashboardContent = (
+            <div>
+              <p className="lead text-muted">Welcome {user.name}</p>
+              <p>
+                You have not created a profile yet, Create a profile as a Member
+                or an Organization
+              </p>
+              <Link
+                to="/api/profiles/create-member"
+                className="btn btn-lg btn-info"
+              >
+                Create Member
+              </Link>{" "}
+              <Link
+                to="/api/profiles/create-organization"
+                className="btn btn-lg btn-info"
+              >
+                Create Organization
+              </Link>
+            </div>
+          );
+        }
       }
     }
     return (
@@ -117,9 +118,10 @@ class dashboard extends Component {
 dashboard.propTypes = {
   getCurrentPartner: PropTypes.func.isRequired,
   getCurrentMember: PropTypes.func.isRequired,
+  getCurrentPartner: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  profile2: PropTypes.object.isRequired,
+  profile2: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -130,5 +132,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentMember,getCurrentPartner }
+  { getCurrentMember, getCurrentPartner }
 )(dashboard);

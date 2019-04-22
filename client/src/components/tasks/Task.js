@@ -1,19 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getTask } from "../../actions/taskActions";
 import Spinner from "../common/Spinner";
 
 class Task extends Component {
   componentDidMount() {
-    const { id, taskID } = this.props.match.params;
-    this.props.getTask(id, taskID);
-    console.log(this.props.task);
+    const { taskID } = this.props.match.params;
+    this.props.getTask(taskID);
   }
   render() {
+    const { task, profile } = this.props;
     let taskContent;
 
-    if (this.props.task == null) {
+    if (task == null) {
       taskContent = <Spinner />;
     } else {
       const {
@@ -25,8 +26,7 @@ class Task extends Component {
         reviewed,
         applicants,
         extra
-      } = this.props.task;
-
+      } = task;
       const theSkills = skills.map((skill, index) => (
         <div key={index} className="p-3">
           <i className="fa fa-check" /> {skill}
@@ -74,6 +74,13 @@ class Task extends Component {
                   {exs}
                 </div>
               </div>
+              <hr />
+              <Link
+                to={`/api/tasks/apply/${profile._id}/${task._id}`}
+                className="btn btn-lg btn-info"
+              >
+                APPLY
+              </Link>
             </div>
           </div>
         </div>
@@ -88,7 +95,8 @@ Task.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  task: state.task.task
+  task: state.task.task,
+  profile: state.member.profile
 });
 
 export default connect(
