@@ -3,24 +3,22 @@ import { GET_TASK, GET_REVIEWED_TASK, POST_TASK, GET_TASKS } from "./types";
 const fetch = require("node-fetch");
 
 // Post Task
-export const postTask = (id, appID) => async dispatch => {
+export const postTask = (taskData, history) => async dispatch => {
+  const body = JSON.stringify(taskData);
   const res = await fetch(
-    `http://localhost:5000/api/tasks/partner/${id}/${appID}`,
+    "http://localhost:5000/api/tasks/partner/${taskData.ID}/${taskData.application}",
     {
+      method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Authorization: localStorage.getItem("jwtToken")
-      }
+      },
+      body: body
     }
   );
-
   const json = await res.json();
   if (json.data) {
-    //   history.push("/taskform")
-  } else {
-    dispatch({
-      type: POST_TASK,
-      payload: json.data
-    });
+    history.push("/dashboard");
   }
 };
 
