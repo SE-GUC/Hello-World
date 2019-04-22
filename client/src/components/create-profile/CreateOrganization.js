@@ -62,17 +62,9 @@ class CreateOrganization extends Component {
     if (organizationData.linkedin == "") {
       delete organizationData.linkedin;
     }
-    var sel = document.getElementById("select");
-    let opt;
-    function getSelectedOption(sel, opt) {
-      for (var i = 0, len = sel.options.length; i < len; i++) {
-        opt = sel.options[i];
-        if (opt.selected === true) {
-          break;
-        }
-      }
-    }
-    getSelectedOption(sel, opt);
+    var e = document.getElementById("select");
+    var opt = e.options[e.selectedIndex].value;
+console.log(opt)
 
     this.props.createOrganization(organizationData, this.props.history, opt);
   }

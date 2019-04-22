@@ -5,7 +5,6 @@ import { getCurrentPartner } from "../../actions/partnerActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import {getCurrentPartner} from "../../actions/partnerActions"
 class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();
