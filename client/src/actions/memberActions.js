@@ -20,7 +20,7 @@ export const getMember = id => async dispatch => {
 };
 
 // Get Current Member
-export const getCurrentMember = id => async dispatch => {
+export const getCurrentMember =id =>  async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/member`, {
     headers: {
       "Content-Type": "application/json",

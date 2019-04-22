@@ -15,22 +15,11 @@ class AppItem extends Component {
               <span>{profile.needConsultancy}</span>
             </p>
             <Link
-              to={`/api/profiles/member/${profile._id}`}
+              to={`/api/applications/admin/${profile._id}/:appID`}
               className="btn btn-info"
             >
-              View Profile
+              View Application
             </Link>
-          </div>
-          <div className="col-md-4 d-none d-md-block">
-            <h4>Skills</h4>
-            <ul className="list-group">
-              {profile.skills.slice(0, 4).map((skill, index) => (
-                <li key={index} className="list-group-item">
-                  <i className="fa fa-check pr-1" />
-                  {skill}
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
@@ -38,8 +27,8 @@ class AppItem extends Component {
   }
 }
 
-MemberItem.propTypes = {
+AppItem.propTypes = {
   profile: PropTypes.object.isRequired
 };
 
-export default MemberItem;
+export default AppItem;

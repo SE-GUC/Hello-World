@@ -56,7 +56,8 @@ export const editPartner = (partnerData, history) => async dispatch => {
       payload: json
     });
   }
-}; export const getCurrentPartner = id => async dispatch => {
+};
+ export const getCurrentPartner = id=> async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/partner`, {
     headers: {
       "Content-Type": "application/json",
