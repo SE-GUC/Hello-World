@@ -45,14 +45,14 @@ export const createConsultant = (consultantData, history) => async dispatch => {
 // delete profile
 router.delete('/:id', async (req, res) => {
     try {
-      const currConsultant= await User.findOne({_id:req.params.id ,tags: 'Partner' })     
-      if (currPartner) {
-        const index=currPartner.tags.indexOf('Partner')
-          currPartner.tags.splice(index,1)
-       currPartner.save()
-        res.json({ msg: 'Partner was deleted successfully'})
+      const currConsultant= await User.findOne({_id:req.params.id ,tags: 'Consultant' })     
+      if (currConsultant) {
+        const index=currConsultant.tags.indexOf('Consultant')
+          currConsultant.tags.splice(index,1)
+       currConsultant.save()
+        res.json({ msg: 'Consultant was deleted successfully'})
       } else {
-        res.json({ msg: 'Partner was deleted Already or Not Found' })
+        res.json({ msg: 'Consultant was deleted Already or Not Found' })
       }
     }
     catch (error) {
