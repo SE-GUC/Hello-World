@@ -21,7 +21,7 @@ class dashboard extends Component {
     if (profile == null && profile2 == null) {
       dashboardContent = <Spinner />;
     } else {
-      if (profile !== null && !Object.keys(profile) > 0) {
+      if (profile !== null && profile.name) {
         dashboardContent = (
           <div>
             <p className="lead text-muted">
@@ -48,7 +48,7 @@ class dashboard extends Component {
           </div>
         );
       } else {
-        if (profile2 !== null && !Object.keys(profile2) > 0) {
+        if (profile2 !== null && profile2.name) {
           dashboardContent = (
             <div>
               <p className="lead text-muted">
