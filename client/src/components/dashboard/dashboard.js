@@ -48,7 +48,7 @@ class dashboard extends Component {
           </div>
         );
       } else {
-        if (profile2 !== null && profile2.name) {
+        if (profile2 !== null && profile2.fieldOfWork) {
           dashboardContent = (
             <div>
               <p className="lead text-muted">

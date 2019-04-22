@@ -28,7 +28,6 @@ import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 import Tasks from "./components/tasks/Tasks";
 import MemberNegotiate from "./components/negotiation/MemberNegotiate";
 import MyTasks from "./components/tasks/MyTasks";
-import ApplyTask from "./components/tasks/ApplyTask";
 
 class App extends Component {
   render() {
@@ -140,13 +139,6 @@ class App extends Component {
                   exact
                   path="/api/tasks/member/mytasks/:id"
                   component={MyTasks}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/tasks/apply/:id/:taskID"
-                  component={ApplyTask}
                 />
               </Switch>
               <Switch>
