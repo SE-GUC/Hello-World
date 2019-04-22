@@ -42,7 +42,24 @@ export const createConsultant = (consultantData, history) => async dispatch => {
     });
   }
 };
-
+// delete profile
+router.delete('/:id', async (req, res) => {
+    try {
+      const currConsultant= await User.findOne({_id:req.params.id ,tags: 'Partner' })     
+      if (currPartner) {
+        const index=currPartner.tags.indexOf('Partner')
+          currPartner.tags.splice(index,1)
+       currPartner.save()
+        res.json({ msg: 'Partner was deleted successfully'})
+      } else {
+        res.json({ msg: 'Partner was deleted Already or Not Found' })
+      }
+    }
+    catch (error) {
+      // We will be handling the error later
+      console.log(error)
+    }
+  })
 // Edit Profile
 export const editConsultant = (memberData, history) => async dispatch => {
   const body = JSON.stringify(consultantData);
