@@ -17,9 +17,15 @@ export const getPartner = id => async dispatch => {
   });
 };
 // create partner
-export const createPartner = (partnerData, history) => async dispatch => {
+<<<<<<< HEAD
+export const createPartner = (partnerData,history,id) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch("http://localhost:5000/api/profiles/partner/", {
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}` , {
+=======
+export const createPartner = (partnerData, history,id) => async dispatch => {
+  const body = JSON.stringify(partnerData);
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +35,7 @@ export const createPartner = (partnerData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -37,9 +43,9 @@ export const createPartner = (partnerData, history) => async dispatch => {
     });
   }
 };
-export const editPartner = (partnerData, history) => async dispatch => {
+export const editPartner = (partnerData, history,id) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch("http://localhost:5000/api/profiles/partner/:id", {
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -56,10 +62,16 @@ export const editPartner = (partnerData, history) => async dispatch => {
       payload: json
     });
   }
+<<<<<<< HEAD
+}; export const getCurrentPartner = id => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {  
+  headers: {
+=======
 };
 export const getCurrentPartner = id => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/profiles/partner`, {
     headers: {
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("jwtToken")
     }

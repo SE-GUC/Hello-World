@@ -38,9 +38,47 @@ class dashboard extends Component {
               className="btn btn-lg btn-info"
             >
               Edit Profile
+<<<<<<< HEAD
+            </Link>
+            <Link
+              to="/api/profiles/addSkils"
+              className="btn btn-lg btn-info"
+            >
+              add skill
+            </Link>
+            <Link
+              to="/Partner-TaskForm"
+              className="btn btn-lg btn-info"
+            >
+               Partner create task
+            </Link>
+            <Link
+              to="/Consultant-TaskForm"
+              className="btn btn-lg btn-info"
+            >
+            consultant create task
+            </Link>
+          </div>
+          
+        );
+      } else {
+        dashboardContent = (
+          <div>
+            <p className="lead text-muted">Welcome {user.name}</p>
+            <p>
+              You have not created a profile yet, Create a profile as a Member
+              or an Organization
+            </p>
+            <Link
+              to="/api/profiles/create-member"
+              className="btn btn-lg btn-info"
+            >
+              Create Member
+=======
             </Link>{" "}
             <Link to="/api/profiles/addSkils" className="btn btn-lg btn-info">
               add skill
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
             </Link>{" "}
             <Link
               to={`/api/tasks/member/mytasks/${profile._id}`}
@@ -139,6 +177,7 @@ class dashboard extends Component {
 }
 
 dashboard.propTypes = {
+  getCurrentPartner: PropTypes.func.isRequired,
   getCurrentMember: PropTypes.func.isRequired,
   getCurrentPartner: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,

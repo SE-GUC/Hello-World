@@ -20,7 +20,6 @@ import EditMember from "./components/edit-profile/EditMember";
 import addSkiils from "./components/member-add-skils/addSkiils";
 import dashboard from "./components/dashboard/dashboard";
 import PrivateRoute from "./components/common/PrivateRoute";
-
 import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
@@ -58,11 +57,9 @@ class App extends Component {
                   component={CreateMember}
                 />
               </Switch>
-
               <Switch>
                 <PrivateRoute exact path="/cp/:id" component={CreatePartner} />
               </Switch>
-
               <Switch>
                 <PrivateRoute
                   exact
@@ -121,6 +118,17 @@ class App extends Component {
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
               />
+              <Route
+                exact
+                path="/api/tasks/admin/:id/:taskID"
+                component={Task}
+              />
+              <Route
+                exact
+                path="/api/tasks/member/:id/:taskID"
+                component={Task}
+              />
+
               <Switch>
                 <PrivateRoute
                   exact

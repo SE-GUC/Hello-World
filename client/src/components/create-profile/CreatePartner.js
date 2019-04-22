@@ -3,17 +3,24 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
-import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createPartner } from "../../actions/partnerActions";
+//import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
+import {createPartner } from "../../actions/partnerActions";
 
-class CreatePartner extends Component {
+class CreatePartner extends Component {  
+<<<<<<< HEAD
   constructor(props) {
     super(props);
     this.state = {
-      fieldOfWork: "",
+      id:this.props.match.params,
+=======
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
+      fieldOfWork:"",
       errors: {}
     };
-
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -22,19 +29,19 @@ class CreatePartner extends Component {
       this.setState({ errors: nextProps.errors });
     }
   }
-
+  
   onSubmit(e) {
     e.preventDefault();
 
     const partnerData = {
-      fieldOfWork: this.state.fieldOfWork
+     fieldOfWork:this.state.fieldOfWork,
     };
-
-    this.props.createPartner(
-      partnerData,
-      this.props.history,
-      this.props.match.params.id
-    );
+    
+<<<<<<< HEAD
+    this.props.createPartner(partnerData, this.props.history,this.state.id);
+=======
+    this.props.createPartner(partnerData, this.props.history,this.props.match.params.id);
+>>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77
   }
 
   onChange(e) {
@@ -50,7 +57,7 @@ class CreatePartner extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about your field</p>
+              <p className="lead text-center">Tell us more about what you do</p>
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
@@ -61,8 +68,7 @@ class CreatePartner extends Component {
                   error={
                     errors.error == '"fieldOfWork" is required'
                       ? errors.error
-                      : errors.error ==
-                        '"fieldOfWork" is not allowed to be empty'
+                      : errors.error == '"fieldOfWork" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
                         '"FieldOfWork" length must be at least 3 characters long'
