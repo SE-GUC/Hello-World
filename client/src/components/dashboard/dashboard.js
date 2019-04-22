@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentMember } from "../../actions/memberActions";
 import { getCurrentPartner } from "../../actions/partnerActions";
+import { getCurrentAdmin } from "../../actions/adminActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -9,16 +10,20 @@ class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();
     this.props.getCurrentPartner();
+    this.props.getCurrentAdmin();
   }
 
   render() {
     const { user } = this.props.auth;
     const { profile } = this.props.profile;
     const profile2 = this.props.profile2.profile;
+    const adminProfile = this.props.adminProfile.profile;
+
+    console.log(this.props);
 
     let dashboardContent;
 
-    if (profile == null && profile2 == null) {
+    if (profile == null && profile2 == null && adminProfile == null) {
       dashboardContent = <Spinner />;
     } else {
       if (profile !== null && profile.name) {
@@ -75,27 +80,36 @@ class dashboard extends Component {
             </div>
           );
         } else {
-          dashboardContent = (
-            <div>
-              <p className="lead text-muted">Welcome {user.name}</p>
-              <p>
-                You have not created a profile yet, Create a profile as a Member
-                or an Organization
-              </p>
-              <Link
-                to="/api/profiles/create-member"
-                className="btn btn-lg btn-info"
-              >
-                Create Member
-              </Link>{" "}
-              <Link
-                to="/api/profiles/create-organization"
-                className="btn btn-lg btn-info"
-              >
-                Create Organization
-              </Link>
-            </div>
-          );
+          if (adminProfile !== null && adminProfile.name) {
+            dashboardContent = (
+              <div>
+                <p className="lead text-muted">Welcome {adminProfile.name}</p>
+                <p className="lead">You are Logged in as an admin</p>
+              </div>
+            );
+          } else {
+            dashboardContent = (
+              <div>
+                <p className="lead text-muted">Welcome {user.name}</p>
+                <p>
+                  You have not created a profile yet, Create a profile as a
+                  Member or an Organization
+                </p>
+                <Link
+                  to="/api/profiles/create-member"
+                  className="btn btn-lg btn-info"
+                >
+                  Create Member
+                </Link>{" "}
+                <Link
+                  to="/api/profiles/create-organization"
+                  className="btn btn-lg btn-info"
+                >
+                  Create Organization
+                </Link>
+              </div>
+            );
+          }
         }
       }
     }
@@ -119,16 +133,18 @@ dashboard.propTypes = {
   getCurrentPartner: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
-  profile2: PropTypes.object.isRequired
+  profile2: PropTypes.object.isRequired,
+  adminProfile: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   profile: state.member,
   auth: state.auth,
-  profile2: state.partner
+  profile2: state.partner,
+  adminProfile: state.admin
 });
 
 export default connect(
   mapStateToProps,
-  { getCurrentMember, getCurrentPartner }
+  { getCurrentMember, getCurrentPartner, getCurrentAdmin }
 )(dashboard);
