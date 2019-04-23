@@ -36,7 +36,8 @@ import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
 import PartnerTaskForm  from "./components/tasks/Partner'sTaskForm"
-
+import editapp from "./components/edit-profile/editapp";
+import AddPastEvents from"./components/edit-profile/AddPastEvents";
 
 class App extends Component {
   render() {
@@ -89,6 +90,13 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/applications/editapp/:id"
+                  component={editapp}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/profiles/addSkils"
                   component={addSkiils}
                 />
@@ -107,6 +115,15 @@ class App extends Component {
                   component={EditPartner}
                 />
               </Switch>
+
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/addpastevent/:id"
+                  component={AddPastEvents}
+                />
+              </Switch>
+
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>

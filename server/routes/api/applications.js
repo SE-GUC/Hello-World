@@ -64,11 +64,11 @@ router.put(
       if (!application)
         return res.status(404).send({ error: "Application does not exist" });
 
-      if (application.partner != partner._id) {
-        return res.status(400).json({
-          Unauthorized: "This Partner is not responsible for this Application"
-        });
-      }
+      // if (application.partner != partner._id) {
+      //   return res.status(400).json({
+      //     Unauthorized: "This Partner is not responsible for this Application"
+      //   });
+      // }
 
       if (application.reviewed) {
         return res
@@ -84,8 +84,8 @@ router.put(
       const fields = {};
       fields.needConsultancy = req.body.needConsultancy;
       fields.description = req.body.description;
-      const updatedApplication = await Application.findByIdAndUpdate(
-        req.params.appID,
+      const updatedApplication = await Application.findOneAndUpdate(
+        {organization:organization1._id},
         { $set: fields }
       );
       return res.json({ msg: "Application updated successfully" });

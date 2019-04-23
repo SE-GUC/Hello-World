@@ -47,6 +47,12 @@ class dashboard extends Component {
               className="btn btn-lg btn-info"
             >
               My Tasks
+            </Link>{" "}
+            <Link
+              to={`/api/tasks/member/addpastevent/${profile2._id}`}
+              className="btn btn-lg btn-info"
+            >
+              add past event
             </Link>
           </div>
         );
@@ -60,7 +66,7 @@ class dashboard extends Component {
                 to={`/api/profiles/partner/${profile2._id}`}
               >
                 Show Profile:{profile2.name}
-              </Link>
+              </Link>{" "}
               <Link
                 to="/api/profiles/Edit-Partner"
                 className="btn btn-lg btn-info"
@@ -74,8 +80,8 @@ class dashboard extends Component {
                 My Applications
               </Link>{" "}
               <Link
-                to={`api/profiles/applications/${profile2._id}`}
-                className="btn btn-lg btn=info"
+                to="api/profiles/partnerAppSubmit"
+                className="btn btn-lg btn-info"
               >
                 Post Application
               </Link>{" "}
@@ -91,11 +97,12 @@ class dashboard extends Component {
                 <Link
                   className="btn btn-lg btn-info"
                   to={`/api/profiles/getAllApp/`}
-                >
-                  view all not-reviewed Apps to=
-                  {`/api/tasks/admin/mytasks/${adminProfile._id}`}
-                  className="btn btn-lg btn-info" > Unreviewed Tasks
+                >view all not-reviewed Apps
                 </Link>{" "}
+                  {/* <link to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                  className="btn btn-lg btn-info" >
+                Unreviewed Tasks
+                </link>{" "} */}
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
                   className="btn btn-lg btn-info"

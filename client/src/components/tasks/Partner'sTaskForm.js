@@ -44,7 +44,6 @@ import { PartnerPostTask } from "../../actions/taskActions"
          experienceLevel : this.state.experienceLevel,
          skills: this.state.skills
          };
-         console.log(id)
         this.props.PartnerPostTask(taskData,id,this.props.history);
     }
 
