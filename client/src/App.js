@@ -25,7 +25,6 @@ import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
 import AdminReview from"./components/tasks/AdminrReview";
-import getAllApp from "./components/applications/getAllApp";
 import Tasks from "./components/tasks/Tasks";
 import MyTasks from "./components/tasks/MyTasks";
 import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
@@ -76,13 +75,6 @@ class App extends Component {
                   exact
                   path="/api/profiles/partnerAppSubmit"
                   component={partnerAppSubmit}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/getAllApp"
-                  component={getAllApp}
                 />
               </Switch>
               <Switch>

@@ -213,11 +213,11 @@ router.get(
   }
 );
 
-// @route   POST api/applications/admin/:id/appID
+// @route   POST api/applications/review/:id
 // @desc    Admin Reviews Application
 // @access  Private
 router.post(
-  "/id",
+  "review/id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
@@ -268,7 +268,7 @@ router.get(
   }
 );
 
-// @route   GET api/applications/partner/appID
+// @route   GET api/applications/partner/:appID
 // @desc    Partner gets Application
 // @access  Private
 router.get(

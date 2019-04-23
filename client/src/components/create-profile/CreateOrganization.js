@@ -71,9 +71,9 @@ class CreateOrganization extends Component {
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
-  handleClick() {
-    this.props.history = this.props.history.push("/");
-  }
+  // handleClick() {
+  //   this.props.history = this.props.history.push("/");
+  // }
 
   render() {
     const { errors } = this.state;
