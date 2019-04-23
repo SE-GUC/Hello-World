@@ -1,4 +1,4 @@
-import { GET_APPLICATIONS, GET_ADMIN } from "./types";
+import { GET_APPLICATIONS, GET_ADMIN,ADMIN_REVIEW } from "./types";
 const fetch = require("node-fetch");
 
 export const getApplications = id => async dispatch => {
@@ -16,6 +16,31 @@ export const getApplications = id => async dispatch => {
     type: GET_APPLICATIONS,
     payload: json.data
   });
+};
+
+//admin review
+export const reviewApplications = (
+  id,
+  appID,
+  history
+
+)=> async dispatch => {
+  const body = JSON.stringify();
+  const res = await fetch(
+    ` http://localhost:5000/api/applications/admin/${id}/${appID}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
 };
 
 // Get Current Admin
