@@ -6,7 +6,9 @@ import { getCurrentAdmin } from "../../actions/adminActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
 import {deletepartner} from "../../actions/partnerActions"
+
 class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();
@@ -104,13 +106,21 @@ class dashboard extends Component {
               <div>
                 <p className="lead text-muted">Welcome {adminProfile.name}</p>
                 <p className="lead">You are Logged in as an admin</p>
+                <Link
+                  className="btn btn-lg btn-info"
+                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                >
+                  {" "}
+                  Unreviewed Tasks
+                </Link>{" "}
 
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
                   className="btn btn-lg btn-info"
                 >
                   Applications
-                </Link>
+                </Link>{" "}
+                
               </div>
             );
           } else {

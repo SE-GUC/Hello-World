@@ -169,3 +169,24 @@ export const partnerNegotiate = (msgData, id, history) => async dispatch => {
     history.push("/dashboard");
   }
 };
+
+// Admin Negotiate
+export const adminNegotiate = (msgData, id, history) => async dispatch => {
+  const body = JSON.stringify(msgData);
+  const res = await fetch(
+    `http://localhost:5000/api/applications/admin/negotiate/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
+};

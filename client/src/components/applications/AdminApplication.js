@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getAdminApplication } from "../../actions/applicationActions";
 import Spinner from "../common/Spinner";
@@ -17,6 +18,8 @@ class AdminApplication extends Component {
   }
   render() {
     let applicationContent;
+
+    const { application } = this.props;
 
     if (this.props.application == null) {
       applicationContent = <Spinner />;
@@ -82,6 +85,12 @@ class AdminApplication extends Component {
                 />
               </form>
               </div>
+              <Link
+                to={`/api/applications/admin/negotiate/${application._id}`}
+                className="btn btn-lg btn-info"
+              >
+                Negotiate
+              </Link>
             </div>
           </div>
         </div>
