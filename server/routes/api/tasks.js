@@ -153,7 +153,6 @@ router.delete(
     }
   }
 );
-
 // @route   POST api/tasks/partner/:id
 // @desc    Partner Posts a Task
 // @access  private
@@ -165,7 +164,6 @@ router.post(
       const organization = await Organization.findOne({user : req.user.id})
       const partner = await Partner.findOne({organization: organization._id});
       if (!partner) return res.status(404).send({ error: "Partner not found" });
-
       const application = await Application.findById(req.params.id);
       if (!application)
         return res.status(404).send({ error: "Application not found" });
@@ -214,6 +212,8 @@ router.post(
     }
   }
 );
+
+
 
 // @route   POST api/tasks/partner/respond/:id/:id2/:taskID
 // @desc    Partner Responds to Member Applications

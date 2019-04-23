@@ -5,8 +5,7 @@ import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
 import TextFieldGroupIcon from "../common/TextFieldGroupIcon"; 
 import { PartnerPostTask } from "../../actions/taskActions"
-import { getCurrentMember } from "../../actions/memberActions";
-import store from '../../store';
+
 
  class PartnerTaskForm extends Component {
     constructor(props) {
@@ -28,22 +27,26 @@ import store from '../../store';
           this.setState({ errors: nextProps.errors });
         }
       }
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+         }
     
     onSubmit(e) {
         e.preventDefault();
-     
+        
+        
+       const { application } = this.props.application;
+       const id = application._id;
+
         const taskData = {
          levelOfCommitment : this.state.levelOfCommitment,
          monetaryCompensation : this.state.monetaryCompensation,
          experienceLevel : this.state.experienceLevel,
          skills: this.state.skills
          };
-         console.log(this.state.appid)
-        this.props.PartnerPostTask(taskData,this.state.appid,this.props.history);
+        this.props.PartnerPostTask(taskData,id,this.props.history);
     }
-    onChange(e) {
-         this.setState({ [e.target.name]: e.target.value });
-          }
+
     
 
   render() {
@@ -59,17 +62,6 @@ import store from '../../store';
               <small className="d-block pb-3">* = required fields</small>
               <form onSubmit={this.onSubmit}>
 
-              <TextFieldGroup
-                  placeholder="* appid"
-                  name="appid"
-                  value={this.state.appid}
-                  onChange={this.onChange}
-                  // error={
-                  //   errors.error == '"age" must be a number'
-                  //     ? errors.error
-                  //     : null
-                  // }
-                />
 
                 <TextFieldGroup
                   placeholder="* levelOfCommitment"
@@ -133,14 +125,16 @@ import store from '../../store';
   }
 }
 PartnerTaskForm.propTypes = {
-    task: PropTypes.object.isRequired
+  application: PropTypes.object.isRequired,
+//  errors: PropTypes.object.isRequired
     };
   
   const mapStateToProps = state => ({
-    task: state.task
+    application: state.application,
+   // errors: state.errors
   });
   
   export default connect(
     mapStateToProps,
-    { PartnerPostTask , getCurrentMember }
+    { PartnerPostTask  }
   )(withRouter(PartnerTaskForm));
