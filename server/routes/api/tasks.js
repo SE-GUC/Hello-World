@@ -153,20 +153,19 @@ router.delete(
     }
   }
 );
-
-// @route   POST api/tasks/partner/:id/:appID
+// @route   POST api/tasks/partner/:id
 // @desc    Partner Posts a Task
 // @access  private
 router.post(
-  "/partner/:id/:appID",
+  "/partner/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      console.log(req.params.id);
-      const partner = await Partner.findById(req.params.id);
+      const organization = await Organization.findOne({user : req.user.id})
+      const partner = await Partner.findOne({organization: organization._id});
       if (!partner) return res.status(404).send({ error: "Partner not found" });
-
-      const application = await Application.findById(req.params.appID);
+  
+      const application = await Application.findById(req.params.id);
       if (!application)
         return res.status(404).send({ error: "Application not found" });
 
@@ -214,6 +213,66 @@ router.post(
     }
   }
 );
+
+// // @route   POST api/tasks/partner/:id/:appID
+// // @desc    Partner Posts a Task
+// // @access  private
+// router.post(
+//   "/partner/:id/:appID",
+//   passport.authenticate("jwt", { session: false }),
+//   async (req, res) => {
+//     try { 
+//       const partner = await Partner.findById(req.params.id);
+//       if (!partner) return res.status(404).send({ error: "Partner not found" });
+
+//       const application = await Application.findById(req.params.appID);
+//       if (!application)
+//         return res.status(404).send({ error: "Application not found" });
+
+//       const isValidated = validator.postValidation(req.body);
+//       if (isValidated.error)
+//         return res
+//           .status(400)
+//           .send({ error: isValidated.error.details[0].message });
+
+//       if (application.needConsultancy) {
+//         return res.status(400).json({
+//           Unauthorized: "This application can only be posted by a consultant"
+//         });
+//       }
+
+//       if (!application.reviewed) {
+//         return res
+//           .status(400)
+//           .json({ error: "This Application has not been reviewed yet" });
+//       }
+
+//       if (application.partner != req.params.id) {
+//         return res.status(400).json({
+//           Unauthorized: "This Partner is not responsible for this Application"
+//         });
+//       }
+
+//       const fields = {};
+//       fields.application = req.params.appID;
+//       fields.levelOfCommitment = req.body.levelOfCommitment;
+//       fields.monetaryCompensation = req.body.monetaryCompensation;
+//       fields.experienceLevel = req.body.experienceLevel;
+//       fields.skills = req.body.skills.split(",");
+
+//       for (let applicant of application.applicants) {
+//         if (applicant.status == "accepted") {
+//           fields.consultant = applicant;
+//         }
+//       }
+
+//       const newTask = await Task.create(fields);
+//       return res.json({ msg: "Task was created successfully", data: newTask });
+//     } catch (error) {
+//       return res.status(404).json({ partnernotfound: "Partner not found" });
+//     }
+//   }
+// );
 
 // @route   POST api/tasks/partner/respond/:id/:id2/:taskID
 // @desc    Partner Responds to Member Applications

@@ -24,11 +24,8 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-<<<<<<< HEAD
 import AdminReview from"./components/tasks/AdminrReview";
-=======
 import getAllApp from "./components/applications/getAllApp";
->>>>>>> 6391f5a78651ec4c3098c5a16517194d32b55cf1
 import Tasks from "./components/tasks/Tasks";
 import MyTasks from "./components/tasks/MyTasks";
 import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
@@ -38,6 +35,8 @@ import AdminApplication from "./components/applications/AdminApplication";
 import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+import PartnerTaskForm  from "./components/tasks/Partner'sTaskForm"
+
 
 class App extends Component {
   render() {
@@ -131,7 +130,15 @@ class App extends Component {
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
               />
+              
               <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/partner/:id"
+                  component={PartnerTaskForm}
+                />
+                </Switch>
+                 <Switch>
                 <PrivateRoute
                   exact
                   path="/api/profiles/partner/applications/:id"

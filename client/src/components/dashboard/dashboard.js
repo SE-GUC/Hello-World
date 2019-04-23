@@ -74,17 +74,12 @@ class dashboard extends Component {
                 My Applications
               </Link>{" "}
               <Link
-                to="api/profiles/application/:id"
+                to={`api/profiles/applications/${profile2._id}`}
                 className="btn btn-lg btn=info"
               >
                 Post Application
               </Link>{" "}
-              <Link to="/Partner-TaskForm" className="btn btn-lg btn-info">
-                Partner create task
-              </Link>{" "}
-              <Link to="/Consultant-TaskForm" className="btn btn-lg btn-info">
-                consultant create task
-              </Link>
+
             </div>
           );
         } else {

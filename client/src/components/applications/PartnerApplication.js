@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { getPartnerApplication } from "../../actions/applicationActions";
 import Spinner from "../common/Spinner";
 
+
 class PartnerApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
@@ -79,6 +80,12 @@ class PartnerApplication extends Component {
                 Negotiate
               </Link>
             </div>
+            <Link
+                to={`/api/tasks/partner/${application._id}`}
+                className="btn btn-lg btn-info"
+              >
+                create a task
+              </Link>
           </div>
         </div>
       );

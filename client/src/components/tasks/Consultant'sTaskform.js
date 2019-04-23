@@ -1,4 +1,3 @@
-<<<<<<< HEAD:client/src/components/tasks/Consultant'sTaskform.js
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -129,5 +128,3 @@ ConsultantTaskForm.propTypes = {
     mapStateToProps,
     { ConsultantPostTask }
   )(withRouter(ConsultantTaskForm));
-=======
->>>>>>> e14a9fe0eda7a7e26405794ec21250d57be13e77:client/src/components/tasks/TaskForm.js
