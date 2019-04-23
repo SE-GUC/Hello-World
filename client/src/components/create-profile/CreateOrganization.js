@@ -66,7 +66,7 @@ class CreateOrganization extends Component {
     var opt = e.options[e.selectedIndex].value;
     console.log(opt);
 
-    this.props.createOrganization(organizationData, this.props.history, opt);
+    this.props.createOrganization(orgData, this.props.history, opt);
   }
 
   onChange(e) {

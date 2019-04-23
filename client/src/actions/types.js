@@ -16,3 +16,4 @@ export const CONSULTANT_RESPOND = "CONSULTANT_RESPOND";
 export const POST_TASK = "POST_TASK";
 export const GET_APPLICATIONS = "GET_APPLICATIONS";
 export const GET_ADMIN = "GET_ADMIN";
+export const ADMIN_REVIEW = "ADMIN_REVIEW";
