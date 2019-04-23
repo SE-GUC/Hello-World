@@ -17,14 +17,14 @@ class getAllApp extends Component {
     if (profiles === null) {
       profileItems = <Spinner />;
     } else {
-     // if (profiles > 0) {
+      if (profiles > 0) {
         profileItems = profiles.map(profile => (
           <Appitem key={profile._id} profile={profile} />
         ));
-    //  } else {
+      } else {
         profileItems = <h4>No applications found...</h4>;
       }
-   // }
+    }
 
     return (
       <div className="profiles">

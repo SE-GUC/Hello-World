@@ -37,7 +37,7 @@ export const createPartner = (partnerData, history) => async dispatch => {
     });
   }
 };
-export const editPartner = (partnerData, history, id) => async dispatch => {
+export const editPartner = (partnerData, history) => async dispatch => {
   const body = JSON.stringify(partnerData);
   const res = await fetch("http://localhost:5000/api/profiles/partner/", {
     method: "PUT",
@@ -75,6 +75,25 @@ export const getCurrentPartner = id => async dispatch => {
     dispatch({
       type: GET_PARTNER,
       payload: {}
+    });
+  }
+};
+export const deletepartner = (history) => async dispatch => {
+  const res = await fetch("http://localhost:5000/api/profiles/pratner/delete",{
+  method:"DELETE",
+  headers:{
+"Content-Type": "application/json",
+Authorization: localStorage.getItem("jwtToken")
+
+  }
+  });
+  const json = await res.json();
+  if (json.data) {
+    history.push("/");
+  } else {
+    dispatch({
+      type: GET_ERRORS,
+      payload: json
     });
   }
 };

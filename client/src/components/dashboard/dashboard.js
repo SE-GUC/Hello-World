@@ -74,8 +74,8 @@ class dashboard extends Component {
                 My Applications
               </Link>{" "}
               <Link
-                to="api/profiles/application/:id"
-                className="btn btn-lg btn=info"
+                to="api/profiles/partnerAppSubmit"
+                className="btn btn-lg btn-info"
               >
                 Post Application
               </Link>{" "}
@@ -96,11 +96,12 @@ class dashboard extends Component {
                 <Link
                   className="btn btn-lg btn-info"
                   to={`/api/profiles/getAllApp/`}
-                >
-                  view all not-reviewed Apps to=
-                  {`/api/tasks/admin/mytasks/${adminProfile._id}`}
-                  className="btn btn-lg btn-info" > Unreviewed Tasks
+                >view all not-reviewed Apps
                 </Link>{" "}
+                  {/* <link to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                  className="btn btn-lg btn-info" >
+                Unreviewed Tasks
+                </link>{" "} */}
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
                   className="btn btn-lg btn-info"

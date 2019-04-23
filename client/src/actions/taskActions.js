@@ -12,7 +12,7 @@ const fetch = require("node-fetch");
 export const postTask = (taskData, history) => async dispatch => {
   const body = JSON.stringify(taskData);
   const res = await fetch(
-    "http://localhost:5000/api/tasks/partner/${taskData.ID}/${taskData.application}",
+    `http://localhost:5000/api/tasks/partner/${taskData.ID}/${taskData.application}`,
     {
       method: "POST",
       headers: {
