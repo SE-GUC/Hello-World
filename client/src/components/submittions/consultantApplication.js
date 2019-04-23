@@ -3,16 +3,18 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import TextFieldGroup from "../common/TextFieldGroup";
-//import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
-import { createPartner } from "../../actions/partnerActions";
+import TextFieldGroupIcon from "../common/TextFieldGroupIcon";
+import { postApplication } from "../../actions/applicationActions";
 
-class CreatePartner extends Component {
+class consultantApplication extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fieldOfWork: "",
+      description: "",
+      needConsultancy: false,
       errors: {}
     };
+
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
@@ -25,15 +27,12 @@ class CreatePartner extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const partnerData = {
-      fieldOfWork: this.state.fieldOfWork
+    const ApplicationData = {
+      description: this.state.description,
+      needConsultancy: false
     };
 
-    this.props.createPartner(
-       partnerData,
-      this.props.history,
-      this.props.match.params.id
-    );
+    this.props.postApplication(ApplicationData, this.props.history);
   }
 
   onChange(e) {
@@ -48,27 +47,39 @@ class CreatePartner extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Partner</h1>
-              <p className="lead text-center">Tell us more about what you do</p>
-              <small className="d-block pb-3">* = required fields</small>
+              <h1 className="display-4 text-center">Create Application</h1>
+              <p className="lead text-center">please fill all</p>
               <form onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="*field-of-work"
-                  name="fieldOfWork"
-                  value={this.state.fieldOfWork}
+                  placeholder="*desc"
+                  name="description"
+                  value={this.state.description}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"fieldOfWork" is required'
+                    errors.error == '"description" is required'
                       ? errors.error
                       : errors.error ==
-                        '"fieldOfWork" is not allowed to be empty'
+                        '"description" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
-                        '"FieldOfWork" length must be at least 3 characters long'
+                        '"description" length must be at least 3 characters long'
                       ? errors.error
                       : null
                   }
                 />
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="1"
+                    value={this.state.needConsultancy}
+                    onChange={this.onChange}
+                  >
+                    <label class="custom-control-label" for="defaultUnchecked">
+                      Need needConsultancy?:
+                    </label>
+                  </input>
+                </div>
                 <input
                   type="submit"
                   value="Submit"
@@ -83,7 +94,7 @@ class CreatePartner extends Component {
   }
 }
 
-CreatePartner.propTypes = {
+consultantApplication.propTypes = {
   profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
@@ -95,5 +106,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { createPartner }
-)(withRouter(CreatePartner));
+  { postApplication }
+)(withRouter(consultantApplication));

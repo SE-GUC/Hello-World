@@ -87,7 +87,20 @@ export const getAdminApplication = id => async dispatch => {
     payload: json.data
   });
 };
-
+// review application
+export const reviewapp = (history,id) => async dispatch =>{
+const res = await fetch(`http://localhost:5000api/applications/review/${id}`,
+{
+  method:"POST",
+  headers:{
+    "Content-Type": "application/json",
+    Authorization:localStorage.getItem("jwtToken")
+  }
+})
+const json = await res.json
+if(json.msg){
+  history.push("/dashboard")
+}}
 // Get Admin Applications
 export const getAdminApplications = () => async dispatch => {
   const res = await fetch(`http://localhost:5000/api/applications/admin`, {
@@ -141,6 +154,27 @@ export const partnerNegotiate = (msgData, id, history) => async dispatch => {
   const body = JSON.stringify(msgData);
   const res = await fetch(
     `http://localhost:5000/api/applications/partner/negotiate/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
+};
+
+// Admin Negotiate
+export const adminNegotiate = (msgData, id, history) => async dispatch => {
+  const body = JSON.stringify(msgData);
+  const res = await fetch(
+    `http://localhost:5000/api/applications/admin/negotiate/${id}`,
     {
       method: "POST",
       headers: {

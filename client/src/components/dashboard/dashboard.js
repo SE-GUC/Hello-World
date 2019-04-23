@@ -6,13 +6,20 @@ import { getCurrentAdmin } from "../../actions/adminActions";
 import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+
+import {deletepartner} from "../../actions/partnerActions"
+
 class dashboard extends Component {
   componentDidMount() {
     this.props.getCurrentMember();
     this.props.getCurrentPartner();
     this.props.getCurrentAdmin();
+    this.onSubmit = this.onSubmit.bind(this);
   }
-
+  onSubmit(e) {
+    e.preventDefault();
+    this.props.deletepartner(this.props.history);
+  }
   render() {
     const { user } = this.props.auth;
     const { profile } = this.props.profile;
@@ -61,6 +68,12 @@ class dashboard extends Component {
           dashboardContent = (
             <div>
               <p className="lead text-muted">Welcome </p>
+              <form onSubmit={this.onSubmit}><input
+                  type="submit"
+                  value="deleteAccount"
+                  className="btn btn-info btn-block mt-4"
+                />
+                </form>
               <Link
                 className="btn btn-lg btn-info"
                 to={`/api/profiles/partner/${profile2._id}`}
@@ -96,19 +109,19 @@ class dashboard extends Component {
                 <p className="lead">You are Logged in as an admin</p>
                 <Link
                   className="btn btn-lg btn-info"
-                  to={`/api/profiles/getAllApp/`}
-                >view all not-reviewed Apps
+                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                >
+                  {" "}
+                  Unreviewed Tasks
                 </Link>{" "}
-                  {/* <link to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
-                  className="btn btn-lg btn-info" >
-                Unreviewed Tasks
-                </link>{" "} */}
+
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
                   className="btn btn-lg btn-info"
                 >
                   Applications
-                </Link>
+                </Link>{" "}
+                
               </div>
             );
           } else {
@@ -159,7 +172,8 @@ dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
   profile2: PropTypes.object.isRequired,
-  adminProfile: PropTypes.object.isRequired
+  adminProfile: PropTypes.object.isRequired,
+  deletepartner:PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -171,5 +185,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCurrentMember, getCurrentPartner, getCurrentAdmin }
+  { getCurrentMember, getCurrentPartner, getCurrentAdmin,deletepartner }
 )(dashboard);

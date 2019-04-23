@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
+
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Footer from "./components/layout/Footer";
@@ -24,8 +25,11 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
-import AdminReview from"./components/tasks/AdminrReview";
+
+import AdminReview from "./components/tasks/AdminrReview";
+
 import getAllApp from "./components/applications/getAllApp";
+
 import Tasks from "./components/tasks/Tasks";
 import MyTasks from "./components/tasks/MyTasks";
 import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
@@ -35,9 +39,16 @@ import AdminApplication from "./components/applications/AdminApplication";
 import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+<<<<<<< HEAD
 import PartnerTaskForm  from "./components/tasks/Partner'sTaskForm"
+=======
+
+>>>>>>> 816cafad48c43ed1e7508eec07b81361d0753494
 import editapp from "./components/edit-profile/editapp";
 import AddPastEvents from"./components/edit-profile/AddPastEvents";
+
+import AdminNegotiation from "./components/applications/AdminNegotiation";
+
 
 class App extends Component {
   render() {
@@ -78,13 +89,6 @@ class App extends Component {
                   exact
                   path="/api/profiles/partnerAppSubmit"
                   component={partnerAppSubmit}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/api/profiles/getAllApp"
-                  component={getAllApp}
                 />
               </Switch>
               <Switch>
@@ -190,6 +194,13 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/tasks/member/mytasks/:id"
+                  component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/applications/admin/all/:id"
                   component={AdminApplications}
                 />
@@ -220,6 +231,13 @@ class App extends Component {
                   exact
                   path="/api/applications/partner/negotiate/:id"
                   component={PartnerNegotiation}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/admin/negotiate/:id"
+                  component={AdminNegotiation}
                 />
               </Switch>
             </div>

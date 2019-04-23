@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import Spinner from "../common/Spinner";
-import Appitem from "./Appitem";
-import { getApplications } from "../../actions/adminActions";
+import ConsultantItem from "./ConsultantItem";
+import { getConsultant } from "../../actions/consultantActions";
 
-class getAllApp extends Component {
+class Consultant extends Component {
   componentDidMount() {
-    this.props.getApplications();
+    this.props.getConsultant();
   }
 
   render() {
@@ -17,12 +17,12 @@ class getAllApp extends Component {
     if (profiles === null) {
       profileItems = <Spinner />;
     } else {
-      if (profiles > 0) {
+      if (profiles.length > 0) {
         profileItems = profiles.map(profile => (
-          <Appitem key={profile._id} profile={profile} />
+          <ConsultantItem key={profile._id} profile={profile} />
         ));
       } else {
-        profileItems = <h4>No applications found...</h4>;
+        profileItems = <h4>No profiles found...</h4>;
       }
     }
 
@@ -31,9 +31,9 @@ class getAllApp extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h1 className="display-4 text-center">applications</h1>
+              <h1 className="display-4 text-center">Developer Profiles</h1>
               <p className="lead text-center">
-                All submitted applications
+                Browse and connect with developers
               </p>
               {profileItems}
             </div>
@@ -44,15 +44,15 @@ class getAllApp extends Component {
   }
 }
 
-getAllApp.propTypes = {
-  getApplications: PropTypes.func.isRequired
+Consultant.propTypes = {
+  getConsultant: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  profile: state.admin
+  profile: state.consultant
 });
 
 export default connect(
   mapStateToProps,
-  { getApplications }
-)(getAllApp);
+  { getConsultant }
+)(Consultant);
