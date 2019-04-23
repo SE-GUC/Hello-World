@@ -30,7 +30,7 @@ class CreatePartner extends Component {
     };
 
     this.props.createPartner(
-      partnerData,
+       partnerData,
       this.props.history,
       this.props.match.params.id
     );

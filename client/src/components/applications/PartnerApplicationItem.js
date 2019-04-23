@@ -20,6 +20,12 @@ class PartnerApplicationItem extends Component {
             >
               View Application
             </Link>
+            <Link
+              to={`/api/applications/editapp/${application._id}`}
+              className="btn btn-info"
+            >
+              Edit Application
+            </Link>
           </div>
         </div>
       </div>

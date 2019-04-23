@@ -17,9 +17,9 @@ export const getPartner = id => async dispatch => {
   });
 };
 // create partner
-export const createPartner = (partnerData, history) => async dispatch => {
+export const createPartner = (partnerData, history,id) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch("http://localhost:5000/api/profiles/partner/", {
+  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const createPartner = (partnerData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -37,7 +37,7 @@ export const createPartner = (partnerData, history) => async dispatch => {
     });
   }
 };
-export const editPartner = (partnerData, history, id) => async dispatch => {
+export const editPartner = (partnerData, history) => async dispatch => {
   const body = JSON.stringify(partnerData);
   const res = await fetch("http://localhost:5000/api/profiles/partner/", {
     method: "PUT",
@@ -75,6 +75,25 @@ export const getCurrentPartner = id => async dispatch => {
     dispatch({
       type: GET_PARTNER,
       payload: {}
+    });
+  }
+};
+export const deletepartner = (history) => async dispatch => {
+  const res = await fetch("http://localhost:5000/api/profiles/pratner/delete",{
+  method:"DELETE",
+  headers:{
+"Content-Type": "application/json",
+Authorization: localStorage.getItem("jwtToken")
+
+  }
+  });
+  const json = await res.json();
+  if (json.data) {
+    history.push("/");
+  } else {
+    dispatch({
+      type: GET_ERRORS,
+      payload: json
     });
   }
 };

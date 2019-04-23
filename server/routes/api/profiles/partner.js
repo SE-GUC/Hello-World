@@ -92,19 +92,17 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const organization = await Partner.findOne({ user: req.user.id });
-      if (!organization)
-        return res.status(404).send({ error: "organization does not exist" });
-      const partner = await Organization.findOne({
+      const organization = await Organization.findOne({ user: req.user.id });
+      const partner = await Partner.findOne({
         organization: organization._id
       });
       if (!partner)
         return res.status(404).send({ error: "Partner does not exist" });
-      const isValidated = validator.updateValidation(req.body);
-      if (isValidated.error)
-        return res
-          .status(400)
-          .send({ error: isValidated.error.details[0].message });
+      // const isValidated = validator.updateValidation(req.body);
+      // if (isValidated.error)
+      //   return res
+      //     .status(400)
+      //     .send({ error: isValidated.error.details[0].message });
       const orgFields = {};
       if (req.body.name) orgFields.name = req.body.name;
       if (req.body.phone) orgFields.phone = req.body.phone;
@@ -112,11 +110,6 @@ router.put(
       if (req.body.address) orgFields.address = req.body.address;
       const fields = {};
       if (req.body.fieldOfWork) fields.fieldOfWork = req.body.fieldOfWork;
-
-      partner.save();
-      organization.save();
-      fields.user = req.user.id;
-
       orgFields.social = {};
       if (req.body.youtube) orgFields.social.youtube = req.body.youtube;
       if (req.body.facebook) orgFields.social.facebook = req.body.facebook;
@@ -125,11 +118,16 @@ router.put(
       if (req.body.instagram) orgFields.social.instagram = req.body.instagram;
 
       if (req.body.avatar) orgFields.avatar = req.body.avatar;
-
       const updatedpartner = await Partner.findOneAndUpdate(
+        { organization: organization._id },
+        {
+          $set: fields
+        }
+      );
+      const updatedorganization = await Organization.findOneAndUpdate(
         { user: req.user.id },
         {
-          $set: Fields
+          $set: orgFields
         }
       );
       return res.json({ msg: "partner updated successfully" });
@@ -391,21 +389,23 @@ router.delete(
   }
 );
 
-// @route   DELETE api/profiles/partner/delete/:id
+// @route   DELETE api/profiles/partner/delete
 // @desc    Delete Partner's Profile
 // @access  Private
 router.delete(
-  "/:id",
+  "/delete",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const partner = await Partner.findById(req.params.id);
+      const organization = await Organization.findOne({user: req.user.id})
+      const partner = await Partner.findOne({organization:organization._id});
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 
-      const deletedPartner = await Partner.findByIdAndRemove(req.params.id);
+      const deletedPartner = await Partner.findByIdAndRemove(partner._id);  
+      const deletedorganization = await Organization.findByIdAndRemove(organization._id)
       const deletedUser = await User.findByIdAndRemove(req.user.id);
 
-      res.json({ msg: "deleted", data: deletedTask });
+      res.json({ msg: "deleted", data: {deletedPartner,deletedorganization,deletedUser} });
     } catch (error) {
       return res.status(404).json({ partnernotfound: "Partner not found" });
     }

@@ -10,7 +10,7 @@ const Member = require("../../models/Member");
 const Partner = require("../../models/Partner");
 const Consultant = require("../../models/Consultant");
 const Admin = require("../../models/Admin");
-
+const Organization = require("../../models/Organization")
 // Load Validation
 const validator = require("../../validation/tasksValidation");
 
@@ -154,19 +154,19 @@ router.delete(
   }
 );
 
-// @route   POST api/tasks/partner/:id/:appID
+// @route   POST api/tasks/partner/:id
 // @desc    Partner Posts a Task
 // @access  private
 router.post(
-  "/partner/:id/:appID",
+  "/partner/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      console.log(req.params.id);
-      const partner = await Partner.findById(req.params.id);
+      const organization = await Organization.findOne({user : req.user.id})
+      const partner = await Partner.findOne({organization: organization._id});
       if (!partner) return res.status(404).send({ error: "Partner not found" });
 
-      const application = await Application.findById(req.params.appID);
+      const application = await Application.findById(req.params.id);
       if (!application)
         return res.status(404).send({ error: "Application not found" });
 
