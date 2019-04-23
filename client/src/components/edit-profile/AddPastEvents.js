@@ -21,8 +21,7 @@ class AddPastEvents extends Component {
   }
   componentDidMount() {
     this.props.getCurrentMember();
-    console.log(this.props)
-  }
+   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -37,7 +36,7 @@ class AddPastEvents extends Component {
       description: this.state.description,
       location: this.state.location,
     };
-
+   
    this.props.addpastevents(memberData, this.props.history);
   };
 
@@ -46,30 +45,25 @@ class AddPastEvents extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+   // const { errors } = this.state;
 
     return (
       <div className="create-profile">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Edit Member Profile</h1>
+              <h1 className="display-4 text-center"> Add Past-Event </h1>
               <p className="lead text-center">
-                Only fill fields you wish to update
+                Fill in the info about the event
               </p>
               <form onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Name"
-                  name="name"
+              <TextFieldGroup
+                  placeholder="title"
+                  name="title"
                   value={this.state.title}
                   onChange={this.onChange}
                 //   error={
-                //     errors.error == '"name" is required'
-                //       ? errors.error
-                //       : errors.error == '"name" is not allowed to be empty'
-                //       ? errors.error
-                //       : errors.error ==
-                //         '"name" length must be at least 3 characters long'
+                //     errors.error == '"age" must be a number'
                 //       ? errors.error
                 //       : null
                 //   }
@@ -113,13 +107,13 @@ class AddPastEvents extends Component {
 AddPastEvents.propTypes = {
   addpastevents: PropTypes.func.isRequired,
   getCurrentMember: PropTypes.func.isRequired,
-//   profile: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
   profile: state.member,
-  errors: state.errors
+// errors: state.errors
 });
 
 export default connect(

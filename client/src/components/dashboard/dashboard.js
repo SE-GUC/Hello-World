@@ -54,6 +54,12 @@ class dashboard extends Component {
               className="btn btn-lg btn-info"
             >
               My Tasks
+            </Link>{" "}
+            <Link
+              to={`/api/tasks/member/addpastevent/${profile2._id}`}
+              className="btn btn-lg btn-info"
+            >
+              add past event
             </Link>
           </div>
         );
@@ -73,7 +79,7 @@ class dashboard extends Component {
                 to={`/api/profiles/partner/${profile2._id}`}
               >
                 Show Profile:{profile2.name}
-              </Link>
+              </Link>{" "}
               <Link
                 to="/api/profiles/Edit-Partner"
                 className="btn btn-lg btn-info"
@@ -92,12 +98,7 @@ class dashboard extends Component {
               >
                 Post Application
               </Link>{" "}
-              <Link to="/Partner-TaskForm" className="btn btn-lg btn-info">
-                Partner create task
-              </Link>{" "}
-              <Link to="/Consultant-TaskForm" className="btn btn-lg btn-info">
-                consultant create task
-              </Link>
+
             </div>
           );
         } else {

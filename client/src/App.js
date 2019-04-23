@@ -39,8 +39,13 @@ import AdminApplication from "./components/applications/AdminApplication";
 import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+<<<<<<< HEAD
+import PartnerTaskForm  from "./components/tasks/Partner'sTaskForm"
+=======
 
+>>>>>>> 816cafad48c43ed1e7508eec07b81361d0753494
 import editapp from "./components/edit-profile/editapp";
+import AddPastEvents from"./components/edit-profile/AddPastEvents";
 
 import AdminNegotiation from "./components/applications/AdminNegotiation";
 
@@ -114,6 +119,15 @@ class App extends Component {
                   component={EditPartner}
                 />
               </Switch>
+
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/member/addpastevent/:id"
+                  component={AddPastEvents}
+                />
+              </Switch>
+
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={dashboard} />
               </Switch>
@@ -137,7 +151,15 @@ class App extends Component {
                 path="/api/applications/consultant/:id/:appID"
                 component={Application}
               />
+              
               <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/tasks/partner/:id"
+                  component={PartnerTaskForm}
+                />
+                </Switch>
+                 <Switch>
                 <PrivateRoute
                   exact
                   path="/api/profiles/partner/applications/:id"
