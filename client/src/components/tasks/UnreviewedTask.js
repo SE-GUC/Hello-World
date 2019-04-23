@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getAdminTask } from "../../actions/taskActions";
 import Spinner from "../common/Spinner";
+import Tasks from "./Tasks";
+
 
 class UnreviewedTask extends Component {
   componentDidMount() {
-    const { taskID } = this.props.match.params;
-    this.props.getAdminTask(taskID);
+    const { taskID,appID } = this.props.match.params;
+    this.props.getAdminTask(taskID,appID);
   }
 
   render() {
@@ -71,6 +73,7 @@ class UnreviewedTask extends Component {
               <hr />
               <h3 className="text-center text-info">Extra Attributes</h3>
               <div className="row">
+              
                 <div className="d-flex flex-wrap justify-content-center align-items-center">
                   {exs}
                 </div>
@@ -78,6 +81,13 @@ class UnreviewedTask extends Component {
               <hr />
             </div>
           </div>
+          
+         
+            <Link to={`/api/applications/admin/${application._id}`} className="btn btn-info">
+              review Task
+            </Link>
+            
+          
         </div>
       );
     }
