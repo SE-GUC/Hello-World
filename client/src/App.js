@@ -167,6 +167,13 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/tasks/member/mytasks/:id"
+                  component={MyTasks}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/applications/admin/all/:id"
                   component={AdminApplications}
                 />
