@@ -17,10 +17,9 @@ export const getPartner = id => async dispatch => {
   });
 };
 // create partner
-
-export const createPartner = (partnerData, history, id) => async dispatch => {
+export const createPartner = (partnerData, history) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
+  const res = await fetch("http://localhost:5000/api/profiles/partner/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,7 +29,7 @@ export const createPartner = (partnerData, history, id) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboard");
+    history.push("/dashboardforPartner");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -40,7 +39,7 @@ export const createPartner = (partnerData, history, id) => async dispatch => {
 };
 export const editPartner = (partnerData, history, id) => async dispatch => {
   const body = JSON.stringify(partnerData);
-  const res = await fetch(`http://localhost:5000/api/profiles/partner/${id}`, {
+  const res = await fetch("http://localhost:5000/api/profiles/partner/", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

@@ -7,10 +7,8 @@ import { GET_ERRORS } from "./types";
 const fetch = require("node-fetch");
 
 // Get Application
-export const getApplication = (id, appID) => async dispatch => {
-  const res = await fetch(
-    `http://localhost:5000/api/applications/admin/${id}/${appID}`
-  );
+export const getApplication = id => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/applications/admin/${id}`);
 
   const json = await res.json();
   dispatch({
@@ -33,7 +31,7 @@ export const getReviewedApplication = (id, appID) => async dispatch => {
 };
 export const postApplication = (ApplicationData, history) => async dispatch => {
   const body = JSON.stringify(ApplicationData);
-  const res = await fetch("http://localhost:5000/api/applications/:id", {
+  const res = await fetch("http://localhost:5000/api/applications", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +41,7 @@ export const postApplication = (ApplicationData, history) => async dispatch => {
   });
   const json = await res.json();
   if (json.data) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -63,7 +61,7 @@ export const editApp = (appData, history, appID) => async dispatch => {
   });
   const json = await res.json();
   if (json.msg) {
-    history.push("/dashboardforPartner");
+    history.push("/dashboard");
   } else {
     dispatch({
       type: GET_ERRORS,
@@ -103,4 +101,58 @@ export const getAdminApplications = () => async dispatch => {
     type: GET_APPLICATIONS,
     payload: json.data
   });
+};
+
+// Get Partner Applications
+export const getPartnerApplications = () => async dispatch => {
+  const res = await fetch(`http://localhost:5000/api/applications/partner`, {
+    headers: {
+      Authorization: localStorage.getItem("jwtToken")
+    }
+  });
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATIONS,
+    payload: json.data
+  });
+};
+
+// Get Partner Application
+export const getPartnerApplication = id => async dispatch => {
+  const res = await fetch(
+    `http://localhost:5000/api/applications/partner/${id}`,
+    {
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")
+      }
+    }
+  );
+
+  const json = await res.json();
+  dispatch({
+    type: GET_APPLICATION,
+    payload: json.data
+  });
+};
+
+// Partner Negotiate
+export const partnerNegotiate = (msgData, id, history) => async dispatch => {
+  const body = JSON.stringify(msgData);
+  const res = await fetch(
+    `http://localhost:5000/api/applications/partner/negotiate/${id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("jwtToken")
+      },
+      body: body
+    }
+  );
+
+  const json = await res.json();
+  if (json.data) {
+    history.push("/dashboard");
+  }
 };

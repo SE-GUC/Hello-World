@@ -24,14 +24,20 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+<<<<<<< HEAD
 import AdminReview from"./components/tasks/AdminrReview";
+=======
+import getAllApp from "./components/applications/getAllApp";
+>>>>>>> 6391f5a78651ec4c3098c5a16517194d32b55cf1
 import Tasks from "./components/tasks/Tasks";
-import MemberNegotiate from "./components/negotiation/MemberNegotiate";
 import MyTasks from "./components/tasks/MyTasks";
 import UnreviewedTasks from "./components/tasks/UnreviewedTasks";
 import UnreviewedTask from "./components/tasks/UnreviewedTask";
 import AdminApplications from "./components/applications/AdminApplications";
 import AdminApplication from "./components/applications/AdminApplication";
+import PartnerApplications from "./components/applications/PartnerApplications";
+import PartnerApplication from "./components/applications/PartnerApplication";
+import PartnerNegotiation from "./components/applications/PartnerNegotiation";
 
 class App extends Component {
   render() {
@@ -70,8 +76,15 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/api/profiles/Post-application"
+                  path="/api/profiles/partnerAppSubmit"
                   component={partnerAppSubmit}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/profiles/getAllApp"
+                  component={getAllApp}
                 />
               </Switch>
               <Switch>
@@ -121,10 +134,18 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
+                  path="/api/profiles/partner/applications/:id"
+                  component={PartnerApplications}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
                   path="/api/tasks/member/:taskID"
                   component={Task}
                 />
               </Switch>
+
               <Switch>
                 <PrivateRoute
                   exact
@@ -166,8 +187,15 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/api/tasks/member/negotiate/:id/:id2"
-                  component={MemberNegotiate}
+                  path="/api/applications/partner/:id"
+                  component={PartnerApplication}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/api/applications/partner/negotiate/:id"
+                  component={PartnerNegotiation}
                 />
               </Switch>
             </div>

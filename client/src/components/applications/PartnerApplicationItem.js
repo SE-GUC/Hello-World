@@ -2,20 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-class AppItem extends Component {
+class PartnerApplicationItem extends Component {
   render() {
-    const { profile } = this.props;
+    const { application } = this.props;
 
     return (
       <div className="card card-body bg-light mb-3">
         <div className="row">
           <div className="col-lg-6 col-md-4 col-8">
-            <h3>{profile.description}</h3>
+            <h3>{application.partner.organization.name}</h3>
             <p>
-              <span>{profile.needConsultancy}</span>
+              <span>{application.description}</span>
             </p>
             <Link
-              to={`/api/applications/admin/${profile._id}`}
+              to={`/api/applications/partner/${application._id}`}
               className="btn btn-info"
             >
               View Application
@@ -27,8 +27,8 @@ class AppItem extends Component {
   }
 }
 
-AppItem.propTypes = {
-  profile: PropTypes.object.isRequired
+PartnerApplicationItem.propTypes = {
+  application: PropTypes.object.isRequired
 };
 
-export default AppItem;
+export default PartnerApplicationItem;

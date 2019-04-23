@@ -63,24 +63,6 @@ router.get(
     }
   }
 );
-// @route GET api/profiles/partner
-// @desc Get Current partner's Profile
-// @access private
-router.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const partner = await Partner.findOne({ user: req.user.id })
-        .populate("fieldOfWork", ["fieldOfWork"])
-        .populate("partner", ["name"]);
-      if (!partner) return res.status(404).send({ error: "Partner not found" });
-      return res.json({ data: partner });
-    } catch (error) {
-      return res.status(404).json({ membernotfound: "partner not found" });
-    }
-  }
-);
 
 // @route GET api/profiles/partner
 // @desc Get Current Partner's Profile
@@ -110,10 +92,12 @@ router.put(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const partner = await Partner.findOne({ user: req.user.id });
-
-      const organization = await Organization.findOne(partner.organization);
-
+      const organization = await Partner.findOne({ user: req.user.id });
+      if (!organization)
+        return res.status(404).send({ error: "organization does not exist" });
+      const partner = await Organization.findOne({
+        organization: organization._id
+      });
       if (!partner)
         return res.status(404).send({ error: "Partner does not exist" });
       const isValidated = validator.updateValidation(req.body);
@@ -121,12 +105,6 @@ router.put(
         return res
           .status(400)
           .send({ error: isValidated.error.details[0].message });
-      const isValidated2 = validator2.createValidation(req.body);
-      if (isValidated2.error)
-        return res
-          .status(400)
-          .send({ error: isValidated.error.details[0].message });
-
       const orgFields = {};
       if (req.body.name) orgFields.name = req.body.name;
       if (req.body.phone) orgFields.phone = req.body.phone;
@@ -152,12 +130,6 @@ router.put(
         { user: req.user.id },
         {
           $set: Fields
-        }
-      );
-      const updatedorganization = await Organization.findOneAndUpdate(
-        { user: req.user.id },
-        {
-          $set: orgFields
         }
       );
       return res.json({ msg: "partner updated successfully" });

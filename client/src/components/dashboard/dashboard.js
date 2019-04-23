@@ -24,13 +24,13 @@ class dashboard extends Component {
     if (profile == null && profile2 == null && adminProfile == null) {
       dashboardContent = <Spinner />;
     } else {
-      if (profile !== null && profile.name) {
+      if (profile2 !== null && profile2.name) {
         dashboardContent = (
           <div>
             <p className="lead text-muted">
               Welcome{" "}
-              <Link to={`/api/profiles/member/${profile._id}`}>
-                {profile.name}
+              <Link to={`/api/profiles/member/${profile2._id}`}>
+                {profile2.name}
               </Link>
             </p>
             <Link
@@ -43,7 +43,7 @@ class dashboard extends Component {
               add skill
             </Link>{" "}
             <Link
-              to={`/api/tasks/member/mytasks/${profile._id}`}
+              to={`/api/tasks/member/mytasks/${profile2._id}`}
               className="btn btn-lg btn-info"
             >
               My Tasks
@@ -51,23 +51,27 @@ class dashboard extends Component {
           </div>
         );
       } else {
-        if (profile2 !== null && profile2.fieldOfWork) {
+        if (profile !== null && profile.fieldOfWork) {
           dashboardContent = (
             <div>
-              <p className="lead text-muted">
-                Welcome{" "}
-                <Link
-                  className="btn btn-lg btn-info"
-                  to={`/api/profiles/partner/${profile2._id}`}
-                >
-                  Show Profile:{profile2.name}
-                </Link>
-              </p>
+              <p className="lead text-muted">Welcome </p>
+              <Link
+                className="btn btn-lg btn-info"
+                to={`/api/profiles/partner/${profile2._id}`}
+              >
+                Show Profile:{profile2.name}
+              </Link>
               <Link
                 to="/api/profiles/Edit-Partner"
                 className="btn btn-lg btn-info"
               >
                 Edit Partner's profile
+              </Link>{" "}
+              <Link
+                to={`/api/profiles/partner/applications/${profile2._id}`}
+                className="btn btn-lg btn-info"
+              >
+                My Applications
               </Link>{" "}
               <Link
                 to="api/profiles/application/:id"
@@ -90,10 +94,12 @@ class dashboard extends Component {
                 <p className="lead text-muted">Welcome {adminProfile.name}</p>
                 <p className="lead">You are Logged in as an admin</p>
                 <Link
-                  to={`/api/tasks/admin/mytasks/${adminProfile._id}`}
                   className="btn btn-lg btn-info"
+                  to={`/api/profiles/getAllApp/`}
                 >
-                  Unreviewed Tasks
+                  view all not-reviewed Apps to=
+                  {`/api/tasks/admin/mytasks/${adminProfile._id}`}
+                  className="btn btn-lg btn-info" > Unreviewed Tasks
                 </Link>{" "}
                 <Link
                   to={`/api/applications/admin/all/${adminProfile._id}`}
@@ -155,9 +161,9 @@ dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  profile: state.member,
+  profile2: state.member,
   auth: state.auth,
-  profile2: state.partner,
+  profile: state.partner,
   adminProfile: state.admin
 });
 
