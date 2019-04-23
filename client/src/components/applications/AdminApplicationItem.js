@@ -10,7 +10,7 @@ class AdminApplicationItem extends Component {
       <div className="card card-body bg-light mb-3">
         <div className="row">
           <div className="col-lg-6 col-md-4 col-8">
-            <h3>{application.partner.organization.name}</h3>
+            
             <p>
               <span>{application.partner.organization.email}</span>
             </p>

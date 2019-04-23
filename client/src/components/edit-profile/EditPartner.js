@@ -35,29 +35,29 @@ class EditPartner extends Component {
 
     if (nextProps.partner) {
       const profile = nextProps.partner;
-      profile.organization.name = profile.organization.name !== null ? profile.organization.name:"";
+      profile.name = profile.organization.name !== null ? profile.name:"";
         profile.fieldOfWork = profile.fieldOfWork !== null ? profile.fieldOfWork: "";
-        profile.organization.address = profile.organization.address !== null ? profile.organization.address:"";
-        profile.organization.email = profile.organization.email !== null ? profile.organization.email : "";
-        profile.organization.phone = profile.organization.phone !== null ? profile.organization.phone : "";
+        profile.address = profile.address !== null ? profile.address:"";
+        profile.email = profile.email !== null ? profile.email : "";
+        profile.phone = profile.phone !== null ? profile.phone : "";
         
-        profile.organization.social = Object.keys(profile.organization.social) !== 0 ? profile.organization.social : {};
+        profile.social = Object.keys(profile.social) !== 0 ? profile.social : {};
         profile.twitter =
-          profile.organization.social.twitter !== null ? profile.organization.social.twitter : "";
+          profile.social.twitter !== null ? profile.social.twitter : "";
         profile.facebook =
-          profile.organization.social.facebook !== null ? profile.organization.social.facebook : "";
+          profile.social.facebook !== null ? profile.social.facebook : "";
         profile.linkedin =
-          profile.organization.social.linkedin !== null ? profile.organization.social.linkedin : "";
+          profile.social.linkedin !== null ? profile.social.linkedin : "";
         profile.youtube =
-          profile.organization.social.youtube !== null ? profile.organization.social.youtube : "";
+          profile.social.youtube !== null ? profile.social.youtube : "";
         profile.instagram =
-          profile.organization.social.instagram !== null ? profile.organization.social.instagram : "";
+          profile.social.instagram !== null ? profile.social.instagram : "";
   
       this.setState({
        fieldOfWork: profile.fieldOfWork,
-       address: profile.organization.address,
-       email : profile.organization.email,
-       phone : profile.organization.phone,
+       address: profile.address,
+       email : profile.email,
+       phone : profile.phone,
        twitter: profile.twitter,
         facebook: profile.facebook,
         linkedin: profile.linkedin,
@@ -143,18 +143,18 @@ class EditPartner extends Component {
                       : null
                   }
                 />
-                <TextFieldGroup
-                  placeholder="fieldOfWork"
-                  name="fieldofwork"
+               <TextFieldGroup
+                  placeholder="you field"
+                  name="fieldOfWork"
                   value={this.state.fieldOfWork}
                   onChange={this.onChange}
                   error={
-                    errors.error == '"fieldOfWork" is required'
+                    errors.error == '"your field" is required'
                       ? errors.error
-                      : errors.error == '"fieldOfWork" is not allowed to be empty'
+                      : errors.error == '"name" is not allowed to be empty'
                       ? errors.error
                       : errors.error ==
-                        '"fieldOfWork" length must be at least 3 characters long'
+                        '"name" length must be at least 3 characters long'
                       ? errors.error
                       : null
                   }

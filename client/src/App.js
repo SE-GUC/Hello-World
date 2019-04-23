@@ -25,6 +25,7 @@ import CreatePartner from "./components/create-profile/CreatePartner";
 import CreateOrganization from "./components/create-profile/CreateOrganization";
 import EditPartner from "./components/edit-profile/EditPartner";
 import partnerAppSubmit from "./components/submittions/partnerAppSubmit";
+
 import AdminReview from "./components/tasks/AdminrReview";
 
 import getAllApp from "./components/applications/getAllApp";
@@ -38,7 +39,11 @@ import AdminApplication from "./components/applications/AdminApplication";
 import PartnerApplications from "./components/applications/PartnerApplications";
 import PartnerApplication from "./components/applications/PartnerApplication";
 import PartnerNegotiation from "./components/applications/PartnerNegotiation";
+
+import editapp from "./components/edit-profile/editapp";
+
 import AdminNegotiation from "./components/applications/AdminNegotiation";
+
 
 class App extends Component {
   render() {
@@ -84,8 +89,8 @@ class App extends Component {
               <Switch>
                 <PrivateRoute
                   exact
-                  path="/api/profiles/getAllApp"
-                  component={getAllApp}
+                  path="/api/applications/editapp/:id"
+                  component={editapp}
                 />
               </Switch>
               <Switch>

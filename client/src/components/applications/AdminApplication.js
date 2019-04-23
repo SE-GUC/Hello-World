@@ -9,6 +9,12 @@ class AdminApplication extends Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.getAdminApplication(id);
+    this.onSubmit = this.onSubmit.bind(this);
+    
+  }
+  onSubmit(e){
+    e.preventDefault();
+    this.props.createOrganization(organizationData, this.props.history, opt);
   }
   render() {
     let applicationContent;
@@ -71,6 +77,13 @@ class AdminApplication extends Component {
               <h3 className="text-center text-info">Negotiation</h3>
               <div>
                 <div>{msgs}</div>
+                <form onSubmit={this.onSubmit}>
+                <input
+                  type="submit"
+                  value="Approve"
+                  className="btn btn-info btn-block mt-4"
+                />
+              </form>
               </div>
               <Link
                 to={`/api/applications/admin/negotiate/${application._id}`}
